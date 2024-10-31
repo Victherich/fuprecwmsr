@@ -1,0 +1,77 @@
+
+
+   .admin-post-shipment-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    height: 500px;
+    /* min-height: 100vh; */
+    overflow-y: scroll;
+  }
+  
+  .admin-post-shipment-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: orange;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+  
+  .admin-post-shipment-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .admin-post-shipment-form-group {
+    margin-bottom: 15px;
+  }
+
+  
+  
+  .admin-post-shipment-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: orange;
+  }
+  
+  .admin-post-shipment-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .admin-post-shipment-form-group select{
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .admin-post-shipment-submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: orange;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .admin-post-shipment-submit-button:hover {
+    background-color:orangered;
+  }
+  
+
+  @media screen and (max-width:428px) {
+    .admin-post-shipment-container{
+      padding: 20px 0px;
+    }
+  }

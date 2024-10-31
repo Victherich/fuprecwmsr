@@ -1,0 +1,109 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: white;
+    color: orange;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Logo Styling */
+  .logo h1 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: orange;
+    cursor: pointer;
+  }
+  
+  /* Navigation Menu */
+  .nav-menu ul {
+    display: flex;
+    list-style: none;
+  }
+  
+  .nav-menu ul li {
+    margin-right: 30px;
+  }
+  
+  .nav-menu ul li a {
+    text-decoration: none;
+    color: orange;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-menu ul li a:hover {
+    color: darkorange;
+  }
+  
+  /* Hamburger Menu */
+  .hamburger {
+    display: none;
+    font-size: 1.8rem;
+    color: orange;
+    cursor: pointer;
+  }
+
+  .logo img{
+    width: 40px;
+  }
+  
+  /* Mobile View */
+  @media screen and (max-width: 768px) {
+    .nav-menu ul {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      width: 100%;
+      background-color: white;
+      text-align: center;
+      transition: all 0.5s ease;
+    }
+  
+    .nav-menu.active ul {
+      display: flex;
+    }
+  
+    .nav-menu ul li {
+      margin: 20px 0;
+    }
+  
+    .hamburger {
+      display: block;
+    }
+  }
+  
+  /* Animations */
+  .nav-menu ul li a {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .nav-menu ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: darkorange;
+    left: 0;
+    bottom: -5px;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-menu ul li a:hover::after {
+    width: 100%;
+  }
+  

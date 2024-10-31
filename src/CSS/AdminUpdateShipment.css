@@ -1,0 +1,23 @@
+
+
+.AdminUpdateShipmentWrap{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 500px;
+  background-color: rgba(0,0,0,0.5);
+  padding: 20px ;
+  z-index: 999;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width:428px) {
+  .AdminUpdateShipmentWrap{
+    padding: 10px;
+  }  
+}

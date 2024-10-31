@@ -1,0 +1,58 @@
+  /* src/CSS/ProfilePage.css */
+  
+  .admin-profile-page {
+    /* background-color:rgba(255, 166, 0, 0.1); */
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .admin-profile-page h2{
+    text-align: center;
+    color: orange;
+  }
+
+  .admin-profile-page p {
+    margin: 10px 0;
+  }
+
+  .admin-profile-page button{
+    padding: 5px;
+    background-color: white;
+    color: orange;
+    border: 1px solid orange;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .admin-profile-page button:hover{
+    background-color: orange;
+    color: white;
+  }
+
+  .admin-profile-edit-modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .admin-profile-edit-modal form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .admin-profile-edit-modal form input{
+    outline: none;
+    padding: 8px;
+    width: 200px;
+  }
+
+  @media screen and (max-wdith:428px) {
+    .admin-profile-page{
+      padding: 20px 0px;
+    }
+  }

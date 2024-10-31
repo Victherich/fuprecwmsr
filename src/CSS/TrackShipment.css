@@ -1,0 +1,199 @@
+.track-shipment-page {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  .track-shipment-heading {
+    background: url("../Images/TrackShipmentImg.png") no-repeat center center/cover;
+    padding: 80px 0;
+    color: white;
+    text-align: center;
+  }
+  
+  .track-shipment-heading h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .track-shipment-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    text-align: center;
+  }
+  
+  .track-description {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  .track-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .track-input {
+    width: 300px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-right: 10px;
+  }
+  
+  .track-button {
+    background-color: #ff6600;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  
+  .track-icon {
+    font-size: 4rem;
+    color: #ff6600;
+    margin-top: 30px;
+    animation: bounce 1.5s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+
+  .status-indicator {
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+
+  /* Modal Styles */
+  .shipment-modal {
+    /* margin-top: 100px; */
+    /* position: relative; */
+    background-color: white;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    border-radius: 8px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 999999;
+    position: fixed;
+    top:100px;
+    /* left:0px; */
+  }
+  
+  .shipment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close-modal {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .shipment-info p {
+    margin: 10px 0;
+  }
+  
+  /* Status Tracker Styles */
+  .status-tracker-container {
+    margin-top: 20px;
+  }
+  
+  .status-tracker {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .status-step {
+    text-align: center;
+  }
+  
+  .status-step.active .status-icon {
+    color: green;
+  }
+  
+  .status-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .status-check {
+    color: green;
+    font-size: 30px;
+  }
+  
+.CircleAndLine{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.Circle{
+  font-size: 2rem;
+  color:lightgray
+}
+.Line{
+  width: 100px;
+  height: 5px;
+  background-color: lightgray;
+}
+
+.StatusLetters{
+  display: flex;
+  justify-content:center;
+  gap: 60px ;
+  text-align: center;
+
+}
+
+.StatusLetters p{
+  font-size: 0.8rem;
+}
+
+  @media screen and (max-width:768px) {
+        .track-form{
+            flex-direction: column;
+            gap:20px
+        }
+  }
+
+@media screen and (max-width:428px) {
+  .shipment-modal{
+    width: 97%;
+  }
+}
+
+

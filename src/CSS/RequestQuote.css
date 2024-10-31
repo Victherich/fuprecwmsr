@@ -1,0 +1,113 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .RequestQuoteWrap{
+    background-image: url("../Images/RFQ.png");
+    background-size: cover;
+    position: relative;
+
+  }
+
+  .RequestQuoteWrap::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    
+  }
+  
+  /* Request Quote Styles */
+  .request-quote {
+    position: relative;
+    /* background-color: #fdfdfd; */
+    padding: 30px;
+    border-radius: 10px;
+    /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
+    max-width: 600px;
+    margin: 0px auto;
+    font-family: 'Arial', sans-serif;
+    animation: fadeIn 1s ease-in-out;
+    
+  }
+  
+  .title {
+    text-align: center;
+    color: orange;
+    margin-bottom: 20px;
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  .quote-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .quote-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+  }
+  
+  .quote-form input, 
+  .quote-form textarea {
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .quote-form input:focus, 
+  .quote-form textarea:focus {
+    border-color: orange;
+    outline: none;
+  }
+  
+  .submit-button {
+    padding: 12px;
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: darkorange;
+  }
+  
+  .confirmation {
+    margin-top: 20px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .confirmation h3 {
+    color: #333;
+  }
+  
+  .confirmation p {
+    font-size: 1.1rem;
+    color: #555;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  

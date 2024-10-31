@@ -1,0 +1,130 @@
+.admin-post-course-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  /* background-color: #f9f9f9; */
+  border-radius: 8px;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+  margin-top: 20px;
+  width: 98%;
+}
+
+.admin-post-course-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: orange;
+}
+
+.admin-post-course-form-group {
+  margin-bottom: 20px;
+}
+
+.admin-post-course-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: orange;
+}
+
+.admin-post-course-input,
+.admin-post-course-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+}
+
+.admin-post-course-textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+.admin-post-course-chapter-section {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.admin-post-course-lesson-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.admin-post-course-lesson-item input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.admin-post-course-add-lesson,
+.admin-post-course-remove-lesson,
+.admin-post-course-add-chapter,
+.admin-post-course-remove-chapter {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.admin-post-course-remove-lesson,
+.admin-post-course-remove-chapter {
+  background-color: #dc3545;
+  margin-left: 10px;
+}
+
+.admin-post-course-add-lesson:hover,
+.admin-post-course-remove-lesson:hover,
+.admin-post-course-add-chapter:hover,
+.admin-post-course-remove-chapter:hover {
+  background-color: #0056b3;
+}
+
+.admin-post-course-remove-lesson:hover,
+.admin-post-course-remove-chapter:hover {
+  background-color: #c82333;
+}
+
+.admin-post-course-submit-button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+}
+
+.admin-post-course-submit-button:hover {
+  background-color: #218838;
+}
+
+
+@media screen and (max-width:768px) {
+  .admin-post-course-lesson-item{
+    flex-direction: column;
+  }
+  .admin-post-course-chapter-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+
+  }
+  .admin-post-course-remove-chapter{
+    margin-left: 0px;
+}
+}

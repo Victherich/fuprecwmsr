@@ -13,6 +13,7 @@ import "animate.css"
 import Swal from "sweetalert2"
 import axios from "axios"
 import { Context } from './Context';
+import '../CSS/LandingPage.css'
 
 const Landingpage = () => {
   const {trackingID, setTrackingID}=useContext(Context)
@@ -226,7 +227,7 @@ const handleSubmit3 = async (e) => {
 
 
   return (
-    reRender&&<div>
+    reRender&&<div className='LandingPage'>
       <Hero />
       <MajorServices />
       <ServicesBrief />

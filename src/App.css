@@ -65,7 +65,7 @@
 /* whats app icon styling */
 .WhatsAppIcon{
   position: fixed;
-  z-index: 99;
+  z-index: 9999;
   /* bottom: 50px; */
   /* right: 50px; */
  bottom: 5%;
@@ -92,3 +92,22 @@
       right: 5%;
   }
 } */
+
+
+.SideLogo2{
+  width: 100px;
+  position: fixed;
+  bottom: 25%;
+  left: 1%;
+  animation: flip 10s infinite;
+  z-index: 99;
+}
+
+@keyframes flip {
+  0% {
+      transform: rotateY(0deg);
+  }
+  100% {
+      transform: rotateY(360deg);
+  }
+}

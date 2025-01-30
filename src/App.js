@@ -77,9 +77,24 @@ import { useState, useEffect } from 'react';
 import wp from "./Images/whatsapplogo.png"
 import AdminSignup from './components/AdminSignUp';
 import VerifyEmail from './components/VerifyEmail';
+import ChristmasOverlay from './components/ChristmassWelcomeMessage';
+import FooterBanner from './components/FooterBanner';
+import ChristmassImg from './Images/ChristmassImg.png'
 
 
 function App() {
+
+  const [showOverlay, setShowOverlay] = useState(true);
+
+  useEffect(() => {
+    // Set a timer to hide the overlay after 2 seconds
+    const timer = setTimeout(() => {
+      setShowOverlay(false);
+    }, 4000);
+
+    // Cleanup the timer on component unmount
+    return () => clearTimeout(timer);
+  }, []);
   
   // // States for different pop-ups
   // const [showLeadPopup, setShowLeadPopup] = useState(false);
@@ -127,6 +142,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+      {/* {showOverlay&& <ChristmasOverlay/>} */}
       <Header />
 
       <Routes>
@@ -147,8 +163,9 @@ function App() {
       
       </Routes>
       <Footer />
+      {/* <img src={ChristmassImg} alt="Logo2" className='SideLogo2' /> */}
       <a><img src={wp} alt="logo" className="WhatsAppIcon" onClick={() => window.open("https://wa.me/2348033062743", "_blank")} /></a> 
- 
+      {/* <FooterBanner/> */}
 
       
     </BrowserRouter>

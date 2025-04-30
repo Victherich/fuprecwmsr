@@ -5,7 +5,7 @@
   }
   
   .contact-heading {
-    background: url('../Images/contactImg.png') no-repeat center center/cover;
+    background: url('../Images/8920.jpg') no-repeat center center/cover;
     padding: 80px 0;
     color: white;
     text-align: center;
@@ -14,7 +14,10 @@
   .contact-heading h2 {
     font-size: 3rem;
     font-weight: bold;
-  }
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+
   
   .contact-content {
     display: flex;
@@ -41,12 +44,17 @@
   }
   
   .contact-button {
-    background-color: #ff6600;
+    background-color: #2E8B57;
     color: white;
     padding: 15px 20px;
     border-radius: 10px;
     cursor: pointer;
     width: 100%;
+    border:none
+  } 
+
+  .contact-button:hover{
+    background-color: gray;
   }
   
   .contact-info {
@@ -68,8 +76,8 @@
   
   .contact-icon {
     font-size: 2.5rem;
-    color: #ff6600;
-    margin-bottom: 10px;
+    color:#2E8B57;
+    margin-bottom: 10px;  
   }
   
   .info-item p {

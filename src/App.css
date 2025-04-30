@@ -63,35 +63,79 @@
 }
 
 /* whats app icon styling */
-.WhatsAppIcon{
+/* Animation for WhatsAppIcon */
+@keyframes moveUpDown1 {
+  0%, 100% {
+    bottom: 12%; /* Initial position */
+  }
+  50% {
+    bottom: 2%; /* Target position */
+  }
+}
+
+.WhatsAppIcon {
   position: fixed;
   z-index: 9999;
-  /* bottom: 50px; */
-  /* right: 50px; */
- bottom: 5%;
- left: 2%; 
-  width: 70px;
+  bottom: 12%;
+  left: 1%;
+  width: 40px;
   box-shadow: 0px 4px 5px;
   border-radius: 50%;
-  cursor: pointer;
+  animation: moveUpDown1 4s ease-in-out infinite; /* Adjust the timing (2s) as needed */
 }
 
-/* @media screen and (max-width:768px) {
-  .WhatsAppIcon{
-      width: 50px;
-      bottom: 120px;
-      right: 30px;
+/* Animation for WhatsAppIcon2 */
+@keyframes moveUpDown2 {
+  0%, 100% {
+    bottom: 2%; /* Initial position */
   }
-
-  
+  50% {
+    bottom: 12%; /* Target position */
+  }
 }
 
-@media screen and (max-width:428px) {
-  .WhatsAppIcon{
-      bottom: 5%;
-      right: 5%;
-  }
-} */
+.WhatsAppIcon2 {
+  position: fixed;
+  z-index: 9999;
+  bottom: 2%;
+  left: 1%;
+  width: 40px;
+  box-shadow: 0px 4px 5px;
+  border-radius: 50%;
+  animation: moveUpDown2 4s ease-in-out infinite; /* Adjust the timing (2s) as needed */
+}
+
+
+
+.WhatsAppIcon3 {
+  position: fixed;
+  z-index: 9999;
+  bottom: 6%;
+  right: 1%;
+  width: 40px;
+  box-shadow: 0px 4px 5px;
+  border-radius: 50%;
+
+}
+
+
+
+.WhatsAppIcon4 {
+  position: fixed;
+  z-index: 9999;
+  bottom: 2%;
+  right: 0.125%;
+  font-weight: bold;
+  color: green;
+  /* width: 40px; */
+  box-shadow: 0px 4px 5px;
+  font-size: 0.7rem;
+  /* border-radius: 50%; */
+  /* animation: moveUpDown2 4s ease-in-out infinite; Adjust the timing (2s) as needed */
+}
+
+
+
 
 
 .SideLogo2{

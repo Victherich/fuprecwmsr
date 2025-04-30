@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../CSS/ShipmentCalculator.css'; // Import the CSS file
 import SC from "../Images/ShipmentCalculatorImg.png";
-import logo from "../Images/logo.jpeg";
+import logo from "../Images/logo.png";
 import 'animate.css'; // Import animate.css for animations
 import Swal from 'sweetalert2';
 

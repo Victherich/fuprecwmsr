@@ -39,6 +39,9 @@ import { store, persistor } from "./Features/Store";
 import ContextProvider from './components/Context';
 // Import the unregister function from your serviceWorker.js file
 import { unregister } from './serviceWorker';
+import 'aos/dist/aos.css';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

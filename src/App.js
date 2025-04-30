@@ -74,12 +74,31 @@ import AdminForgotPassword from './components/AdminForgotPassword';
 import AdminResetPassword from './components/AdminResetPassword';
 import Popup from './components/Popup'; // Import the Popup component
 import { useState, useEffect } from 'react';
-import wp from "./Images/whatsapplogo.png"
+import wp1 from "./Images/logo.png"
+import wp2 from './Images/logo3.png'
+import wp3 from './Images/Iwere.jpeg'
 import AdminSignup from './components/AdminSignUp';
 import VerifyEmail from './components/VerifyEmail';
 import ChristmasOverlay from './components/ChristmassWelcomeMessage';
 import FooterBanner from './components/FooterBanner';
 import ChristmassImg from './Images/ChristmassImg.png'
+import Partners from './components/Partners';
+import GalleryPage from './components/GalleryPage';
+import PortalWelcomePage from './components/PortalWelomePage';
+import AcademicsPages from './components/AcademicsPages';
+import Admissions from './components/Admissions';
+import ApplicationPage from './components/ApplicationPage';
+import StudentProfile from './components/StudentProfile';
+import StudentLogin from './components/StudentLogin';
+import PrivateStudentDashboard from './components/PrivateStudentDashboard';
+import StudentDashboard from './components/StudentDashboard';
+import DirectorMessage from './components/DirectorMessage';
+import StaffTeam from './components/StaffTeam';
+import ShortCourses from './components/ShortCourses';
+import ShortCoursesPage from './components/ShortCourcesPage';
+import StudentForgotPassword from './components/StudentForgotPassword';
+import StudentResetPassword from './components/StudentResetPassword';
+import Events from './components/Events';
 
 
 function App() {
@@ -146,25 +165,52 @@ function App() {
       <Header />
 
       <Routes>
+        <Route path='/portal' element={<PortalWelcomePage/>}/>
+        <Route path='/gallery' element={<GalleryPage/>}/>
         <Route path="/" element={<Landingpage />} />
         <Route path="/trackshipment" element={<TrackShipment />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/contactus" element={<Contact />} />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/services" element={<Services />} />
+        <Route path='/academics' element={<AcademicsPages/>}/>
+        <Route path='/admissions' element={<Admissions/>}/>
+        <Route path='/application' element={<ApplicationPage/>}/>
+        <Route path='/directormessage' element={<DirectorMessage/>}/>
+        <Route path='/staffteam' element={<StaffTeam/>}/>
+        <Route path='/shortcourses' element={<ShortCoursesPage/>}/>
+        <Route path='/events' element={<Events/>}/>
+        <Route path='/studentforgotpassword' element={<StudentForgotPassword/>}/>
+        <Route path='/studentresetpassword/:token' element={<StudentResetPassword/>}/>
+       
+
+        <Route path='/studentlogin' element={<StudentLogin/>}/>
+
+        <Route path='/studentdashboard' element={<PrivateStudentDashboard/>}>
+          <Route path='' element={<StudentDashboard/>}/>
+        </Route>
+
+
+
+
         <Route path="/adminlogin" element={<AdminLogin />} />
         {/* <Route path="/adminsignup" element={<AdminSignup/>}/> */}
         <Route path="/adminforgotpassword" element={<AdminForgotPassword />} />
-        <Route path="/reset-password/:token" element={<AdminResetPassword />} />
+        <Route path="/adminresetpassword/:token" element={<AdminResetPassword />} />
         <Route path="/admin" element={<PrivateAdminDashboard />}>
           <Route path="" element={<AdminDashborad />} />
         </Route>
         <Route path="/verify/:token" element={<VerifyEmail/>}/>
       
       </Routes>
+      <Partners/>
       <Footer />
       {/* <img src={ChristmassImg} alt="Logo2" className='SideLogo2' /> */}
-      <a><img src={wp} alt="logo" className="WhatsAppIcon" onClick={() => window.open("https://wa.me/2348033062743", "_blank")} /></a> 
+      <a><img src={wp1} alt="logo" className="WhatsAppIcon" /></a> 
+    
+      <a><img src={wp2} alt="logo" className="WhatsAppIcon2" /></a> 
+      {/* <a><img src={wp3} alt="logo" className="WhatsAppIcon3" /></a>  */}
+      {/* <a><div className='WhatsAppIcon4'>ROYAL IWERE FOUNDATION</div></a>  */}
       {/* <FooterBanner/> */}
 
       

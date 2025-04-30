@@ -1,157 +1,190 @@
 import React, { useState } from 'react';
-import '../CSS/AdminLogin.css';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import styled from 'styled-components';
 import Swal from 'sweetalert2';
-import { css } from '@emotion/react';
-import ClipLoader from 'react-spinners/ClipLoader';
-import Logo from '../Images/logo.jpeg';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: white;
+`;
+
+const FormWrapper = styled.div`
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+`;
+
+const Title = styled.h2`
+  color: green;
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
+
+const Label = styled.label`
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+
+  &:focus {
+    border-color: orange;
+    outline: none;
+  }
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+
+  &:focus {
+    border-color: green;
+    outline: none;
+  }
+`;
+
+const Button = styled.button`
+  width: 100%;
+  background: green;
+  color: white;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    background: orange;
+  }
+`;
 
 const AdminSignup = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    fullName: '',
+  const [form, setForm] = useState({
+    name: '',
     email: '',
+    confirmEmail: '',
+    phone: '',
     password: '',
-    phoneNumber: ''
+    confirmPassword: '',
+    role: '',
   });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+  const handleChange = e => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-  `;
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setIsSubmitting(true);
 
-    // Show loading spinner
+    // Validation
+    if (form.email !== form.confirmEmail) {
+      return Swal.fire('Error', 'Emails do not match', 'error');
+    }
+
+    if (form.password !== form.confirmPassword) {
+      return Swal.fire('Error', 'Passwords do not match', 'error');
+    }
+
     Swal.fire({
-      title: 'Loading...',
-      text: 'Creating admin account...',
+      title: 'Please wait...',
+      text: 'Creating account...',
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
 
     try {
-      const response = await axios.post('https://vinrichards.com/api2/admin_signup.php', formData, {
+      const response = await fetch('https://www.cwmsrfupre.com.ng/api/admin_signup.php', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(form),
       });
 
-      Swal.close();
+      const data = await response.json();
 
-      if (response.data.success) {
-        Swal.fire('Success!', 'Account created. Please check your email indox or spam for verification.', 'success');
-        setFormData({
-          fullName: '',
+      if (data.success) {
+        Swal.fire('Success 🎉', data.message, 'success');
+        navigate('/adminlogin')
+        setForm({
+          name: '',
           email: '',
+          confirmEmail: '',
+          phone: '',
           password: '',
-          phoneNumber: ''
+          confirmPassword: '',
+          role: '',
         });
-        navigate('/adminlogin');
       } else {
-        Swal.fire('Error!', response.data.error, 'error');
+        Swal.fire('Error ❌', data.error || 'Something went wrong.', 'error');
       }
-    } catch (error) {
-      Swal.close();
-      Swal.fire('Error!', 'Something went wrong. Please try again later.', 'error');
-    } finally {
-      setIsSubmitting(false);
+    } catch (err) {
+      Swal.fire('Error ❌', 'Could not connect to the server.', 'error');
     }
   };
 
   return (
-    <div className='ContactFormWrap' style={{padding:"0px",backgroundColor:"white"}}>
-      <div className='contact-form-container' style={{padding:"5px",boxShadow:"none"}}>
-        <h2>Register an Admin </h2>
-        <img src={Logo} alt='Logo' style={{ position: 'relative', width: '70px' }} />
-        <form onSubmit={handleSubmit} style={{width:"100%"}}>
-          <div className='form-group' >
-            <label htmlFor='fullName'>Full Name</label>
-            <input
-              type='text'
-              id='fullName'
-              name='fullName'
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-              placeholder="Enter your full name"
-              style={{width:"98%"}}
-            />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='email'>Email</label>
-            <input
-              type='email'
-              id='email'
-              name='email'
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="Enter your email"
-              style={{width:"98%"}}
-            />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password'>Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id='password'
-              name='password'
-              value={formData.password}
-              onChange={handleChange}
-              required
-              placeholder="Enter a strong password"
-              style={{width:"98%"}}
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              style={{ position: 'absolute', right: '10px', top: '65%', cursor: 'pointer', transform: 'translateY(-50%)' }}
-            >
-              {showPassword ? '🙈' : '👁️'}
-            </span>
-          </div>
-          <div className='form-group'>
-            <label htmlFor='phoneNumber'>Phone Number</label>
-            <input
-              type='tel'
-              id='phoneNumber'
-              name='phoneNumber'
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              required
-              placeholder="Enter your phone number"
-              style={{width:"98%"}}
-            />
-          </div>
-          <button type='submit' disabled={isSubmitting}>
-            {isSubmitting ? (
-              <ClipLoader color={'#ffffff'} loading={isSubmitting} css={override} size={15} />
-            ) : (
-              'Sign Up'
-            )}
-          </button>
+    <Container>
+      <FormWrapper>
+        <Title>Admin / Lecturer Register</Title>
+        <form onSubmit={handleSubmit}>
+          <Label>Full Name</Label>
+          <Input name="name" value={form.name} onChange={handleChange} required />
+
+          <Label>Email</Label>
+          <Input name="email" type="email" value={form.email} onChange={handleChange} required />
+
+          <Label>Confirm Email</Label>
+          <Input name="confirmEmail" type="email" value={form.confirmEmail} onChange={handleChange} required />
+
+          <Label>Phone Number</Label>
+          <Input name="phone" value={form.phone} onChange={handleChange} required />
+
+          <Label>Password</Label>
+          <Input name="password" type="password" value={form.password} onChange={handleChange} required />
+
+          <Label>Confirm Password</Label>
+          <Input name="confirmPassword" type="password" value={form.confirmPassword} onChange={handleChange} required />
+
+          <Label>Role</Label>
+<Select name="role" value={form.role} onChange={handleChange} required>
+  <option value="" disabled>--Select Role--</option> {/* Default empty option */}
+  <option value="Admin">Admin</option>
+  <option value="Lecturer">Lecturer</option>
+</Select>
+
+
+          <Button type="submit">Create Account</Button>
+          <p 
+        style={{marginTop:"10px", cursor:"pointer"}}
+        onClick={()=>navigate('/adminlogin')}>Already have an account? Login</p>
         </form>
-        <p style={{ marginTop: '10px', position: 'relative', cursor: 'pointer', color: 'orange' }} onClick={() => navigate('/adminlogin')}>
-          Already an admin? Log In
-        </p>
-      </div>
-    </div>
+      </FormWrapper>
+    </Container>
   );
 };
 

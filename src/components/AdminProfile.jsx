@@ -1,163 +1,215 @@
-// import React, { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import '../CSS/AdminProfile.css';
-// import Swal from 'sweetalert2';
-// import axios from 'axios';
-// import { adminLogin } from '../Features/Slice';
-
-// const AdminProfile = () => {
-//   const adminInfo = useSelector((state) => state.adminInfo);
-//   const dispatch = useDispatch(); // Assuming you use Redux for state management
-//   const [editModal, setEditModal] = useState(false);
-//   const [phone, setPhone] = useState('');
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       const response = await axios.post('https://elexdondigitalacademy.com/api2/admin_update_phone.php', {
-//         email: adminInfo.email, // Assuming email is stored in the adminInfo
-//         phoneNumber: phone
-//       });
-
-//       if (response.data.success) {
-//         // Dispatch action to update Redux state if needed
-//         dispatch({ type: 'UPDATE_ADMIN_INFO', payload: response.data.user });
-
-//         Swal.fire({
-//           icon: 'success',
-//           title: 'Update Successful',
-//           text: 'Phone number updated successfully.',
-//           confirmButtonText: 'OK'
-//         });
-//         const adminInfo = response.data.user
-//         setPhone(''); // Clear input field
-//         setEditModal(false); // Close the modal
-//         dispatch(adminLogin({adminInfo}))
-//       } else {
-//         Swal.fire({
-//           icon: 'error',
-//           title: 'Update Failed',
-//           text: response.data.error,
-//           confirmButtonText: 'OK'
-//         });
-//       }
-//     } catch (error) {
-//       console.error('Error updating phone number:', error);
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Update Failed',
-//         text: 'An error occurred. Please try again.',
-//         confirmButtonText: 'OK'
-//       });
-//     }
-//   };
-
-//   return (
-//     <div className="admin-profile-page">
-//       <h2>Admin Information</h2>
-//       <p><strong style={{color:"orange"}}>Name:</strong> {adminInfo.full_name}</p>
-//       <p><strong style={{color:"orange"}}>Email:</strong> {adminInfo.email}</p>
-//       <p><strong style={{color:"orange"}}>Phone:</strong> {adminInfo.phone_number}</p>
-//       <button onClick={() => setEditModal(!editModal)}>Edit Information</button>
-//       {editModal && (
-//         <div className='admin-profile-edit-modal'>
-//           <form onSubmit={handleSubmit}>
-//             <input 
-//               placeholder='New Phone Number' 
-//               value={phone} 
-//               onChange={(e) => setPhone(e.target.value)} 
-//               required
-//             />
-//             <button type="submit">Update</button>
-//           </form>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default AdminProfile;
-
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import '../CSS/AdminProfile.css';
-import Swal from 'sweetalert2';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import axios from 'axios';
-import { adminLogin, updateAdminInfo } from '../Features/Slice';
+import Swal from 'sweetalert2';
 
-const AdminProfile = () => {
-  const adminInfo = useSelector((state) => state.adminInfo);
-  const dispatch = useDispatch();
-  const [editModal, setEditModal] = useState(false);
-  const [phone, setPhone] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const loadingAlert = Swal.fire({title:"Updating phone number..."})
-    Swal.showLoading()
-    try {
-      const response = await axios.post('https://vinrichards.com/api2/admin_update_phone.php', {
-        email: adminInfo.email, // Assuming email is stored in adminInfo
-        phoneNumber: phone
+
+// Add this near the top, after your imports
+const EditButton = styled.button`
+  background-color: #006400;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 10px;
+
+  &:hover {
+    background-color: #004d00;
+  }
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Modal = styled.div`
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+`;
+
+const SaveButton = styled.button`
+  background-color: #006400;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+`;
+
+const CancelButton = styled.button`
+  margin-left: 10px;
+  padding: 10px 16px;
+  background-color: #ccc;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+`;
+
+
+
+
+const Container = styled.div`
+  background-color: white;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Card = styled.div`
+  background-color: #e6f5ea;
+  border: 1px solid #b2d8c8;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
+`;
+
+const Title = styled.h2`
+  color: #006400;
+  margin-bottom: 1.5rem;
+  text-align: center;
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+`;
+
+const Label = styled.div`
+  font-weight: bold;
+  color: #333;
+`;
+
+const Value = styled.div`
+  color: #444;
+  text-align: right;
+`;
+
+const Error = styled.div`
+  color: red;
+  text-align: center;
+  margin-top: 2rem;
+`;
+
+const AdminDetailsPage = ({ adminId }) => {
+  const [admin, setAdmin] = useState(null);
+  const [error, setError] = useState('');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [newPhone, setNewPhone] = useState('');
+
+  useEffect(() => {
+    if (!adminId) return;
+
+    axios.get(`https://www.cwmsrfupre.com.ng/api/get_admin_by_id.php?id=${adminId}`)
+      .then(res => {
+        if (res.data.success) {
+          setAdmin(res.data.user);
+        } else {
+          setError(res.data.error);
+        }
+      })
+      .catch(() => {
+        setError('Failed to fetch admin details.');
       });
+  }, [adminId]);
 
-      if (response.data.success) {
-        // Dispatch action to update Redux state
-        dispatch(updateAdminInfo({ phone_number: response.data.user.phone_number }));
+  const openModal = () => {
+    setNewPhone(admin.phone);
+    setModalOpen(true);
+  };
 
-        Swal.fire({
-          icon: 'success',
-          title: 'Update Successful',
-          text: 'Phone number updated successfully.',
-          confirmButtonText: 'OK'
-        });
-        setPhone(''); // Clear input field
-        setEditModal(false); // Close the modal
+  const handleSave = () => {
+    axios.post('https://www.cwmsrfupre.com.ng/api/update_admin_phone.php', {
+      id: admin.id,
+      phone: newPhone,
+    }).then(res => {
+      if (res.data.success) {
+        setAdmin(prev => ({ ...prev, phone: newPhone }));
+        setModalOpen(false);
+        Swal.fire({text:"Phone number updated", icon :"success"})
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Update Failed',
-          text: response.data.error,
-          confirmButtonText: 'OK'
-        });
+        Swal.fire({text:'Update failed: ' + res.data.error});
       }
-    } catch (error) {
-      console.error('Error updating phone number:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Update Failed',
-        text: 'An error occurred. Please try again.',
-        confirmButtonText: 'OK'
-      });
-    }finally{
-      loadingAlert.close()
-    }
+    }).catch(() => {
+      Swal.fire({text:'Error updating phone number.'});
+    });
   };
 
   return (
-    <div className="admin-profile-page">
-      <h2>Admin Information</h2>
-      <p><strong style={{color:"orange"}}>Name:</strong> {adminInfo.full_name}</p>
-      <p><strong style={{color:"orange"}}>Email:</strong> {adminInfo.email}</p>
-      <p><strong style={{color:"orange"}}>Phone:</strong> {adminInfo.phone_number}</p>
-      <button onClick={() => setEditModal(!editModal)}>Edit Phone number</button>
-      {editModal && (
-        <div className='admin-profile-edit-modal'>
-          <form onSubmit={handleSubmit}>
-            <input 
-              placeholder='New Phone Number' 
-              value={phone} 
-              onChange={(e) => setPhone(e.target.value)} 
-              required
-            />
-            <button type="submit">Update</button>
-          </form>
-        </div>
+    <Container>
+      {admin ? (
+        <>
+          <Card>
+            <Title>Admin Details</Title>
+            {/* <InfoRow><Label>ID:</Label><Value>{admin.id}</Value></InfoRow> */}
+            <InfoRow><Label>Name:</Label><Value>{admin.name}</Value></InfoRow>
+            <InfoRow><Label>Email:</Label><Value>{admin.email}</Value></InfoRow>
+            <InfoRow>
+              <Label>Phone:</Label>
+              <Value>
+                {admin.phone}
+                <EditButton onClick={openModal}>Edit</EditButton>
+              </Value>
+            </InfoRow>
+            <InfoRow><Label>Role:</Label><Value>{admin.role}</Value></InfoRow>
+            <InfoRow><Label>Created At:</Label><Value>{new Date(admin.created_at).toLocaleString()}</Value></InfoRow>
+          </Card>
+
+          {isModalOpen && (
+            <ModalOverlay>
+              <Modal>
+                <h3>Edit Phone Number</h3>
+                <Input
+                  type="text"
+                  value={newPhone}
+                  onChange={(e) => setNewPhone(e.target.value)}
+                />
+                <div>
+                  <SaveButton onClick={handleSave}>Save</SaveButton>
+                  <CancelButton onClick={() => setModalOpen(false)}>Cancel</CancelButton>
+                </div>
+              </Modal>
+            </ModalOverlay>
+          )}
+        </>
+      ) : (
+        <Error>{error || 'Loading...'}</Error>
       )}
-    </div>
+    </Container>
   );
 };
 
-export default AdminProfile;
 
+export default AdminDetailsPage

@@ -1,0 +1,56 @@
+.community-impact {
+    background: linear-gradient(to right, #00274D, #004080);
+    color: white;
+    text-align: center;
+    padding: 50px 20px;
+  }
+  
+  .community-title {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9);
+  }
+  
+  .community-text {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    color: #f0f0f0;
+  }
+  
+  .carousel-container {
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .carousel-slide img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .carousel-slide img:hover {
+    transform: scale(1.05);
+  }
+  
+  .slick-dots li button:before {
+    color: white;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .community-title {
+      font-size: 2rem;
+    }
+    
+    .community-text {
+      font-size: 1rem;
+    }
+  }
+  

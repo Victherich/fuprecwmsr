@@ -8,9 +8,10 @@
     flex-wrap: wrap;
     gap: 40px;
     text-align: left;
-    background-image: url("../Images/SB9.png");
+    background-image: url("../Images/future1.png");
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: bottom;
   }
   
   /* Content Section */
@@ -35,10 +36,11 @@
   
   .services-brief-text h2 {
     font-size: 2rem;
-    color: orange;
+    color: white;
     margin-bottom: 20px;
-  }
-  
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.9); /* Subtle shadow for depth */
+}
+
   .services-brief-text p {
     font-size: 1.1rem;
     line-height: 1.6;
@@ -66,7 +68,7 @@
   .services-brief-image{
     width: 30%;
     height: 300px;
-    background-image: url("../Images/SB.png");
+    background-image: url("../Images/startup.png");
     background-size: cover;
     border-radius: 10px;
     background-color: red;

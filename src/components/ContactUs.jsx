@@ -34,7 +34,7 @@ const handleSubmit = async (e) => {
   });
 
   try {
-    const response = await fetch('https://vinrichards.com/api2/contact_form_endpoint.php', {
+    const response = await fetch('https://www.cwmsrfupre.com.ng/api/contact_form_endpoint.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
@@ -83,7 +83,16 @@ const handleSubmit = async (e) => {
       <div className="contact-heading animate__animated animate__slideInLeft animate__slower">
         <h2 className='animate__animated animate__slideInRight animate__slower'>Contact Us</h2>
       </div>
+
+      
       <div className="contact-content">
+        <div style={{textAlign:"center", padding:"20px 10px", color:"green"}}>
+          <h4>
+          Wish to enquire about admissions, syllabus, or anything else? We welcome inquiries, partnerships, and collaborations. Please reach out to us using the following contact details:
+          </h4>
+          
+        </div>
+        <br/>
         <div className="contact-form">
           <form onSubmit={handleSubmit}>
             <input
@@ -126,23 +135,46 @@ const handleSubmit = async (e) => {
 
           {feedback && <p>{feedback}</p>}
         </div>
+<br/>
+        <div style={{textAlign:"center"}}>
+          <h4>
+          Office Hours: 
+          </h4>
+<p>Monday – Friday: 9:00 AM – 5:00 PM (WAT)</p>
+<br/>
+<h4>Follow Us: </h4>
+
+<p>Stay connected with us on social media for updates on our programs, research, and events:</p>
+<p>
+For specific inquiries regarding collaboration, research opportunities, or academic programs, please contact us via phone or send us a mail. 
+ 
+</p>
+         
+        </div>
 
         <div className="contact-info">
           <div className="info-item">
             <FaPhone className="contact-icon" />
-            <p>+234 803 306 2743</p>
-            <p>+1 929 631 9254</p>
+            
+            <p>
+            +234 903 0223 041<br/> +234 808 2407 735<br/> +234 803 619 3299<br/> +234 811 931 7782
+            </p>
           </div>
           <div className="info-item">
             <FaEnvelope className="contact-icon" />
-            <p>info@vinrichards.com</p>
-            <p>vvpassmak@gmail.com</p>
-            <p>vinrichardsca@gmail.com</p>
+            <p> wmsr@fupre.edu.ng</p>
+            <p> contact@cwmsrfupre.com.ng</p>
+            <p>admin@cwmsrfupre.com.ng</p>
+            <p>academic@cwmsrfupre.com.ng</p>
+         
           </div>
           <div className="info-item">
             <FaMapMarkerAlt className="contact-icon" />
-            <p>Room 101 NPA Commercial Building, Lagos, Nigeria</p>
-            <p>120-33 195th St, Saint Albans, Queens, NY</p>
+            <p>
+            Centre for Waste Management and Sustainable<br/> Resources (CWMSR)<br/> 
+            </p>
+            <p>Federal University of Petroleum Resources,<br/> Effurun (FUPRE),<br/> Delta State, Nigeria.</p>
+
           </div>
         </div>
       </div>

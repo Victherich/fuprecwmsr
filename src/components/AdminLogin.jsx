@@ -1,75 +1,120 @@
 import React, { useState } from 'react';
-import '../CSS/AdminLogin.css';
-import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import ClipLoader from 'react-spinners/ClipLoader';
-import Logo from '../Images/logo.jpeg';
+import styled from 'styled-components';
 import { adminLogin } from '../Features/Slice';
-import { useDispatch, useSelector } from 'react-redux';
+import { UseDispatch, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+// Styled Components
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  color:green;
+`;
+
+const Form = styled.form`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  // box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 12px;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  
+  &:hover {
+    background-color: darkorange;
+  }
+`;
+
+const Label = styled.label`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  
+`;
+
+const Title = styled.h2`
+  text-align: center;
+  
+`;
 
 const AdminLogin = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const location = useLocation();
   const navigate = useNavigate();
-  
-  const adminToken = useSelector(state => state.adminToken); // Adjust this to match your root reducer key
-  console.log(adminToken);
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === 'email' ? value.toLowerCase() : value
-    });
+    if (name === 'email') setEmail(value);
+    if (name === 'password') setPassword(value);
   };
 
-  const handleSubmit = async (e) => {
+  // Handle login
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+
+    if (!email || !password) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Missing fields',
+        text: 'Email and password are required.',
+      });
+      return;
+    }
+
+    // Show loading
+    Swal.fire({
+      title: 'Loading...',
+      text: 'Please wait while we log you in...',
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     try {
-      const response = await axios.post('https://vinrichards.com/api2/admin_login.php', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      console.log("Login Response:", response.data);
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admin_login.php', { email, password });
 
       if (response.data.success) {
-        if (response.data.message === 'Please verify your email address.') {
-          Swal.fire({
-            icon: 'info',
-            title: 'Email Not Verified',
-            text: response.data.error,
-            showConfirmButton: true,
-            confirmButtonText: 'Ok'
-          });
-        } else {
-          Swal.fire({
-            icon: 'success',
-            title: 'Login Successful',
-            text: response.data.message,
-            showConfirmButton: false,
-            timer: 2000
-          });
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          text: response.data.message,
+        });
+        console.log(response.data)
+        
+        const adminInfo = response.data.user;
+        const adminToken = response.data.token;
 
-          const adminInfo = response.data.user;
-          const adminToken = response.data.token;
+        // Dispatch login action with a single object containing both adminInfo and adminToken
+        dispatch(adminLogin({ adminInfo, adminToken }));
 
-          // Dispatch login action with a single object containing both adminInfo and adminToken
-          dispatch(adminLogin({ adminInfo, adminToken }));
+        navigate('/admin');
 
-          navigate('/admin');
-        }
       } else {
         Swal.fire({
           icon: 'error',
@@ -78,80 +123,53 @@ const AdminLogin = () => {
         });
       }
     } catch (error) {
-      console.error("Login Error:", error);
 
-      let errorMessage = 'An error occurred. Please try again.';
-      if (error.response) {
-        if (error.response.data && error.response.data.error) {
-          errorMessage = error.response.data.error;
-        } else if (typeof error.response.data === 'string') {
-          errorMessage = error.response.data;
-        } else {
-          errorMessage = 'Unexpected error from server.';
-        }
-      } else if (error.request) {
-        errorMessage = 'No response from server. Please check your internet connection.';
-      } else {
-        errorMessage = error.message;
-      }
-
+      console.error(error)
       Swal.fire({
         icon: 'error',
-        title: 'Login Failed',
-        text: errorMessage,
+        title: 'Error',
+        text: 'There was an error connecting to the server.',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className='ContactFormWrap' key={location.pathname}>
-      <div className='contact-form-container'>
-        <h2>Admin Login</h2>
-        <img src={Logo} alt='Logo' style={{ position: 'relative', width: '70px' }} />
-        <form onSubmit={handleSubmit}>
-          <div className='form-group'>
-            <label htmlFor='email'>Email</label>
-            <input
-              type='email'
-              id='email'
-              name='email'
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='password'>Password</label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id='password'
-              name='password'
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              style={{ position: 'absolute', right: '10px', top: '65%', cursor: 'pointer', transform: 'translateY(-50%)' }}
-            >
-              {showPassword ? '🙈' : '👁️'}
-            </span>
-          </div>
-          <button type='submit' disabled={isSubmitting}>
-            {isSubmitting ? (
-              <ClipLoader color={'#ffffff'} loading={isSubmitting} size={15} />
-            ) : (
-              'Login'
-            )}
-          </button>
-        </form>
-        <p style={{ marginTop: '10px', position: 'relative', cursor: 'pointer', color: 'orange' }} onClick={() => navigate('/adminforgotpassword')}>
-          Forgot Password
-        </p>
-      </div>
-    </div>
+    <Container>
+      <Form onSubmit={handleLogin}>
+        <Title>Login</Title>
+        
+        <div>
+          <Label>Email</Label>
+          <Input
+            type="email"
+            name="email"
+            value={email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        
+        <div>
+          <Label>Password</Label>
+          <Input
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+       
+        
+        <Button type="submit">Login</Button>
+        {/* <p 
+        style={{marginTop:"10px", cursor:"pointer"}}
+        onClick={()=>navigate('/adminsignup')}>Don't have an account? Sign Up</p> */}
+        <p 
+        style={{marginTop:"10px", cursor:"pointer"}}
+        onClick={()=>navigate('/adminforgotpassword')}>Forgot Password</p>
+      </Form>
+    </Container>
   );
 };
 

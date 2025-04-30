@@ -1,0 +1,136 @@
+/* General Styling */
+.partners-section {
+    background: #f9f9f9;
+    padding: 60px 20px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    overflow: hidden;
+    background-image: url('../Images/partnerbg.jpg');
+    background-position: bottom;
+    background-size: cover;
+  }
+  
+  .partners-title {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.9); /* Soft glow effect */
+}
+
+  
+  /* Scrolling Animation */
+  .partners-slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+  }
+  
+  .partners-track {
+    display: flex;
+    animation: scroll 15s linear infinite;
+    align-items: center;
+  }
+  
+  .partner-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    margin: 0 15px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .partner-card:hover {
+    transform: scale(1.1);
+  }
+  
+  .partner-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .partner-name {
+    font-size: 0.8rem;
+    color: #ff6600;
+    font-weight: 500;
+  }
+
+  
+  /* Apply Section */
+  .apply-section {
+    background: #28a745;
+    color: white;
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .apply-section p {
+    font-size: 18px;
+  }
+
+  .apply-btn {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    border:1px solid white;
+    cursor: pointer;
+  }
+  
+  .apply-btn:hover {
+    background: #218838;
+    border:none;
+  }
+
+
+  
+
+
+
+  /* Infinite Scrolling Animation */
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .partners-title {
+      font-size: 2rem;
+    }
+    
+    .partner-logo {
+      width: 100px;
+    }
+    
+    .partner-card {
+      min-width: 160px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .partners-title {
+      font-size: 1.8rem;
+    }
+    
+    .partner-logo {
+      width: 80px;
+    }
+    
+    .partner-card {
+      min-width: 140px;
+    }
+  }
+  

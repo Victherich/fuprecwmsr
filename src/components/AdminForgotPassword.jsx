@@ -1,97 +1,149 @@
-// src/ForgotPassword.js
-import React, { useContext, useState } from 'react';
-import '../CSS/AdminLogin.css';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { css } from '@emotion/react';
-import ClipLoader from 'react-spinners/ClipLoader';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
+const Container = styled.div`
+  min-height: 100vh;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+`;
+
+const FormWrapper = styled.div`
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+`;
+
+const Title = styled.h2`
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: green;
+  text-align: center;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  &:focus {
+    border-color: green;
+    outline: none;
+  }
+`;
+
+const Button = styled.button`
+  padding: 0.75rem;
+  background-color:green;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    background-color: lightgreen;
+  }
+`;
+
+const Message = styled.p`
+  margin-top: 1rem;
+  color: ${({ success }) => (success ? 'green' : 'red')};
+  text-align: center;
+  font-size: 0.95rem;
+`;
 
 const AdminForgotPassword = () => {
-  const location = useLocation()
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+  const [buttonText, setButtonText]=useState("Send Reset Link")
 
-  const [resendLink, setResendLink] = useState(false);
-
-  const handleChange = (e) => {
-    setEmail(e.target.value);
-  };
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+  
+    // Show loading alert
+    Swal.fire({
+      title: 'Please wait...',
+      text: 'Sending password reset link...',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
   
     try {
-      const response = await axios.post("https://vinrichards.com/api2/admin_forgot_password.php", { email });
-      setMessage(response.data.message);
-      setResendLink(true);
-      Swal.fire({
-        // icon: 'success',
-        text: response.data.message?`${response.data.message} Please check your inbox or spam for reset link`:"Invalid email",
-        confirmButtonText: 'Ok'
+      const res = await fetch('https://www.cwmsrfupre.com.ng/api/admin_forgot_password.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
       });
-    } catch (error) {
-      console.error('Error during forgot password request:', error);
-      let errorMessage = 'An error occurred while processing your request. Please try again.';
   
-      if (error.response) {
-        const { status, data } = error.response;
-        if (status === 404) {
-          errorMessage = data.error || 'User not found. Please check your email and try again.';
-        } else if (status === 500) {
-          errorMessage = 'Server error. Please try again later.';
-        }
+      const data = await res.json();
+  
+      Swal.close();
+  
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: data.message || 'Reset link sent successfully Please check your email inbox or spam folder!',
+        });
+        setButtonText("Resend Reset Link");
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: data.message || 'Something went wrong. Please try again.',
+        });
       }
-  
+    } catch (error) {
+      Swal.close();
       Swal.fire({
         icon: 'error',
-        title: 'Request Failed',
-        text: errorMessage,
-        confirmButtonText: 'OK'
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
   
-  const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-  `;
 
   return (
-    <div className='ContactFormWrap'key={location.pathname} >
-      <div className="contact-form-container">
-        <h2>Admin Forgot Password</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <button type="submit">
-            {isSubmitting ? (
-              <ClipLoader color={"#ffffff"} loading={isSubmitting} css={override} size={15} />
-            ) : (
-              <p>{resendLink ? "Resend link" : "Get link"}</p>
-            )}
-          </button>
-          <p onClick={()=>navigate("/adminlogin")} style={{position:"relative",color:"orange",cursor:"pointer",textDecoration:"underline"}}>Login</p>
-        </form>
-      </div>
-    </div>
+    <Container>
+      <FormWrapper>
+        <Title>Admin Forgot Password</Title>
+        <Form onSubmit={handleSubmit}>
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Button type="submit">{buttonText}</Button>
+
+        </Form>
+        <p onClick={()=>navigate("/adminlogin")} style={{color:"green", cursor:"pointer"}}>Back to Login</p>
+        {message && <Message success={success}>{message}</Message>}
+      </FormWrapper>
+    </Container>
   );
 };
 
 export default AdminForgotPassword;
+

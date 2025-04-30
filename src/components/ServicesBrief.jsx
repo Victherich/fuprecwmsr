@@ -56,12 +56,12 @@ const ServicesBrief = () => {
       {/* Content Section */}
       <div className="services-brief-content">
         <div className="services-brief-text">
-          <h2>Our Air & Ocean Freights</h2>
-          <p>
-            Discover our comprehensive logistics solutions, including Air Freight and Ocean Freight services. From urgent air shipments to reliable sea logistics, we cover all your needs with precision and professionalism.
-          </p>
-          <button className="explore-more-btn" onClick={handleMoreClick}>
-            Explore More
+          <h2>Your Future Starts Here @
+          CENTRE FOR WASTE MANAGEMENT  & SUSTAINABLE RESOURCES,FUPRE</h2>
+         
+          <button className="explore-more-btn" onClick={()=>navigate('/application')}>
+            
+            Get Started
           </button>
         </div>
         <div className="services-brief-image">

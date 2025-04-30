@@ -1,17 +1,27 @@
 import React, { useEffect, useRef } from 'react';
 import '../CSS/AboutUsBriefComponent.css';
 import { useNavigate } from 'react-router-dom';
-import { FaBuilding, FaUsers, FaShip } from 'react-icons/fa';
+import { FaRecycle, FaLeaf, FaFlask } from 'react-icons/fa';
 import briefImage from '../Images/whoweare2.png'; // replace with actual image path
 import 'animate.css'; // Import animate.css for animations
+import Swal from 'sweetalert2'
 
 const AboutUsBrief = () => {
   const navigate = useNavigate();
   const observer = useRef(null);
 
   const handleMoreClick = () => {
-    navigate('/aboutus');  // Navigates to the full About Us page
+    // navigate('/aboutus');  // Navigates to the full About Us page
+    Swal.fire({
+      title:"About us page is coming soon..."
+    })
   };
+
+  const handleAlert = ()=>{
+    Swal.fire({
+      title:"About us page is coming soon..."
+    })
+  }
 
   useEffect(() => {
     const handleIntersection = (entries) => {
@@ -59,20 +69,19 @@ const AboutUsBrief = () => {
       {/* Content Section */}
       <div className="about-us-brief-content">
         <div className="about-us-brief-text">
-          <h2>About Vinrichard's Clearing Agents Limited</h2>
+          <h2>♻️ About CWMSR ♻️</h2>
           <p>
-            Founded in 2022, our company has quickly become a trusted name in logistics and real estate. Located in Lagos, we specialize in shipping, clearing and forwarding, customs brokerage, and estate agency services.
+          The Centre for Waste Management and Sustainable Resources (CWMSR) is a pioneering research and academic hub dedicated to addressing the growing environmental challenges of waste management and promoting sustainable development practices. 
           </p>
           <p>
-            Our team of dedicated professionals ensures every job is handled with precision and full compliance, making us a reliable partner in international trade and real estate.
-          </p>
+          Located at the Federal University of Petroleum Resources, Effurun (FUPRE), Delta State, Nigeria, the Centre is at the forefront of innovation in waste management, environmental sustainability, and pollution control, with a particular focus on the oil and gas sector.</p>
           <div className="about-brief-icons">
-            <FaUsers className="about-brief-icon" />
-            <FaShip className="about-brief-icon" />
-            <FaBuilding className="about-brief-icon" />
+          <FaRecycle className="about-brief-icon" />
+<FaLeaf className="about-brief-icon" />
+<FaFlask className="about-brief-icon" />
           </div>
-          <button className="more-about-btn" onClick={handleMoreClick}>
-            More About VCA
+          <button className="more-about-btn" onClick={()=>navigate('/aboutus')}>
+            More About CWMSR
           </button>
         </div>
 

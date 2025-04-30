@@ -1,0 +1,111 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .courses-section {
+    text-align: center;
+    padding: 50px 20px;
+    background: linear-gradient(to right, #f0f7f4, #dff7e3);
+    border-top: 2px solid green;
+  }
+  
+  .courses-title {
+    font-size: 2.5rem;
+    color: #004d00;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .courses-description {
+    font-size: 1.2rem;
+    color: #333;
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  
+  /* Irregular Grid Layout */
+  .courses-grid {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  .course-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .course-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .course-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .course-info {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 77, 0, 0.8);
+    color: white;
+    padding: 15px;
+    text-align: left;
+  }
+  
+  .course-title {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  .course-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  /* Irregular Grid Styling */
+  .card-1 {
+    grid-column: span 2;
+  }
+  .card-2 {
+    grid-column: span 1;
+  }
+  .card-3 {
+    grid-column: span 1;
+  }
+  .card-4 {
+    grid-column: span 2;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .courses-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .card-1, .card-2, .card-3, .card-4 {
+      grid-column: span 1;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .courses-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  

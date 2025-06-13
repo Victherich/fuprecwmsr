@@ -16,15 +16,22 @@
   
   /* Grid Layout */
   .faculty-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 10px;
+    justify-content: center; */
+    display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
     
   }
   
   /* Faculty Cards */
   .faculty-card {
+    width: 200px;
+   
     background:white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -41,8 +48,9 @@
   /* Faculty Images */
   .faculty-image {
     width: 100%;
-    /* height: 280px; */
+    height: 200px;
     object-fit: cover;
+    object-position:top;
     border-bottom: 5px solid #ff6600;
   }
   
@@ -68,6 +76,21 @@
     color:green ;
     margin-top: 5px;
     font-weight: bold;
+  }
+
+  .faculty-section button{
+    padding: 10px 20px;
+    background-color: #ff6600;
+    color:white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 50px;
+
+  }
+
+  .faculty-section button:hover{
+    background-color: gray;
   }
   
   /* Responsive Design */

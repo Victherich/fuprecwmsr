@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import heroImage from '../Images/ggg9.jpg'; // Add a hero image to your Images folder
+import ShortCourses2 from './ShortCourses2';
 
 const PageContainer = styled.div`
   font-family: 'Segoe UI', sans-serif;
@@ -199,6 +200,8 @@ const ShortCoursesPage = () => {
           </a>
         </ContactBlock>
       </ContactInfo> */}
+
+      <ShortCourses2/>
     </PageContainer>
   );
 };

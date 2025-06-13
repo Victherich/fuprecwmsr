@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import ShortCourses2 from './ShortCourses2';
+
 
 const ShortCourses = () => {
   return (
@@ -64,7 +66,9 @@ const ShortCourses = () => {
             <li>Advanced Sorting and Separation Technologies</li>
           </ul>
         </Section>
+        
       </Content>
+      
     </Container>
   );
 };

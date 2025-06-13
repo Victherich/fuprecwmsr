@@ -525,9 +525,12 @@ const graduateStudent = async (studentId) => {
     <Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/api/${student.file_path}`, '_blank')}>
   View Application Documents
 </Button>
+<Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/api/${student.proof_of_payment_path}`, '_blank')}>
+  View Proof of Application payment
+</Button>
 
     {student.status!=='graduated'&&<Button onClick={()=>admitStudent(student.id)}>
-        Grand Admission
+        Grant Admission
       </Button>}
       {student.status!=='graduated'&&<Button onClick={()=>cancelStudentAdmission(student.id)}>
         Cancel Admission

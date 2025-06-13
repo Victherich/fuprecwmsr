@@ -159,7 +159,7 @@ const Header = () => {
           </li>
 
           {/* Regular nav items */}
-          {['Academics','Admissions','Application','Portal', 'Events', 'Gallery',  'Contact Us'].map((text, index) => {
+          {['Academics','Admissions','Application','Research', 'Portal', 'Events', 'Gallery',  'Contact Us'].map((text, index) => {
             const path = `/${text.toLowerCase().replace(' ', '')}`;
             return (
               <li key={index}>

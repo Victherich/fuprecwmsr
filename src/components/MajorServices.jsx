@@ -99,7 +99,7 @@ import React, { useEffect, useRef } from 'react';
 import '../CSS/MajorServices.css'; // Updated CSS file
 import DiplomaImg from "../Images/pic7.jpg";
 import MScImg from "../Images/pic9.jpg";
-import PhDImg from "../Images/phd.jpeg";
+import PhDImg from "../Images/staff/phd.jpeg";
 import "animate.css"; // Import animations
 import { FaArrowCircleRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';

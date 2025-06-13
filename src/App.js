@@ -99,6 +99,8 @@ import ShortCoursesPage from './components/ShortCourcesPage';
 import StudentForgotPassword from './components/StudentForgotPassword';
 import StudentResetPassword from './components/StudentResetPassword';
 import Events from './components/Events';
+import AppUpdate from './components/AppUpdate';
+import ResearchPage from './components/ResearchPage';
 
 
 function App() {
@@ -160,6 +162,7 @@ function App() {
 
   return (
     <BrowserRouter>
+    <AppUpdate/>
       <ScrollToTop />
       {/* {showOverlay&& <ChristmasOverlay/>} */}
       <Header />
@@ -182,7 +185,8 @@ function App() {
         <Route path='/events' element={<Events/>}/>
         <Route path='/studentforgotpassword' element={<StudentForgotPassword/>}/>
         <Route path='/studentresetpassword/:token' element={<StudentResetPassword/>}/>
-       
+        <Route path='/research' element={<ResearchPage/>}/>
+        
 
         <Route path='/studentlogin' element={<StudentLogin/>}/>
 

@@ -174,7 +174,10 @@ For specific inquiries regarding collaboration, research opportunities, or acade
             Centre for Waste Management and Sustainable<br/> Resources (CWMSR)<br/> 
             </p>
             <p>Federal University of Petroleum Resources,<br/> Effurun (FUPRE),<br/> Delta State, Nigeria.</p>
-
+<br/>
+<p>
+  No, 2. Olanikpeku Street APIS ( Bassan Plaza)<br/>  Central Business District FCT, Abuja
+</p>
           </div>
         </div>
       </div>

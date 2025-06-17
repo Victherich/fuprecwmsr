@@ -91,7 +91,7 @@ const Loading = styled.div`
   margin-top: 2rem;
 `;
 
-const AllAdminsAndLecturers = () => {
+const AllAdmin = () => {
   const [admins, setAdmins] = useState([]);
   const [filteredAdmins, setFilteredAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -186,4 +186,4 @@ const AllAdminsAndLecturers = () => {
   );
 };
 
-export default AllAdminsAndLecturers;
+export default AllAdmin;

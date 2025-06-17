@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
-import { adminLogin } from '../Features/Slice';
+import { lecturerLogin } from '../Features/Slice';
 import { UseDispatch, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,7 +62,7 @@ const Title = styled.h2`
   
 `;
 
-const AdminLogin = () => {
+const LecturerLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -97,7 +98,7 @@ const AdminLogin = () => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admin_login.php', { email, password });
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/lecturer_login.php', { email, password });
 
       if (response.data.success) {
         Swal.fire({
@@ -107,13 +108,13 @@ const AdminLogin = () => {
         });
         console.log(response.data)
         
-        const adminInfo = response.data.user;
-        const adminToken = response.data.token;
+        const lecturerInfo = response.data.user;
+        const lecturerToken = response.data.token;
 
         // Dispatch login action with a single object containing both adminInfo and adminToken
-        dispatch(adminLogin({ adminInfo, adminToken }));
+        dispatch(lecturerLogin({ lecturerInfo, lecturerToken }));
 
-        navigate('/admin');
+        navigate('/lecturer');
 
       } else {
         Swal.fire({
@@ -136,7 +137,7 @@ const AdminLogin = () => {
   return (
     <Container>
       <Form onSubmit={handleLogin}>
-        <Title>Login</Title>
+        <Title>Lecturer Login</Title>
         
         <div>
           <Label>Email</Label>
@@ -165,10 +166,14 @@ const AdminLogin = () => {
        
         <p 
         style={{marginTop:"10px", cursor:"pointer"}}
-        onClick={()=>navigate('/adminforgotpassword')}>Forgot Password</p>
+        onClick={()=>navigate('/lecturerforgotpassword')}>Forgot Password</p>
+
+        <p 
+        style={{marginTop:"10px", cursor:"pointer"}}
+        onClick={()=>navigate('/lecturersignup')}>Don't have an acount? Register.</p>
       </Form>
     </Container>
   );
 };
 
-export default AdminLogin;
+export default LecturerLogin;

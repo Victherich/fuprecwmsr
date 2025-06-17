@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -107,7 +108,7 @@ const Select = styled.select`
 
 `
 
-const AllStudents = () => {
+const AllLecturerStudents = ({lecturerId}) => {
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,26 +123,38 @@ const AllStudents = () => {
 
 
 
-    const handleGetAllstudents=()=>{
-    axios.get('https://www.cwmsrfupre.com.ng/api/get_all_students.php')  // Make sure to replace with the correct API URL
-      .then(res => {
-        if (res.data.success) {
-          setStudents(res.data.students);
-          setFilteredStudents(res.data.students);
-        } else {
-          setError(res.data.error || 'Failed to load students.');
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError('Failed to fetch students.');
-        setLoading(false);
-        console.error(error);
-      });
-    };
+const handleGetLecturerStudents = () => {
+  // Replace this with actual logged-in lecturer ID
+// Assuming `user` comes from Context or Auth
+
+  if (!lecturerId) {
+    setError('Lecturer ID is missing.');
+    setLoading(false);
+    return;
+  }
+
+  axios.post('https://www.cwmsrfupre.com.ng/api/get_students_in_lecturer_courses.php', {
+    lecturer_id: lecturerId
+  })
+  .then(res => {
+    if (res.data.success) {
+      setStudents(res.data.students);
+      setFilteredStudents(res.data.students);
+    } else {
+      setError(res.data.error || 'Failed to load students.');
+    }
+    setLoading(false);
+  })
+  .catch(err => {
+    console.error(err);
+    setError('An error occurred while fetching students.');
+    setLoading(false);
+  });
+};
+
 
     useEffect(() => {
-handleGetAllstudents();
+handleGetLecturerStudents();
 
 }, []);
 
@@ -178,7 +191,7 @@ handleGetAllstudents();
 
   return (
     <Container>
-      <Title>All Students</Title>
+      <Title>All Lecturer's Students</Title>
       <SearchContainer>
         <SearchInput
           type="text"
@@ -254,12 +267,12 @@ handleGetAllstudents();
           </Card>
         ))}
       </CardsWrapper>
-      {studentProfileId&&<StudentProfile 
+      {/* {studentProfileId&&<StudentProfile 
       id={studentProfileId} 
       setStudentProfileId={setStudentProfileId}
-      handleGetAllstudents={handleGetAllstudents}/>}
+      handleGetAllstudents={handleGetAllstudents}/>} */}
     </Container>
   );
 };
 
-export default AllStudents;
+export default AllLecturerStudents;

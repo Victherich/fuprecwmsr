@@ -66,11 +66,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-// import ManagementUserDetails from './ManagementUserDetails';
+
 import Swal from 'sweetalert2';
 import { adminLogout } from '../Features/Slice';
 import AdminDetailsPage from './AdminProfile';
-import AllAdminsAndLecturers from './AllAdminAndLecturers';
+import AllAdmin from './AllAdmin';
 import AllStudents from './AllStudents';
 import LecturerScoring from './LecturerScoring';
 import Announcements from './Announcements';
@@ -80,24 +80,9 @@ import PostLectureNotes from './PostLectureNotes.jsx';
 import LecturerOnlineClass from './LecturerOnlineClass.jsx';
 import MeetingLinkUploader from './MeetingLinkUploader.jsx';
 import AdminSignup from './AdminSignUp.jsx';
-// import Departments from './Departments';
-// import Classes from './Classes';
-// import Subjects from './Subjects';
-// import Students from './Students';
-// import Semesters from './SemesterOrTerms';
-// import SearchStudent from './SearchStudent';
-// import SchoolFees from './SchoolFees';
-// import CurrentSemesterOrTerm from './CurrentSemesterOrTerm';
-// import StudentsByClass from './StudentsByClass';
-// import ManagementAnnouncements from './ManagementAnnouncements';
-// import ManageFeesPayments from './ManageFeesPayments';
-// import StudentSignup from './StudentSignup';
-// import SchoolWeekManager from './SchoolTermCalender';
-// import SchoolManagementSignup from './SchoolManagementSignup';
-// import TeacherSignup from './TeacherSignup';
-// import TeacherList from './AllTeachers';
-// import StudentFeedbacks from './StudentFeedbacks';
-// import TeacherFeedbacks from './TeacherFeedbacks';
+import AccessCodeManager from './AccessCodeManager';
+import AllLecturers from './AllLecturers';
+
 
 // Styled Components
 const DashboardContainer = styled.div`
@@ -270,8 +255,11 @@ const SchoolManagementDashboard = () => {
     switch (activeMenu) {
       case 'profile':
         return <AdminDetailsPage adminId={adminInfo.id}/>;
-        case 'alladminsandlecturers':
-        return <AllAdminsAndLecturers />;
+        case 'alladmin':
+        return <AllAdmin />;
+
+        case 'alllecturers':
+        return <AllLecturers />;
         case 'allstudents':
         return <AllStudents />;
         case 'scoring':
@@ -287,24 +275,13 @@ const SchoolManagementDashboard = () => {
         return <PostLectureNotes />;
       case 'meetinglinkupload':
         return <MeetingLinkUploader lecturerId={adminInfo.id}/>;
+
+         case 'manageaccesscode':
+        return <AccessCodeManager/>;
+
         case 'adminsignup':
         return <AdminSignup/>;
-      //   case 'schoolFeesManagement':
-      //     return <ManageFeesPayments />;
-      //     case 'registerStudent':
-      //       return <StudentSignup />;
-      //       case 'schoolCalender':
-      //         return <SchoolWeekManager />;
-      //         case 'registerAdmin':
-      //           return <SchoolManagementSignup/>;
-      //           case 'registerTeacher':
-      //             return <TeacherSignup/>;
-      //             case 'allTeacher':
-      //             return <TeacherList/>;
-      //             case 'studentsFeedbacks':
-      //               return <StudentFeedbacks/>;
-      //               case 'teachersFeedbacks':
-      //               return <TeacherFeedbacks/>;
+      
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;
     }
@@ -317,7 +294,7 @@ const SchoolManagementDashboard = () => {
       </Hamburger>
       <Overlay isOpen={menuOpen} onClick={closeMenuOnOutsideClick} />
       <Sidebar isOpen={menuOpen}>
-        <SidebarHeader>Management Dashboard</SidebarHeader>
+        <SidebarHeader>Admin Dashboard</SidebarHeader>
         <SidebarMenu>
        
           <SidebarMenuItem
@@ -328,10 +305,17 @@ const SchoolManagementDashboard = () => {
           </SidebarMenuItem>
 
          <SidebarMenuItem
-            active={activeMenu === 'alladminsandlecturers'}
-            onClick={() => handleMenuClick('alladminsandlecturers')}
+            active={activeMenu === 'alladmin'}
+            onClick={() => handleMenuClick('alladmin')}
           >
-            Lecturers / Admins
+            Admins
+          </SidebarMenuItem>
+
+          <SidebarMenuItem
+            active={activeMenu === 'alllecturers'}
+            onClick={() => handleMenuClick('alllecturers')}
+          >
+            Lecturers
           </SidebarMenuItem>
 
           <SidebarMenuItem
@@ -341,12 +325,12 @@ const SchoolManagementDashboard = () => {
             All Students
           </SidebarMenuItem>
  
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'scoring'}
             onClick={() => handleMenuClick('scoring')}
           >
             Scoring
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
    
 
           <SidebarMenuItem
@@ -356,41 +340,48 @@ const SchoolManagementDashboard = () => {
             Announcements
           </SidebarMenuItem>
  
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'LiveLecture'}
             onClick={() => handleMenuClick('LiveLecture')}
           >
 
             LiveLecture
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'assignments'}
             onClick={() => handleMenuClick('assignments')}
           >
 
             Assignments
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'lecturenotes'}
             onClick={() => handleMenuClick('lecturenotes')}
           >
             Lecture Notes
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
-         {adminInfo?.name?.trim()==="Esther Nnenna Esom" &&<SidebarMenuItem
+         {/* {adminInfo?.name?.trim()==="Esther Nnenna Esom" &&<SidebarMenuItem
             active={activeMenu === 'meetinglinkupload'}
             onClick={() => handleMenuClick('meetinglinkupload')}
           >
             Upload Meeting Link
-          </SidebarMenuItem>}
+          </SidebarMenuItem>} */}
+
+           <SidebarMenuItem
+            active={activeMenu === 'manageaccesscode'}
+            onClick={() => handleMenuClick('manageaccesscode')}
+          >
+            Manage Access Codes
+          </SidebarMenuItem>
 
           <SidebarMenuItem
             active={activeMenu === 'adminsignup'}
             onClick={() => handleMenuClick('adminsignup')}
           >
-            Register Admin / Lecturer
+            Register Admin
           </SidebarMenuItem>
 
   {/*        <SidebarMenuItem

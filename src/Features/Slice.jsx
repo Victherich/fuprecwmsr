@@ -7,6 +7,9 @@ const MySlice = createSlice({
     adminInfo: null,
     adminToken: null,
 
+     lecturerInfo: null,
+    lecturerToken: null,
+
     studentInfo:null,
     studentToken:null,
   },
@@ -24,6 +27,22 @@ const MySlice = createSlice({
         state.adminInfo = { ...state.adminInfo, ...payload };
       }
     },
+lecturerLogin: (state, { payload }) => {
+  state.lecturerInfo = payload.lecturerInfo;
+  state.lecturerToken = payload.lecturerToken;
+},
+lecturerLogout: (state) => {
+  state.lecturerInfo = null;
+  state.lecturerToken = null;
+},
+updateLecturerInfo: (state, { payload }) => {
+  if (state.lecturerInfo) {
+    state.lecturerInfo = { ...state.lecturerInfo, ...payload };
+  }
+},
+
+
+
 
     studentLogin: (state, { payload }) => {
       state.studentInfo = payload.studentInfo;
@@ -37,6 +56,6 @@ const MySlice = createSlice({
   },
 });
 
-export const { adminLogin, adminLogout, updateAdminInfo , studentLogin, studentLogout} = MySlice.actions;
+export const { adminLogin, adminLogout, updateAdminInfo , studentLogin, studentLogout, lecturerLogin, lecturerLogout, updateLecturerInfo} = MySlice.actions;
 export default MySlice.reducer;
 

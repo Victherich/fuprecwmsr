@@ -91,9 +91,9 @@ const PostLectureNotes = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [file, setFile] = useState(null);
-  const adminInfo = useSelector(state => state.adminInfo);
+  const lecturerInfo = useSelector(state => state.lecturerInfo);
   const [lectureNotes, setLectureNotes] = useState([]);
-  const lecturer = adminInfo;
+  const lecturer = lecturerInfo;
 
   const handleSubmit = async () => {
     if (!selectedCourseId || !title || !description) {
@@ -103,7 +103,7 @@ const PostLectureNotes = () => {
 
     const formData = new FormData();
     formData.append('course_id', selectedCourseId);
-    formData.append('lecturer_id', adminInfo?.id); // use from context
+    formData.append('lecturer_id', lecturerInfo?.id); // use from context
     formData.append('title', title);
     formData.append('description', description);
     if (file) formData.append('file', file);

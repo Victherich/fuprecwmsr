@@ -182,8 +182,14 @@ const StaffTeam = () => {
 
         <StaffCard>
           <img src={deputydirector} alt="Dr. Ozioma Nduagu" />
-          <h2>Dr. Ozioma Nduagu</h2>
+          <h2>Very Revd. Dr. Ozioma Israel Nduagu Sw.</h2>
           <h4>Deputy Director</h4>
+          <h5 style={{color:"#333"}}>FIWM, FAIPHP, FSWA, DSW.</h5>
+           <p style={{fontSize:"0.8rem", fontWeight:"500"}}>Centre for Waste Management and sustainable resources, FUPRE
+ Abuja Liaison Office.
+No, 2. Olanikpeku Street APIS ( Bassan Plaza)  Central Business District FCT, Abuja</p> 
+       
+        
           {/* <p>Deputy Director, CWMSR</p> */}
         </StaffCard>
 

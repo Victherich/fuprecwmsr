@@ -1,7 +1,9 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import VerifyAccessCodeForLecturerSignUp from './VerifyAccessCodeForLecturerSignUp'
 
 const Container = styled.div`
   display: flex;
@@ -79,7 +81,8 @@ const Button = styled.button`
   }
 `;
 
-const AdminSignup = () => {
+const LecturerSignup = () => {
+  const [status, setStatus] = useState('');
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '',
@@ -117,7 +120,7 @@ const AdminSignup = () => {
     });
 
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/api/admin_signup.php', {
+      const response = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_signup.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +132,7 @@ const AdminSignup = () => {
 
       if (data.success) {
         Swal.fire('Success 🎉', data.message, 'success');
-        navigate('/adminlogin')
+        navigate('/lecturerlogin')
         setForm({
           name: '',
           email: '',
@@ -147,10 +150,15 @@ const AdminSignup = () => {
     }
   };
 
+  if(status!=="existing"){
+    return <VerifyAccessCodeForLecturerSignUp status={status} setStatus={setStatus}/>
+  }
+
   return (
+    
     <Container>
       <FormWrapper>
-        <Title>Admin Register</Title>
+        <Title>Lecturer Register</Title>
         <form onSubmit={handleSubmit}>
           <Label>Full Name</Label>
           <Input name="name" value={form.name} onChange={handleChange} required />
@@ -173,7 +181,7 @@ const AdminSignup = () => {
           <Label>Role</Label>
 <Select name="role" value={form.role} onChange={handleChange} required>
   <option value="" disabled>--Select Role--</option> {/* Default empty option */}
-  <option value="Admin">Admin</option>
+  {/* <option value="Admin">Admin</option> */}
   <option value="Lecturer">Lecturer</option>
 </Select>
 
@@ -181,11 +189,11 @@ const AdminSignup = () => {
           <Button type="submit">Create Account</Button>
           <p 
         style={{marginTop:"10px", cursor:"pointer"}}
-        onClick={()=>navigate('/adminlogin')}>Already have an account? Login</p>
+        onClick={()=>navigate('/lecturerlogin')}>Already have an account? Login</p>
         </form>
       </FormWrapper>
     </Container>
   );
 };
 
-export default AdminSignup;
+export default LecturerSignup;

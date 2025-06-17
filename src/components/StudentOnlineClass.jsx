@@ -122,7 +122,7 @@ const Button = styled.button`
 
 const StudentOnlineClass = () => {
   const [classes, setClasses] = useState([]);
-  const [admins, setAdmins] = useState([]);
+  const [lecturers, setLecturers] = useState([]);
 
   const fetchClasses = async () => {
     try {
@@ -140,11 +140,11 @@ const StudentOnlineClass = () => {
     }
   };
 
-  const fetchAdmins = async () => {
+  const fetchLecturers = async () => {
     try {
-      const res = await axios.get('https://www.cwmsrfupre.com.ng/api/get_all_admin.php');
+      const res = await axios.get('https://www.cwmsrfupre.com.ng/api/get_all_lecturer.php');
       if (res.data.success) {
-        setAdmins(res.data.admins);
+        setLecturers(res.data.lecturers);
       } else {
         Swal.fire({ text: res.data.error || 'Failed to load admins.' });
       }
@@ -154,9 +154,11 @@ const StudentOnlineClass = () => {
     }
   };
 
+
+
   useEffect(() => {
     fetchClasses();
-    fetchAdmins();
+    fetchLecturers();
   }, []);
 
   return (
@@ -166,7 +168,7 @@ const StudentOnlineClass = () => {
         <p>No online classes available.</p>
       ) : (
         classes.map((item) => {
-          const lecturer = admins.find(admin => parseInt(admin.id) === parseInt(item.lecturer_id));
+          const lecturer = lecturers.find(lecturer => parseInt(lecturer.id) === parseInt(item.lecturer_id));
           const lecturerName = lecturer ? lecturer.name : `Lecturer ID ${item.lecturer_id}`;
 
           return (

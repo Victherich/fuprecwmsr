@@ -176,7 +176,8 @@ const handleAlert = ()=>{
         <Subtitle>Access your academic resources, courses, and more.</Subtitle>
         <ButtonContainer>
           <StudentButton onClick={()=>navigate ('/studentdashboard')}>Student Portal</StudentButton>
-          <LecturerButton onClick={()=>navigate('/admin')}>Admin / Lecturer Portal</LecturerButton>
+          <LecturerButton onClick={()=>navigate('/admin')}>Admin Portal</LecturerButton>
+          <StudentButton onClick={()=>navigate('/lecturer')}>Lecturer Portal</StudentButton>
         </ButtonContainer>
       </WelcomeContent>
     </WelcomeContainer>

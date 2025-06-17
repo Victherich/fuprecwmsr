@@ -101,6 +101,10 @@ import StudentResetPassword from './components/StudentResetPassword';
 import Events from './components/Events';
 import AppUpdate from './components/AppUpdate';
 import ResearchPage from './components/ResearchPage';
+import LecturerLogin from './components/LecturerLogin';
+import PrivateLecturerDashboard from './components/PrivateLecturerDashboard';
+import LecturerDashboard from './components/LecturerDashboard';
+import LecturerSignup from './components/LecturerSignup';
 
 
 function App() {
@@ -205,6 +209,16 @@ function App() {
           <Route path="" element={<AdminDashborad />} />
         </Route>
         <Route path="/verify/:token" element={<VerifyEmail/>}/>
+
+
+
+
+        {/* leccturer routes */}
+        <Route path='/lecturersignup' element={<LecturerSignup/>}/>
+        <Route path='/lecturerlogin' element={<LecturerLogin/>}/>
+        <Route path="/lecturer" element={<PrivateLecturerDashboard />}>
+          <Route path="" element={<LecturerDashboard />} />
+        </Route>
       
       </Routes>
       <Partners/>

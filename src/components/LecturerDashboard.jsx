@@ -1,43 +1,27 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-// import ManagementUserDetails from './ManagementUserDetails';
+
 import Swal from 'sweetalert2';
-import { studentLogout } from '../Features/Slice';
+import { lecturerLogout } from '../Features/Slice';
 import AdminDetailsPage from './AdminProfile';
 import AllAdmin from './AllAdmin';
 import AllStudents from './AllStudents';
-import StudentProfile from './StudentProfile';
-import StudentProfile2 from './StudentProfile2';
-import EnrollPage from './EnrollmentPage';
-import StudentResult from './StudentResult';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import LecturerScoring from './LecturerScoring';
 import Announcements from './Announcements';
-import StudentAssignments from './StudentAssignments';
-import StudentLectureNotes from './StudentLectureNotes';
-import StudentOnlineClass from './StudentOnlineClass';
-// import Departments from './Departments';
-// import Classes from './Classes';
-// import Subjects from './Subjects';
-// import Students from './Students';
-// import Semesters from './SemesterOrTerms';
-// import SearchStudent from './SearchStudent';
-// import SchoolFees from './SchoolFees';
-// import CurrentSemesterOrTerm from './CurrentSemesterOrTerm';
-// import StudentsByClass from './StudentsByClass';
-// import ManagementAnnouncements from './ManagementAnnouncements';
-// import ManageFeesPayments from './ManageFeesPayments';
-// import StudentSignup from './StudentSignup';
-// import SchoolWeekManager from './SchoolTermCalender';
-// import SchoolManagementSignup from './SchoolManagementSignup';
-// import TeacherSignup from './TeacherSignup';
-// import TeacherList from './AllTeachers';
-// import StudentFeedbacks from './StudentFeedbacks';
-// import TeacherFeedbacks from './TeacherFeedbacks';
+import LiveLecture from './LiveLecture';
+import PostAssignment from './Assignments.jsx';
+import PostLectureNotes from './PostLectureNotes.jsx';
+import LecturerOnlineClass from './LecturerOnlineClass.jsx';
+import MeetingLinkUploader from './MeetingLinkUploader.jsx';
+import AdminSignup from './AdminSignUp.jsx';
+import LecturerDetailsPage from './LecturerProfile';
+import EnrollLecturerPage from './LecturerCourseEnrollmentPage';
+import AllLecturerStudents from './AllLecturerStudents';
+
 
 // Styled Components
 const DashboardContainer = styled.div`
@@ -154,17 +138,12 @@ const SettingsContent = () => <h1>Settings Content</h1>;
 const HelpContent = () => <h1>Help Content</h1>;
 
 // Main Component
-const StudentDashboard = () => {
+const LecturerDashboard = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('profile');
-  const studentInfo = useSelector(state=>state.studentInfo)
-  const location = useLocation();
-  const [student, setStudent]=useState({});
-  const studentId = studentInfo.id
-  const [error, setError]=useState('')
+  const lecturerInfo = useSelector(state=>state.lecturerInfo)
   
-  
-  // console.log(managementInfo)
+  console.log(lecturerInfo)
 
   const dispatch = useDispatch();
 
@@ -183,7 +162,7 @@ const StudentDashboard = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         // Perform the logout actions
-        dispatch(studentLogout());
+        dispatch(lecturerLogout());
         Swal.fire({
           title: "Logged Out",
           text: "You have been logged out successfully.",
@@ -214,80 +193,34 @@ const StudentDashboard = () => {
   const renderContent = () => {
     switch (activeMenu) {
       case 'profile':
-        return <StudentProfile2 studentId={studentInfo.id}/>;
+        return <LecturerDetailsPage lecturerId={lecturerInfo?.id}/>;
         case 'alladmin':
         return <AllAdmin />;
-        case 'enrollment':
-        return <EnrollPage studentId={studentInfo.id}/>;
-        case 'myresults':
-        return <StudentResult studentId={studentInfo.id} />;
+
+          case 'enrollment':
+        return <EnrollLecturerPage lecturerId={lecturerInfo?.id}/>;
+        case 'allstudents':
+        return <AllLecturerStudents lecturerId={lecturerInfo?.id}/>;
+        case 'scoring':
+        return <LecturerScoring />;
         case 'announcements':
         return <Announcements />;
+        case 'LiveLecture':
+          return <LecturerOnlineClass lecturerId={lecturerInfo.id}/>
+        // return <LiveLecture roomName={adminInfo.name} userName={adminInfo.name} />;
         case 'assignments':
-        return <StudentAssignments studentId={studentInfo.id}/>;
+        return <PostAssignment/>;
         case 'lecturenotes':
-        return <StudentLectureNotes studentId={studentId}/>;
-        case 'onlineclass':
-        return <StudentOnlineClass/>;
-      // case 'currentSemester':
-      //   return <CurrentSemesterOrTerm/>;
-      //   case 'announcements':
-      //   return <ManagementAnnouncements/>;
-      //   case 'schoolFeesManagement':
-      //     return <ManageFeesPayments />;
-      //     case 'registerStudent':
-      //       return <StudentSignup />;
-      //       case 'schoolCalender':
-      //         return <SchoolWeekManager />;
-      //         case 'registerAdmin':
-      //           return <SchoolManagementSignup/>;
-      //           case 'registerTeacher':
-      //             return <TeacherSignup/>;
-      //             case 'allTeacher':
-      //             return <TeacherList/>;
-      //             case 'studentsFeedbacks':
-      //               return <StudentFeedbacks/>;
-      //               case 'teachersFeedbacks':
-      //               return <TeacherFeedbacks/>;
+        return <PostLectureNotes />;
+      case 'meetinglinkupload':
+        return <MeetingLinkUploader lecturerId={lecturerInfo.id}/>;
+        case 'adminsignup':
+        return <AdminSignup/>;
+      
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;
     }
   };
-
-// get studen info
-useEffect(() => {
-    if (!studentId) return;
-
-    axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
-      .then(res => {
-        if (res.data.success) {
-          setStudent(res.data.student);
-        //   console.log(res.data.student)
-        
-        } else {
-          setError(res.data.error);
-        }
-      })
-      .catch(() => {
-        setError('Failed to fetch admin details.');
-      });
-  }, [studentId]);
-
-
-// run suspended ui
-  useEffect(()=>{
-    if(location.pathname==='/studentdashboard'&&student.suspension==="suspended"){
-        Swal.fire({
-            icon:"warning",
-            title:"Suspended",
-            text:"You have been suspended, kindly contact the management.",
-            allowOutsideClick:false,
-            confirmButtonText:"Logout",
-        }).then((result)=>{if(result.isConfirmed){
-            dispatch(studentLogout());
-        }})
-    }
-  },[student])
 
   return (
     <DashboardContainer>
@@ -296,35 +229,42 @@ useEffect(() => {
       </Hamburger>
       <Overlay isOpen={menuOpen} onClick={closeMenuOnOutsideClick} />
       <Sidebar isOpen={menuOpen}>
-        <SidebarHeader>Student Dashboard</SidebarHeader>
+        <SidebarHeader>Lecturer Dashboard</SidebarHeader>
         <SidebarMenu>
        
           <SidebarMenuItem
             active={activeMenu === 'profile'}
             onClick={() => handleMenuClick('profile')}
           >
-            Hi, {studentInfo.name}
+            Hi, {lecturerInfo.name}
           </SidebarMenuItem>
 
          {/* <SidebarMenuItem
             active={activeMenu === 'alladmin'}
             onClick={() => handleMenuClick('alladmin')}
           >
-            Admins
+            Lecturers / Admins
           </SidebarMenuItem> */}
 
           <SidebarMenuItem
             active={activeMenu === 'enrollment'}
             onClick={() => handleMenuClick('enrollment')}
           >
-            Enrollments
+            Enrollment
           </SidebarMenuItem>
 
           <SidebarMenuItem
-            active={activeMenu === 'myresults'}
-            onClick={() => handleMenuClick('myresults')}
+            active={activeMenu === 'allstudents'}
+            onClick={() => handleMenuClick('allstudents')}
           >
-            My Results
+            Students
+          </SidebarMenuItem>
+ 
+          <SidebarMenuItem
+            active={activeMenu === 'scoring'}
+            onClick={() => handleMenuClick('scoring')}
+          >
+            Scoring
           </SidebarMenuItem>
    
 
@@ -334,7 +274,15 @@ useEffect(() => {
           >
             Announcements
           </SidebarMenuItem>
-  
+ 
+          <SidebarMenuItem
+            active={activeMenu === 'LiveLecture'}
+            onClick={() => handleMenuClick('LiveLecture')}
+          >
+
+            LiveLecture
+          </SidebarMenuItem>
+
           <SidebarMenuItem
             active={activeMenu === 'assignments'}
             onClick={() => handleMenuClick('assignments')}
@@ -347,65 +295,19 @@ useEffect(() => {
             active={activeMenu === 'lecturenotes'}
             onClick={() => handleMenuClick('lecturenotes')}
           >
-
             Lecture Notes
           </SidebarMenuItem>
 
-          <SidebarMenuItem
-            active={activeMenu === 'onlineclass'}
-            onClick={() => handleMenuClick('onlineclass')}
+         {lecturerInfo?.name?.trim()==="Esther Nnenna Esom" &&<SidebarMenuItem
+            active={activeMenu === 'meetinglinkupload'}
+            onClick={() => handleMenuClick('meetinglinkupload')}
           >
-            Student Online Class
-          </SidebarMenuItem>
-{/*
-          <SidebarMenuItem
-            active={activeMenu === 'studentsByClass'}
-            onClick={() => handleMenuClick('studentsByClass')}
-          >
-            Students by Class
-          </SidebarMenuItem>
+            Upload Meeting Link
+          </SidebarMenuItem>}
 
-          <SidebarMenuItem
-            active={activeMenu === 'registerStudent'}
-            onClick={() => handleMenuClick('registerStudent')}
-          >
-            Register Student
-          </SidebarMenuItem>
+          
 
-          <SidebarMenuItem
-            active={activeMenu === 'registerTeacher'}
-            onClick={() => handleMenuClick('registerTeacher')}
-          >
-            Register Teacher
-          </SidebarMenuItem>
-
-          <SidebarMenuItem
-            active={activeMenu === 'registerAdmin'}
-            onClick={() => handleMenuClick('registerAdmin')}
-          >
-            Register Admin / Management staff
-          </SidebarMenuItem>
-
-          <SidebarMenuItem
-            active={activeMenu === 'schoolCalender'}
-            onClick={() => handleMenuClick('schoolCalender')}
-          >
-           School week Manager / Calender
-          </SidebarMenuItem>
-
-          <SidebarMenuItem
-            active={activeMenu === 'studentsFeedbacks'}
-            onClick={() => handleMenuClick('studentsFeedbacks')}
-          >
-           Students Feedbacks
-          </SidebarMenuItem>
-
-          <SidebarMenuItem
-            active={activeMenu === 'teachersFeedbacks'}
-            onClick={() => handleMenuClick('teachersFeedbacks')}
-          >
-           Teachers Feedbacks
-          </SidebarMenuItem> */}
+ 
           
           <SidebarMenuItem
             onClick={handleLogout}
@@ -419,5 +321,5 @@ useEffect(() => {
   );
 };
 
-export default StudentDashboard;
+export default LecturerDashboard;
 

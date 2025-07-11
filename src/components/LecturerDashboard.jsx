@@ -1,6 +1,6 @@
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,6 +21,7 @@ import AdminSignup from './AdminSignUp.jsx';
 import LecturerDetailsPage from './LecturerProfile';
 import EnrollLecturerPage from './LecturerCourseEnrollmentPage';
 import AllLecturerStudents from './AllLecturerStudents';
+import axios from 'axios';
 
 
 // Styled Components
@@ -141,9 +142,10 @@ const HelpContent = () => <h1>Help Content</h1>;
 const LecturerDashboard = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('profile');
-  const lecturerInfo = useSelector(state=>state.lecturerInfo)
+  const lecturerInfo = useSelector(state=>state.lecturerInfo);
+  const [admin, setAdmin] = useState({});
   
-  console.log(lecturerInfo)
+  console.log(admin)
 
   const dispatch = useDispatch();
 
@@ -175,6 +177,42 @@ const LecturerDashboard = () => {
       }
     });
   };
+
+
+
+const getLecturerById = ()=>{
+      if (!lecturerInfo) return;
+  
+      axios.get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerInfo.id}`)
+        .then(res => {
+          if (res.data.success) {
+            setAdmin(res.data.user);
+          } else {
+            // setError(res.data.error);
+          }
+        })
+        .catch(() => {
+          // setError('Failed to fetch admin details.');
+        });
+      }
+
+
+
+       useEffect(() => {
+getLecturerById();
+    }, [lecturerInfo.id]);
+
+    useEffect(()=>{
+      const id = setInterval(()=>{
+        getLecturerById();
+      }, 3*60*1000)
+
+      return ()=>clearInterval(id)
+    },[])
+
+
+
+ 
   
 
 
@@ -221,6 +259,16 @@ const LecturerDashboard = () => {
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;
     }
   };
+
+
+
+     if (admin.suspension==='suspended'){
+
+      return (<div style={{display:"flex", flexDirection:"column", width:"100%",height:"500px", gap:"30px", justifyContent:"center", alignItems:"center"}}>
+        <h3 style={{color:"#333"}}>Your account has been suspended , Please contact the management</h3>
+        <button style={{color:"white", backgroundColor:"green", cursor:"pointer", border:"none", padding:"15px"}} onClick={()=>dispatch(lecturerLogout())}>Logout</button>
+      </div>)
+    }
 
   return (
     <DashboardContainer>

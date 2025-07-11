@@ -627,6 +627,7 @@ import GalleryComponent from './GalleryComponent';
 import OnlineCourses from './OnlineCourses';
 import CommunityImpact from './CommunityImpact';
 import ChampionsDay from './ChampionsDay';
+import CurrentEvents from './CurrentEvents';
 
 const Landingpage = () => {
 
@@ -654,6 +655,7 @@ const Landingpage = () => {
       <div className='LandingPage'>
         <Hero />
         <AboutUsBrief />
+        <CurrentEvents/>
         <Academics/>
         <FacultyLecturers/>
         

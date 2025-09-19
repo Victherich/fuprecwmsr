@@ -5,7 +5,7 @@ import axios from 'axios';
 const Container = styled.div`
   background-color: white;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 0.5rem;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ const Card = styled.div`
   background-color: #f0fff5;
   border: 1px solid #d4ecd7;
   border-radius: 8px;
-  padding: 1.5rem;
+  padding: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -68,6 +68,11 @@ const CardTitle = styled.h3`
 const CardRow = styled.div`
   display: flex;
   justify-content: space-between;
+
+
+  @media(max-width:768px){
+  flex-direction:column;
+  }
 `;
 
 const CardLabel = styled.span`

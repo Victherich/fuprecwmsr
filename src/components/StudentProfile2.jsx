@@ -7,6 +7,7 @@ import { Context } from './Context';
 
 
 
+
 // Add this near the top, after your imports
 const EditButton = styled.button`
   background-color: #006400;
@@ -77,9 +78,9 @@ const CancelButton = styled.button`
 
 
 const Container = styled.div`
-  background-color: white;
+  background-color:  #e6f5ea;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 1rem;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
   justify-content: center;
@@ -87,19 +88,20 @@ const Container = styled.div`
 `;
 
 const Card = styled.div`
-  background-color: #e6f5ea;
-  border: 1px solid #b2d8c8;
+  // background-color: #e6f5ea;
+  // border: 1px solid #b2d8c8;
   border-radius: 16px;
-  padding: 2rem;
+  // padding: 2rem;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
+  // box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
 `;
 
 const Title = styled.h2`
   color: #006400;
   margin-bottom: 1.5rem;
   text-align: center;
+  text-decoration:underline;
 `;
 
 const InfoRow = styled.div`
@@ -107,16 +109,29 @@ const InfoRow = styled.div`
   justify-content: space-between;
   margin-bottom: 0.75rem;
   font-size: 1rem;
+  @media(max-width:768px){
+    flex-direction:column;
+    text-align:left;
+  }
 `;
 
 const Label = styled.div`
   font-weight: bold;
   color: #333;
+   @media(max-width:768px){
+
+    // text-align:center;
+  }
 `;
 
 const Value = styled.div`
   color: #444;
   text-align: right;
+ @media(max-width:768px){
+
+    text-align:left;
+  }
+
 `;
 
 const Error = styled.div`
@@ -124,6 +139,7 @@ const Error = styled.div`
   text-align: center;
   margin-top: 2rem;
 `;
+
 
 const StudentProfile2 = ({ studentId }) => {
   const [student, setStudent] = useState(null);

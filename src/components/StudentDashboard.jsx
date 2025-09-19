@@ -20,6 +20,7 @@ import Announcements from './Announcements';
 import StudentAssignments from './StudentAssignments';
 import StudentLectureNotes from './StudentLectureNotes';
 import StudentOnlineClass from './StudentOnlineClass';
+import EmailPage from './EmailPage';
 // import Departments from './Departments';
 // import Classes from './Classes';
 // import Subjects from './Subjects';
@@ -61,8 +62,9 @@ const Sidebar = styled.div`
   position: fixed;
   height: 100%;
   min-height:100vh;
-  z-index: 999;
+  z-index: 100;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  // width:300px;
 
   @media (min-width: 768px) {
     width: 250px;
@@ -109,7 +111,8 @@ const ContentArea = styled.div`
   flex-grow: 1;
   margin-left: ${(props) => (props.isOpen ? '250px' : '0')};
   transition: margin-left 0.3s ease-in-out;
-  padding: 20px;
+  // padding: 20px;
+  width:100%;
 
   @media (min-width: 768px) {
     // margin-left: 250px;
@@ -129,7 +132,7 @@ const Hamburger = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1100;
+  z-index: 300;
 
   @media (min-width: 768px) {
     display: none;
@@ -144,7 +147,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 900;
+  z-index: 50;
 `;
 
 // Content Components
@@ -162,6 +165,8 @@ const StudentDashboard = () => {
   const [student, setStudent]=useState({});
   const studentId = studentInfo.id
   const [error, setError]=useState('')
+
+  console.log(student)
   
   
   // console.log(managementInfo)
@@ -229,6 +234,8 @@ const StudentDashboard = () => {
         return <StudentLectureNotes studentId={studentId}/>;
         case 'onlineclass':
         return <StudentOnlineClass/>;
+            case 'email':
+        return <EmailPage userEmail={studentInfo.email} user={studentInfo}/>;
       // case 'currentSemester':
       //   return <CurrentSemesterOrTerm/>;
       //   case 'announcements':
@@ -281,6 +288,26 @@ useEffect(() => {
             icon:"warning",
             title:"Suspended",
             text:"You have been suspended, kindly contact the management.",
+            allowOutsideClick:false,
+            confirmButtonText:"Logout",
+        }).then((result)=>{if(result.isConfirmed){
+            dispatch(studentLogout());
+        }})
+    } else if(location.pathname==='/studentdashboard'&&student.status==="applied"){
+ Swal.fire({
+            icon:"warning",
+            // title:"Suspended",
+            text:"You are no longer admitted, kindly contact the management.",
+            allowOutsideClick:false,
+            confirmButtonText:"Logout",
+        }).then((result)=>{if(result.isConfirmed){
+            dispatch(studentLogout());
+        }})
+    } else if(location.pathname==='/studentdashboard'&&student.status==="graduated"){
+ Swal.fire({
+            icon:"warning",
+            // title:"Suspended",
+            text:"You have already graduated, kindly contact the management.",
             allowOutsideClick:false,
             confirmButtonText:"Logout",
         }).then((result)=>{if(result.isConfirmed){
@@ -356,6 +383,13 @@ useEffect(() => {
             onClick={() => handleMenuClick('onlineclass')}
           >
             Student Online Class
+          </SidebarMenuItem>
+
+          <SidebarMenuItem
+            active={activeMenu === 'email'}
+            onClick={() => handleMenuClick('email')}
+          >
+            Emails
           </SidebarMenuItem>
 {/*
           <SidebarMenuItem

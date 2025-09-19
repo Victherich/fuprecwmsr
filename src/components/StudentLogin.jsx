@@ -58,7 +58,7 @@ const Title = styled.h2`
 `;
 
 const StudentLogin = () => {
-  const [admissionNumber, setAdmissionNumber] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -66,11 +66,11 @@ const StudentLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!admissionNumber || !password) {
+    if (!email || !password) {
       Swal.fire({
         icon: 'error',
         title: 'Missing fields',
-        text: 'Admission number and password are required.',
+        text: 'Email and password are required.',
       });
       return;
     }
@@ -85,7 +85,7 @@ const StudentLogin = () => {
 
     try {
       const res = await axios.post('https://www.cwmsrfupre.com.ng/api/student_login.php', {
-        admission_number: admissionNumber,
+        email: email,
         password: password,
       });
 
@@ -123,12 +123,12 @@ const StudentLogin = () => {
       <Form onSubmit={handleLogin}>
         <Title>Student Login</Title>
         <div>
-          <Label>Admission Number</Label>
+          <Label>Email</Label>
           <Input
-            type="text"
-            value={admissionNumber}
-            onChange={(e) => setAdmissionNumber(e.target.value)}
-            placeholder="Enter your admission number"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
             required
           />
         </div>
@@ -143,12 +143,12 @@ const StudentLogin = () => {
           />
         </div>
         <Button type="submit">Login</Button>
-        <p style={{color:"green", cursor:"pointer"}} onClick={()=>navigate("/studentforgotpassword")}>Forgot Password?</p>
+        <p style={{ color: 'green', cursor: 'pointer' }} onClick={() => navigate('/studentforgotpassword')}>
+          Forgot Password?
+        </p>
       </Form>
     </Container>
   );
 };
 
 export default StudentLogin;
-
-

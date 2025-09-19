@@ -86,8 +86,8 @@ const LecturerSignup = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '',
-    email: '',
-    confirmEmail: '',
+    // email: '',
+    // confirmEmail: '',
     phone: '',
     password: '',
     confirmPassword: '',
@@ -99,56 +99,88 @@ const LecturerSignup = () => {
   };
 
   const handleSubmit = async e => {
-    e.preventDefault();
+  e.preventDefault();
 
-    // Validation
-    if (form.email !== form.confirmEmail) {
-      return Swal.fire('Error', 'Emails do not match', 'error');
-    }
+  if (form.password !== form.confirmPassword) {
+    return Swal.fire('Error ❌', 'Passwords do not match', 'error');
+  }
 
-    if (form.password !== form.confirmPassword) {
-      return Swal.fire('Error', 'Passwords do not match', 'error');
-    }
+  Swal.fire({
+    title: 'Please wait...',
+    text: 'Creating account...',
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
 
-    Swal.fire({
-      title: 'Please wait...',
-      text: 'Creating account...',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
+  try {
+    const response = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_signup.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify(form),
     });
 
-    try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_signup.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(form),
+    const data = await response.json();
+    Swal.close();
+
+    if (data.success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Account Created 🎉',
+        html: `
+          <p>Your lecturer account has been created successfully.</p>
+          <p><strong>Your login email:</strong></p>
+          <p style="color:#2B32B2; font-size:1.2rem;"><b id="generatedEmail">${data.email}</b></p>
+          <p>Please use this email with your provided password to login to your lecturer portal.</p>
+        `,
+        confirmButtonText: 'Copy Email & Go to Portal',
+        confirmButtonColor: '#2B32B2',
+        allowOutsideClick: false,
+      }).then((swalResult) => {
+        if (swalResult.isConfirmed) {
+          const emailText = document.getElementById("generatedEmail").innerText;
+
+          // Copy email to clipboard
+          navigator.clipboard.writeText(emailText).then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Email Copied!',
+              text: `Your email (${emailText}) has been copied. You can now login.`,
+              confirmButtonText: 'Go to Login',
+              confirmButtonColor: '#2B32B2',
+              allowOutsideClick: false,
+            }).then(() => {
+              window.location.href = "https://www.cwmsrfupre.com.ng/lecturerlogin";
+            });
+          });
+        }
       });
 
-      const data = await response.json();
-
-      if (data.success) {
-        Swal.fire('Success 🎉', data.message, 'success');
-        navigate('/lecturerlogin')
-        setForm({
-          name: '',
-          email: '',
-          confirmEmail: '',
-          phone: '',
-          password: '',
-          confirmPassword: '',
-          role: '',
-        });
-      } else {
-        Swal.fire('Error ❌', data.error || 'Something went wrong.', 'error');
-      }
-    } catch (err) {
-      Swal.fire('Error ❌', 'Could not connect to the server.', 'error');
+      // Reset form after success
+      setForm({
+        name: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+        role: '',
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Signup Failed ❌',
+        text: data.error || 'Something went wrong.',
+        confirmButtonColor: '#d33',
+      });
     }
-  };
+  } catch (err) {
+    Swal.close();
+    Swal.fire('Error ❌', 'Could not connect to the server.', 'error');
+  }
+};
+
 
   if(status!=="existing"){
     return <VerifyAccessCodeForLecturerSignUp status={status} setStatus={setStatus}/>
@@ -163,11 +195,11 @@ const LecturerSignup = () => {
           <Label>Full Name</Label>
           <Input name="name" value={form.name} onChange={handleChange} required />
 
-          <Label>Email</Label>
+          {/* <Label>Email</Label>
           <Input name="email" type="email" value={form.email} onChange={handleChange} required />
 
           <Label>Confirm Email</Label>
-          <Input name="confirmEmail" type="email" value={form.confirmEmail} onChange={handleChange} required />
+          <Input name="confirmEmail" type="email" value={form.confirmEmail} onChange={handleChange} required /> */}
 
           <Label>Phone Number</Label>
           <Input name="phone" value={form.phone} onChange={handleChange} required />

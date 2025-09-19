@@ -22,6 +22,7 @@ import LecturerDetailsPage from './LecturerProfile';
 import EnrollLecturerPage from './LecturerCourseEnrollmentPage';
 import AllLecturerStudents from './AllLecturerStudents';
 import axios from 'axios';
+import EmailPage from './EmailPage.jsx';
 
 
 // Styled Components
@@ -46,8 +47,9 @@ const Sidebar = styled.div`
   position: fixed;
   height: 100%;
   min-height:100vh;
-  z-index: 999;
+  z-index: 100;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    // width:300px;
 
   @media (min-width: 768px) {
     width: 250px;
@@ -94,7 +96,8 @@ const ContentArea = styled.div`
   flex-grow: 1;
   margin-left: ${(props) => (props.isOpen ? '250px' : '0')};
   transition: margin-left 0.3s ease-in-out;
-  padding: 20px;
+  // padding: 20px;
+  widthh:100%;
 
   @media (min-width: 768px) {
     // margin-left: 250px;
@@ -114,7 +117,7 @@ const Hamburger = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1100;
+  z-index: 300;
 
   @media (min-width: 768px) {
     display: none;
@@ -129,7 +132,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 900;
+  z-index: 50;
 `;
 
 // Content Components
@@ -254,6 +257,8 @@ getLecturerById();
         return <MeetingLinkUploader lecturerId={lecturerInfo.id}/>;
         case 'adminsignup':
         return <AdminSignup/>;
+          case 'email':
+        return <EmailPage userEmail={lecturerInfo.email} user={lecturerInfo}/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;
@@ -354,7 +359,12 @@ getLecturerById();
           </SidebarMenuItem>}
 
           
-
+   <SidebarMenuItem
+            active={activeMenu === 'email'}
+            onClick={() => handleMenuClick('email')}
+          >
+            Emails
+          </SidebarMenuItem>
  
           
           <SidebarMenuItem

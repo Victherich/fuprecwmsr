@@ -277,3 +277,124 @@ export default ContextProvider
 // erification token : LSSsgK8tRsuI0kHzgZruKg
 
 
+
+
+
+
+
+
+// send mail .php
+
+// text/x-generic send_mail.php ( PHP script, ASCII text, with CRLF line terminators )
+// <?php
+// // api/send_mail.php
+// error_reporting(E_ALL);
+// ini_set('display_errors', 0);
+// ini_set('log_errors', 1);
+// ini_set('error_log', __DIR__ . '/mail_error.log');
+
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Methods: POST, OPTIONS');
+// header('Access-Control-Allow-Headers: Content-Type');
+// header('Content-Type: application/json');
+
+// // No-cache
+// header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+// header("Pragma: no-cache");
+// header("Expires: 0");
+
+// if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit(); }
+
+// // include config
+// $configPath = __DIR__ . '/config.php';
+// if (!file_exists($configPath)) {
+//     error_log("Config file not found at $configPath");
+//     echo json_encode(['success' => false, 'error' => 'Server configuration error']);
+//     exit();
+// }
+// include $configPath;
+
+// // Read JSON
+// $input = json_decode(file_get_contents('php://input'), true);
+
+// $from_name  = isset($input['from_name']) ? trim($input['from_name']) : '';
+// $from_email = isset($input['from_email']) ? trim($input['from_email']) : '';
+// $to_name    = isset($input['to_name']) ? trim($input['to_name']) : '';
+// $to_email   = isset($input['to_email']) ? trim($input['to_email']) : '';
+// $subject    = isset($input['subject']) ? trim($input['subject']) : '';
+// $body       = isset($input['body']) ? trim($input['body']) : '';
+// $cc_list    = isset($input['cc']) && is_array($input['cc']) ? $input['cc'] : [];
+
+// // Basic validation
+// if (!$from_email || !$to_email || !$subject || !$body) {
+//     echo json_encode(['success' => false, 'error' => 'Missing required fields.']);
+//     exit();
+// }
+// if (!filter_var($from_email, FILTER_VALIDATE_EMAIL) || !filter_var($to_email, FILTER_VALIDATE_EMAIL)) {
+//     echo json_encode(['success' => false, 'error' => 'Invalid email address.']);
+//     exit();
+// }
+
+// // Format CC as string
+// $cc_string = '';
+// if (!empty($cc_list)) {
+//     $cc_sanitized = array_map(fn($e) => filter_var(trim($e), FILTER_SANITIZE_EMAIL), $cc_list);
+//     $cc_valid = array_filter($cc_sanitized, fn($e) => filter_var($e, FILTER_VALIDATE_EMAIL));
+//     $cc_string = implode(',', $cc_valid);
+// }
+
+// $conn->begin_transaction();
+
+// try {
+//     // 1) Insert into sent table
+//     $stmtSent = $conn->prepare("
+//         INSERT INTO sent (from_name, from_email, to_name, to_email, subject, body, cc) 
+//         VALUES (?, ?, ?, ?, ?, ?, ?)
+//     ");
+//     if (!$stmtSent) throw new Exception("Prepare failed (sent): " . $conn->error);
+
+//     if (!$stmtSent->bind_param("sssssss", $from_name, $from_email, $to_name, $to_email, $subject, $body, $cc_string)) {
+//         throw new Exception("Bind failed (sent): " . $stmtSent->error);
+//     }
+
+//     if (!$stmtSent->execute()) throw new Exception("Execute failed (sent): " . $stmtSent->error);
+
+//     $sentId = $stmtSent->insert_id;
+//     $stmtSent->close();
+
+//     // 2) Insert into inbox table (recipient)
+//     $folder = 'inbox';
+//     $is_read = 0;
+//     $attachments = NULL;
+
+//     $stmtInbox = $conn->prepare("
+//         INSERT INTO inbox (from_name, from_email, to_email, subject, body, cc, is_read, folder, attachments) 
+//         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+//     ");
+//     if (!$stmtInbox) throw new Exception("Prepare failed (inbox): " . $conn->error);
+
+//     if (!$stmtInbox->bind_param("ssssssiss", $from_name, $from_email, $to_email, $subject, $body, $cc_string, $is_read, $folder, $attachments)) {
+//         throw new Exception("Bind failed (inbox): " . $stmtInbox->error);
+//     }
+
+//     if (!$stmtInbox->execute()) throw new Exception("Execute failed (inbox): " . $stmtInbox->error);
+
+//     $inboxId = $stmtInbox->insert_id;
+//     $stmtInbox->close();
+
+//     $conn->commit();
+
+//     echo json_encode([
+//         'success' => true,
+//         'message' => 'Message sent and saved with CC.',
+//         'sent_id' => $sentId,
+//         'inbox_id' => $inboxId,
+//         'cc' => $cc_string
+//     ]);
+// } catch (Exception $e) {
+//     $conn->rollback();
+//     error_log("Send mail failed: " . $e->getMessage());
+//     echo json_encode(['success' => false, 'error' => 'Failed to send message.']);
+// }
+
+// $conn->close();

@@ -62,6 +62,24 @@
   /* color:red; */
 }
 
+/* Transparent popup */
+.no-bg-popup {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Hide default text */
+.no-bg-popup .swal2-title,
+.no-bg-popup .swal2-html-container {
+  display: none !important;
+}
+
+/* Make the spinner white */
+.no-bg-popup .swal2-loader {
+  border-color: white transparent white transparent !important;
+}
+
+
 /* whats app icon styling */
 /* Animation for WhatsAppIcon */
 @keyframes moveUpDown1 {

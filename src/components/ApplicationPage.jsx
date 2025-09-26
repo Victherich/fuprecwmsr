@@ -654,6 +654,7 @@ import { Context } from './Context';
 import RequiredDocuments from './RequiredDocuments';
 
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaUniversity, FaFileAlt, FaFileUpload } from 'react-icons/fa'; // Assuming react-icons
+import EmailVerificationModal from './EmailVerificationModal';
 
 // Assuming RequiredDocuments is a component you already have
 
@@ -662,10 +663,11 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaUniversity, FaFileAlt, F
 const ApplicationPage = () => {
   const navigate = useNavigate();
   const { programs } = useContext(Context);
+  const [emailVerificationModalOpen, setEmailVerificationModalOpen]=useState(false);
 
   const [formData, setFormData] = useState({
     fullName: '',
-    // email: '',
+    email2: '',
     // confirmEmail: '',
     password: '',
     confirmPassword: '',
@@ -696,14 +698,14 @@ const ApplicationPage = () => {
     e.preventDefault();
 
     // Password and Email confirmation validation
-    if (formData.email !== formData.confirmEmail) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Email Mismatch',
-        text: 'Your email and confirmation email do not match.',
-      });
-      return;
-    }
+    // if (formData.email !== formData.confirmEmail) {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Email Mismatch',
+    //     text: 'Your email and confirmation email do not match.',
+    //   });
+    //   return;
+    // }
 
     if (formData.password !== formData.confirmPassword) {
       Swal.fire({
@@ -778,7 +780,7 @@ const ApplicationPage = () => {
     // Create a FormData object to send the data
     const formDataToSend = new FormData();
     formDataToSend.append('fullName', formData.fullName);
-    // formDataToSend.append('email', formData.email);
+    formDataToSend.append('email2', formData.email2);
     formDataToSend.append('password', formData.password);
     formDataToSend.append('phone', formData.phone);
     formDataToSend.append('address', formData.address);
@@ -805,113 +807,116 @@ const ApplicationPage = () => {
     handleFinalSubmit(formDataToSend);
   };
 
-  // const handleFinalSubmit = async (formDataToSend) => {
-  //   console.log(formDataToSend);
-  //   Swal.fire({ text: 'Submitting...' });
-  //   Swal.showLoading();
-  //   try {
-  //     const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
-  //       method: 'POST',
-  //       body: formDataToSend, // Sending FormData directly
-  //     });
-
-  //     const result = await response.json();
-
-  //     if (result.success) {
-  //       notifyAdminsOfApplication();
-  //       Swal.fire({
-  //         icon: 'success',
-  //         text: 'Application submitted successfully!',
-  //         allowOutsideClick: false,
-  //       });
-  //     } else {
-  //       Swal.fire({
-  //         icon: 'error',
-  //         text: result.error || 'Something went wrong, please try again.',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     Swal.fire({
-  //       icon: 'error',
-  //       text: 'Something went wrong. Please try again.',
-  //     });
-  //   }
-  // };
-const handleFinalSubmit = async (formDataToSend) => {
-  console.log(formDataToSend);
-
-  Swal.fire({
-    title: 'Submitting Application...',
-    text: 'Please wait while we process your form.',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    },
-  });
-
-  try {
-    const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
-      method: 'POST',
-      body: formDataToSend, // Sending FormData directly
-    });
-
-    const result = await response.json();
-    Swal.close(); // Close loading state
-
-    if (result.success) {
-      notifyAdminsOfApplication();
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Application Submitted!',
-        html: `
-          <p>Your admission form has been submitted successfully 🎉</p>
-          <p><strong>Your login email:</strong></p>
-          <p style="color:#2B32B2; font-size:1.2rem;"><b id="generatedEmail">${result.email}</b></p>
-          <p>Please use this email with your provided password to login to your student portal.</p>
-        `,
-        confirmButtonText: 'Copy Email & Go to Portal',
-        confirmButtonColor: '#2B32B2',
-        allowOutsideClick: false,
-      }).then((swalResult) => {
-        if (swalResult.isConfirmed) {
-          const emailText = document.getElementById("generatedEmail").innerText;
-
-          // Copy email to clipboard
-          navigator.clipboard.writeText(emailText).then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Email Copied!',
-              text: `Your email (${emailText}) has been copied. You can now login.`,
-              confirmButtonText: 'Go to Login',
-              confirmButtonColor: '#2B32B2',
-              allowOutsideClick:false,
-            }).then(() => {
-              // Redirect after confirmation
-              window.location.href = "https://www.cwmsrfupre.com.ng/studentlogin";
-            });
-          });
-        }
+  const handleFinalSubmit = async (formDataToSend) => {
+    console.log(formDataToSend);
+    Swal.fire({ text: 'Submitting...' });
+    Swal.showLoading();
+    try {
+      const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
+        method: 'POST',
+        body: formDataToSend, // Sending FormData directly
       });
-    } else {
+
+      const result = await response.json();
+
+      if (result.success) {
+        notifyAdminsOfApplication();
+        Swal.fire({
+          icon: 'success',
+          text: 'Application submitted successfully! And we shall get back to you. Thanks',
+          allowOutsideClick: false,
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          text: result.error || 'Something went wrong, please try again.',
+        });
+      }
+    } catch (error) {
+      console.error(error);
       Swal.fire({
         icon: 'error',
-        title: 'Submission Failed',
-        text: result.error || 'Something went wrong, please try again.',
-        confirmButtonColor: '#d33',
+        text: 'Something went wrong. Please try again.',
       });
     }
-  } catch (error) {
-    console.error(error);
-    Swal.fire({
-      icon: 'error',
-      title: 'Server Error',
-      text: 'Something went wrong. Please try again later.',
-      confirmButtonColor: '#d33',
-    });
-  }
-};
+  };
+
+
+
+// const handleFinalSubmit = async (formDataToSend) => {
+//   console.log(formDataToSend);
+
+//   Swal.fire({
+//     title: 'Submitting Application...',
+//     text: 'Please wait while we process your form.',
+//     allowOutsideClick: false,
+//     didOpen: () => {
+//       Swal.showLoading();
+//     },
+//   });
+
+//   try {
+//     const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
+//       method: 'POST',
+//       body: formDataToSend, // Sending FormData directly
+//     });
+
+//     const result = await response.json();
+//     Swal.close(); // Close loading state
+
+//     if (result.success) {
+//       notifyAdminsOfApplication();
+
+//       Swal.fire({
+//         icon: 'success',
+//         title: 'Application Submitted!',
+//         html: `
+//           <p>Your admission form has been submitted successfully 🎉</p>
+//           <p><strong>Your login email:</strong></p>
+//           <p style="color:#2B32B2; font-size:1.2rem;"><b id="generatedEmail">${result.email}</b></p>
+//           <p>Please use this email with your provided password to login to your student portal.</p>
+//         `,
+//         confirmButtonText: 'Copy Email & Go to Portal',
+//         confirmButtonColor: '#2B32B2',
+//         allowOutsideClick: false,
+//       }).then((swalResult) => {
+//         if (swalResult.isConfirmed) {
+//           const emailText = document.getElementById("generatedEmail").innerText;
+
+//           // Copy email to clipboard
+//           navigator.clipboard.writeText(emailText).then(() => {
+//             Swal.fire({
+//               icon: 'success',
+//               title: 'Email Copied!',
+//               text: `Your email (${emailText}) has been copied. You can now login.`,
+//               confirmButtonText: 'Go to Login',
+//               confirmButtonColor: '#2B32B2',
+//               allowOutsideClick:false,
+//             }).then(() => {
+//               // Redirect after confirmation
+//               window.location.href = "https://www.cwmsrfupre.com.ng/studentlogin";
+//             });
+//           });
+//         }
+//       });
+//     } else {
+//       Swal.fire({
+//         icon: 'error',
+//         title: 'Submission Failed',
+//         text: result.error || 'Something went wrong, please try again.',
+//         confirmButtonColor: '#d33',
+//       });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     Swal.fire({
+//       icon: 'error',
+//       title: 'Server Error',
+//       text: 'Something went wrong. Please try again later.',
+//       confirmButtonColor: '#d33',
+//     });
+//   }
+// };
 
 
   const notifyAdminsOfApplication = async () => {
@@ -946,6 +951,10 @@ const handleFinalSubmit = async (formDataToSend) => {
         //     window.location.reload();
         //   }
         // });
+          // reload after 3 seconds
+  setTimeout(() => {
+    window.location.reload();
+  }, 2000);
         console.log("notification sent to admin")
       } else {
         // Swal.fire({
@@ -965,8 +974,26 @@ const handleFinalSubmit = async (formDataToSend) => {
     }
   };
 
+const handleVerifyEmail = () => {
+  if (!formData.email2 || formData.email2.trim() === "") {
+
+ setEmailVerificationModalOpen(true);
+  }
+
+ 
+};
+
+
+
+
   return (
     <ApplicationContainer>
+      {emailVerificationModalOpen&&<EmailVerificationModal 
+      onClose={()=>setEmailVerificationModalOpen(false)}
+        onVerified={(verifiedEmail) =>
+          setFormData((prev) => ({ ...prev, email2: verifiedEmail }))
+        }
+      />}
       {/* Hero Section */}
       <HeroSection>
         {/* ... existing hero content ... */}
@@ -983,7 +1010,7 @@ const handleFinalSubmit = async (formDataToSend) => {
         <p style={{ marginBottom: '20px', fontWeight: 'bold' }}>
           Fill all the information and submit all the required documents according to our Academics page and our Admissions page including PROOF OF ADMISSION FEE PAYMENT.
         </p>
-        <FormContainer onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit} onClick={handleVerifyEmail}>
           {/* ... existing form fields (full_name, email, password, phone, address, program, qualification, experience, statement) ... */}
 
           <FormGroup>
@@ -993,12 +1020,12 @@ const handleFinalSubmit = async (formDataToSend) => {
             <Input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
           </FormGroup>
 
-          {/* <FormGroup>
+          <FormGroup>
             <Label>
               <FaEnvelope /> Email:
             </Label>
-            <Input type="email" name="email" value={formData.email} onChange={handleChange} required />
-          </FormGroup> */}
+            <Input type="email" name="email2" value={formData.email2} onChange={handleChange} required disabled/>
+          </FormGroup>
 
           {/* <FormGroup>
             <Label>

@@ -500,8 +500,8 @@ const graduateStudent = async (studentId) => {
       {student && (
         <Card>
           <Title><FaUserGraduate /> {student.full_name}</Title>
-
-          <Field><FaEnvelope /> <Label>Email:</Label> {student.email}</Field>
+<Field><FaEnvelope /> <Label>Institution Email:</Label> {student.email}</Field>
+          <Field><FaEnvelope /> <Label>Personal Email:</Label> {student.email2}</Field>
           <Field><FaPhone /> <Label>Phone:</Label> {student.phone}</Field>
           <Field><FaMapMarkerAlt /> <Label>Address:</Label> {student.address}</Field>
           <Field><MdSchool /> <Label>Program:</Label>  {

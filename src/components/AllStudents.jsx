@@ -222,7 +222,10 @@ handleGetAllstudents();
               <CardLabel>ID:</CardLabel><CardValue>{student.id}</CardValue>
             </CardRow> */}
             <CardRow>
-              <CardLabel>Email:</CardLabel><CardValue>{student.email}</CardValue>
+              <CardLabel>Institution Email:</CardLabel><CardValue>{student.email}</CardValue>
+            </CardRow>
+             <CardRow>
+              <CardLabel>Personal Email:</CardLabel><CardValue>{student.email2}</CardValue>
             </CardRow>
             <CardRow>
               <CardLabel>Phone:</CardLabel><CardValue>{student.phone}</CardValue>

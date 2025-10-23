@@ -207,24 +207,24 @@ const LecturerOnlineClass = ({ lecturerId }) => {
 
   return (
     <Container>
-      <h2 style={{color:"green"}}>Your Online Class</h2>
+      <h2 style={{color:"green"}}>Your Online Meeting / Class</h2>
 
-      {onlineClasses.length===0&&<Button onClick={handleSubmit}>Create Your Online Class</Button>}
+      {onlineClasses.length===0&&<Button onClick={handleSubmit}>Create Your Online Meeting / Class</Button>}
 
       {/* <h3 style={{ marginTop: '40px' }}>Previous Online Classes</h3> */}
       {onlineClasses.length === 0 ? (
-        <p>No online classes found.</p>
+        <p>No online Meeting / Class found.</p>
       ) : (
         onlineClasses.map((cls, index) => (
           <ClassItem key={index}>
-            <h3 style={{color:"green"}}>This is your online class</h3>
+            <h3 style={{color:"green"}}>This is your online Meeting / Class </h3>
             {/* <div><strong>Meeting Link:</strong> <a href={cls.meeting_link} target="_blank" rel="noopener noreferrer">{cls.meeting_link}</a></div> */}
             <div><strong>Created At:</strong> {cls.created_at}</div>
             <Button onClick={()=>window.open(cls.meeting_link, "_blank")}>
-              Enter Class
+              Enter Meeting / Class
             </Button>
             <Button onClick={()=>deleteClass(cls.id)} style={{color:"green", backgroundColor:"white", border:"1px solid green"}}>
-              Delete Class
+              Delete Meeting / Class
             </Button>
           </ClassItem>
         ))

@@ -17,13 +17,13 @@ const Container = styled.div`
 
 const Title = styled.h2`
   text-align: center;
-  color: #333;
+  color: green;
   margin-bottom: 30px;
 `;
 
 const AssignmentCard = styled.div`
   background: #f7f7f7;
-  border-left: 6px solid #3498db;
+  border-left: 6px solid orange;
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 8px;
@@ -80,11 +80,11 @@ const StudentAssignments = ({ studentId }) => {
           console.log(response.data.assignments)
           
         } else {
-          setError(response.data.error || "Failed to fetch assignments.");
+          setError(response.data.error || "Failed to fetch posts.");
           console.log(response.data)
         }
       } catch (err) {
-        setError("An error occurred while fetching assignments.");
+        setError("An error occurred while fetching post.");
       } finally {
         setLoading(false);
       }
@@ -103,12 +103,12 @@ const StudentAssignments = ({ studentId }) => {
 
   return (
     <Container>
-      <Title>Your Assignments</Title>
+      <Title>Your Assignments / Quizes / Exam papers / Lecture notes / Handouts</Title>
 
-      {loading && <Message>Loading assignments...</Message>}
+      {loading && <Message>Loading...</Message>}
       {error && <Message>{error}</Message>}
       {!loading && !error && assignments.length === 0 && (
-        <Message>No assignments found for your enrolled courses.</Message>
+        <Message>No post found for your enrolled courses.</Message>
       )}
 
       {assignments.map((assignment) => (

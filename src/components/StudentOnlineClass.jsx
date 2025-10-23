@@ -163,9 +163,9 @@ const StudentOnlineClass = () => {
 
   return (
     <Container>
-      <h2>All Online Classes</h2>
+      <h2>All Online Meeting / Classes</h2>
       {classes.length === 0 ? (
-        <p>No online classes available.</p>
+        <p>No online meeting / classes available.</p>
       ) : (
         classes.map((item) => {
           const lecturer = lecturers.find(lecturer => parseInt(lecturer.id) === parseInt(item.lecturer_id));
@@ -176,7 +176,7 @@ const StudentOnlineClass = () => {
               <Title>Lecturer: {lecturerName}</Title>
               <Text><strong>Created At:</strong> {new Date(item.created_at).toLocaleString()}</Text>
               <Button onClick={() => window.open(item.meeting_link, "_blank")}>
-                Join Class
+                Join Meeting / Class
               </Button>
             </ClassCard>
           );

@@ -228,7 +228,11 @@ const courses = [
 ];
 
 
-
+const categories = [
+  {id:1, name:"Assignment"},
+  {id:2, name:"Quiz"},
+  {id:3, name:"Exam"}
+]
 
 
 
@@ -242,7 +246,7 @@ const courses = [
   return (
     <Context.Provider value={{adminToken,setAdminToken,admin,setAdmin,adminMenu,
     setAdminMenu,trackingID,setTrackingID,
-    programs, levels, semesters, courses}}>
+    programs, levels, semesters, courses, categories}}>
 
         {children}
     </Context.Provider>

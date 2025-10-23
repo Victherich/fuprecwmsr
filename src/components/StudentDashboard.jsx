@@ -21,6 +21,9 @@ import StudentAssignments from './StudentAssignments';
 import StudentLectureNotes from './StudentLectureNotes';
 import StudentOnlineClass from './StudentOnlineClass';
 import EmailPage from './EmailPage';
+import ForumPage from './ForumPage';
+import DashboardHomeButton from './DashboardHomeButton';
+import StudentSubmissions from './StudentSubmissions';
 // import Departments from './Departments';
 // import Classes from './Classes';
 // import Subjects from './Subjects';
@@ -163,8 +166,8 @@ const StudentDashboard = () => {
   const studentInfo = useSelector(state=>state.studentInfo)
   const location = useLocation();
   const [student, setStudent]=useState({});
-  const studentId = studentInfo.id
-  const [error, setError]=useState('')
+  const studentId = studentInfo.id;
+  const [error, setError]=useState('');
 
   console.log(student)
   
@@ -219,7 +222,11 @@ const StudentDashboard = () => {
   const renderContent = () => {
     switch (activeMenu) {
       case 'profile':
-        return <StudentProfile2 studentId={studentInfo.id}/>;
+        return <StudentProfile2 
+        studentId={studentInfo.id}
+            onNavigate={handleMenuClick}
+    onLogout={handleLogout}
+        />;
         case 'alladmin':
         return <AllAdmin />;
         case 'enrollment':
@@ -236,26 +243,14 @@ const StudentDashboard = () => {
         return <StudentOnlineClass/>;
             case 'email':
         return <EmailPage userEmail={studentInfo.email} user={studentInfo}/>;
-      // case 'currentSemester':
-      //   return <CurrentSemesterOrTerm/>;
-      //   case 'announcements':
-      //   return <ManagementAnnouncements/>;
-      //   case 'schoolFeesManagement':
-      //     return <ManageFeesPayments />;
-      //     case 'registerStudent':
-      //       return <StudentSignup />;
-      //       case 'schoolCalender':
-      //         return <SchoolWeekManager />;
-      //         case 'registerAdmin':
-      //           return <SchoolManagementSignup/>;
-      //           case 'registerTeacher':
-      //             return <TeacherSignup/>;
-      //             case 'allTeacher':
-      //             return <TeacherList/>;
-      //             case 'studentsFeedbacks':
-      //               return <StudentFeedbacks/>;
-      //               case 'teachersFeedbacks':
-      //               return <TeacherFeedbacks/>;
+
+        
+                 case 'forum':
+        return <ForumPage userEmail={student.email} user={student}/>;
+
+             case 'submissions':
+        return <StudentSubmissions/>;
+
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;
     }
@@ -362,21 +357,21 @@ useEffect(() => {
             Announcements
           </SidebarMenuItem>
   
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'assignments'}
             onClick={() => handleMenuClick('assignments')}
           >
 
             Assignments
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'lecturenotes'}
             onClick={() => handleMenuClick('lecturenotes')}
           >
 
             Lecture Notes
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
           <SidebarMenuItem
             active={activeMenu === 'onlineclass'}
@@ -390,6 +385,14 @@ useEffect(() => {
             onClick={() => handleMenuClick('email')}
           >
             Emails
+          </SidebarMenuItem>
+
+
+           <SidebarMenuItem
+            active={activeMenu === 'forum'}
+            onClick={() => handleMenuClick('forum')}
+          >
+            Forum
           </SidebarMenuItem>
 {/*
           <SidebarMenuItem
@@ -448,6 +451,7 @@ useEffect(() => {
           </SidebarMenuItem>
         </SidebarMenu>
       </Sidebar>
+          <DashboardHomeButton onGoHome={() => setActiveMenu('profile')} />
       <ContentArea isOpen={menuOpen}>{renderContent()}</ContentArea>
     </DashboardContainer>
   );

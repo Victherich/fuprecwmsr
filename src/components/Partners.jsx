@@ -54,7 +54,11 @@ const Partners = () => {
   </section>
 )}
 
-      <div className="partners-section">
+      {(
+        location.pathname !== '/studentdashboard' &&
+        location.pathname !== '/admin' &&
+        location.pathname !== '/lecturer'
+      )&&(<div className="partners-section">
       
       <h2 className="partners-title">Our Partners</h2>
       <div className="partners-slider">
@@ -67,7 +71,7 @@ const Partners = () => {
           ))}
         </div>
       </div>
-    </div>
+    </div>)}
     </>
  
   );

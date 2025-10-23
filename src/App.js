@@ -105,6 +105,8 @@ import LecturerLogin from './components/LecturerLogin';
 import PrivateLecturerDashboard from './components/PrivateLecturerDashboard';
 import LecturerDashboard from './components/LecturerDashboard';
 import LecturerSignup from './components/LecturerSignup';
+import AnnouncementTicker from './components/AnnouncementTicker';
+import AnnouncementsPage from './components/AnnouncementsPage';
 
 
 function App() {
@@ -190,6 +192,7 @@ function App() {
         <Route path='/studentforgotpassword' element={<StudentForgotPassword/>}/>
         <Route path='/studentresetpassword/:token' element={<StudentResetPassword/>}/>
         <Route path='/research' element={<ResearchPage/>}/>
+        <Route path='/announcements' element={<AnnouncementsPage/>}/>
         
 
         <Route path='/studentlogin' element={<StudentLogin/>}/>
@@ -202,7 +205,7 @@ function App() {
 
 
         <Route path="/adminlogin" element={<AdminLogin />} />
-        {/* <Route path="/adminsignup" element={<AdminSignup/>}/> */}
+        <Route path="/adminsignup" element={<AdminSignup/>}/>
         <Route path="/adminforgotpassword" element={<AdminForgotPassword />} />
         <Route path="/adminresetpassword/:token" element={<AdminResetPassword />} />
         <Route path="/admin" element={<PrivateAdminDashboard />}>
@@ -221,6 +224,7 @@ function App() {
         </Route>
       
       </Routes>
+      <AnnouncementTicker/>
       <Partners/>
       <Footer />
       {/* <img src={ChristmassImg} alt="Logo2" className='SideLogo2' /> */}

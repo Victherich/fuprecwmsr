@@ -1,27 +1,132 @@
+import React, { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+import Swal from "sweetalert2";
+import {
+  FaBook,
+  FaEnvelope,
+  FaClipboardList,
+  FaGraduationCap,
+  FaPhoneAlt,
+  FaIdCard,
+  FaSignOutAlt,
+  FaUser,
+  FaLaptop,
+  FaComments,
+} from "react-icons/fa";
+import { Context } from "./Context";
 
-import React, { useContext, useEffect, useState } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import Swal from 'sweetalert2';
-import { Context } from './Context';
+const Container = styled.div`
+  background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 1100px;
+`;
 
-
-
-// Add this near the top, after your imports
-const EditButton = styled.button`
-  background-color: #006400;
+const ProfileCard = styled.div`
+  background: linear-gradient(135deg, #006400, #00b36b);
   color: white;
-  border: none;
-  padding: 4px 10px;
-  font-size: 0.85rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-left: 10px;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 100, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+`;
 
-  &:hover {
-    background-color: #004d00;
+const Info = styled.div`
+  flex: 1;
+  min-width: 250px;
+`;
+
+const Name = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+`;
+
+const Email = styled.p`
+  font-size: 1rem;
+  opacity: 0.9;
+`;
+
+const Details = styled.div`
+  text-align: right;
+  font-size: 0.9rem;
+  min-width: 220px;
+  @media (max-width: 768px) {
+    text-align: left;
+    margin-top: 1rem;
   }
+`;
+
+const EditButton = styled.button`
+  background: white;
+  color: #006400;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  margin-top: 0.5rem;
+  &:hover {
+    background: #f1f1f1;
+  }
+`;
+
+const Title = styled.h3`
+  font-size: 1.4rem;
+  color: #006400;
+  margin-bottom: 1.2rem;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+`;
+
+const Card = styled.div`
+  background: white;
+  padding: 1.8rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 100, 0, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 100, 0, 0.05);
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 100, 0, 0.1);
+  }
+`;
+
+const Icon = styled.div`
+  font-size: 2rem;
+  color: #00994d;
+  margin-bottom: 0.8rem;
+`;
+
+const Label = styled.h4`
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+`;
+
+const Value = styled.p`
+  color: #777;
 `;
 
 const ModalOverlay = styled.div`
@@ -30,7 +135,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,15 +147,13 @@ const Modal = styled.div`
   border-radius: 10px;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 `;
 
 const Input = styled.input`
   width: 100%;
   padding: 0.75rem;
   font-size: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem 0;
   border-radius: 8px;
   border: 1px solid #ccc;
 `;
@@ -74,173 +177,171 @@ const CancelButton = styled.button`
   cursor: pointer;
 `;
 
-
-
-
-const Container = styled.div`
-  background-color:  #e6f5ea;
-  min-height: 100vh;
-  padding: 1rem;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Card = styled.div`
-  // background-color: #e6f5ea;
-  // border: 1px solid #b2d8c8;
-  border-radius: 16px;
-  // padding: 2rem;
-  max-width: 500px;
-  width: 100%;
-  // box-shadow: 0 4px 12px rgba(0, 128, 0, 0.1);
-`;
-
-const Title = styled.h2`
-  color: #006400;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  text-decoration:underline;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.75rem;
-  font-size: 1rem;
-  @media(max-width:768px){
-    flex-direction:column;
-    text-align:left;
-  }
-`;
-
-const Label = styled.div`
-  font-weight: bold;
-  color: #333;
-   @media(max-width:768px){
-
-    // text-align:center;
-  }
-`;
-
-const Value = styled.div`
-  color: #444;
-  text-align: right;
- @media(max-width:768px){
-
-    text-align:left;
-  }
-
-`;
-
-const Error = styled.div`
-  color: red;
-  text-align: center;
-  margin-top: 2rem;
-`;
-
-
-const StudentProfile2 = ({ studentId }) => {
+const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
   const [student, setStudent] = useState(null);
-  const [error, setError] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
-  const [newPhone, setNewPhone] = useState('');
-  const {programs}=useContext(Context);
-//   console.log(studentId)
+  const [newPhone, setNewPhone] = useState("");
+  const { programs } = useContext(Context);
 
   useEffect(() => {
     if (!studentId) return;
-
-    axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
-      .then(res => {
+    axios
+      .get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+      .then((res) => {
         if (res.data.success) {
           setStudent(res.data.student);
-        //   console.log(res.data.student)
-        
-        } else {
-          setError(res.data.error);
         }
       })
-      .catch(() => {
-        setError('Failed to fetch admin details.');
-      });
+      .catch(() => Swal.fire("Error", "Failed to fetch student details", "error"));
   }, [studentId]);
 
-  const openModal = () => {
-    setNewPhone(student.phone);
-    setModalOpen(true);
+  const handleSave = () => {
+    axios
+      .post("https://www.cwmsrfupre.com.ng/api/update_student_phone.php", {
+        id: student.id,
+        phone: newPhone,
+      })
+      .then((res) => {
+        if (res.data.success) {
+          setStudent((prev) => ({ ...prev, phone: newPhone }));
+          setModalOpen(false);
+          Swal.fire("Updated", "Phone number updated successfully", "success");
+        } else {
+          Swal.fire("Error", res.data.error, "error");
+        }
+      });
   };
 
-  const handleSave = () => {
-    axios.post('https://www.cwmsrfupre.com.ng/api/update_student_phone.php', {
-      id: student.id,
-      phone: newPhone,
-    }).then(res => {
-      if (res.data.success) {
-        setStudent(prev => ({ ...prev, phone: newPhone }));
-        setModalOpen(false);
-        Swal.fire({text:"Phone number updated", icon:"success"});
-      } else {
-        Swal.fire({text:'Update failed: ' + res.data.error});
-      }
-    }).catch(() => {
-      Swal.fire({text:'Error updating phone number.'});
-    });
-  };
+  if (!student)
+    return <p style={{ textAlign: "center", color: "green" }}>Loading...</p>;
 
   return (
     <Container>
-      {student ? (
-        <>
-          <Card>
-            <Title>Student Details</Title>
-            {/* <InfoRow><Label>ID:</Label><Value>{student.id}</Value></InfoRow> */}
-            <InfoRow><Label>Admission Number:</Label><Value>{student.admission_number}</Value></InfoRow>
-            <InfoRow><Label>Name:</Label><Value>{student.full_name}</Value></InfoRow>
-            <InfoRow><Label>Email:</Label><Value>{student.email}</Value></InfoRow>
-            <InfoRow>
-              <Label>Phone:</Label>
-              <Value>
-                {student.phone}
-                <EditButton onClick={openModal}>Edit</EditButton>
-              </Value>
-            </InfoRow>
+      <Wrapper>
+        {/* ✅ Profile Card */}
+        <ProfileCard>
+          <Info>
+            <Name>🎓 {student.full_name}</Name>
+            <Email>{student.email}</Email>
+            <EditButton
+              onClick={() => {
+                setNewPhone(student.phone);
+                setModalOpen(true);
+              }}
+            >
+              <FaPhoneAlt style={{ marginRight: "6px" }} /> Edit Phone
+            </EditButton>
+          </Info>
 
-            <InfoRow>
-  <Label>Program:</Label>
-  <Value>
-    {
-      programs.find(p => p.id == student.program)?.name || 'N/A'
-    }
-  </Value>
-</InfoRow>
-            <InfoRow><Label>Created At:</Label><Value>{new Date(student.created_at).toLocaleString()}</Value></InfoRow>
+          <Details>
+            <p>
+              <FaIdCard /> <b>Admission No:</b> {student.admission_number}
+            </p>
+            <p>
+              <FaBook /> <b>Program:</b>{" "}
+              {programs.find((p) => p.id == student.program)?.name || "N/A"}
+            </p>
+            <p>
+              <FaGraduationCap /> <b>Status:</b> {student.status}
+            </p>
+            <p>
+              <FaUser /> <b>Suspension:</b> {student.suspension || "Active"}
+            </p>
+          </Details>
+        </ProfileCard>
+
+        {/* ✅ Dashboard Quick Access */}
+        <Title>Quick Access</Title>
+        <Grid>
+          <Card onClick={() => onNavigate("enrollment")}>
+            <Icon>
+              <FaBook />
+            </Icon>
+            <Label>Enrollments</Label>
+            <Value>Ensure to enroll for all the courses you are offering.</Value>
           </Card>
 
-          {isModalOpen && (
-            <ModalOverlay>
-              <Modal>
-                <h3>Edit Phone Number</h3>
-                <Input
-                  type="text"
-                  value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
-                />
-                <div>
-                  <SaveButton onClick={handleSave}>Save</SaveButton>
-                  <CancelButton onClick={() => setModalOpen(false)}>Cancel</CancelButton>
-                </div>
-              </Modal>
-            </ModalOverlay>
-          )}
-        </>
-      ) : (
-        <Error>{error || 'Loading...'}</Error>
-      )}
+          <Card onClick={() => onNavigate("myresults")}>
+            <Icon>
+              <FaClipboardList />
+            </Icon>
+            <Label>My Results</Label>
+            <Value>View your results & GPA</Value>
+          </Card>
+
+          <Card onClick={() => onNavigate("assignments")}>
+            <Icon>
+              <FaBook />
+            </Icon>
+            <Label>Assignments / Quizes / Exam papers / Lecture notes / Handouts</Label>
+            {/* <Value>View & submit assignments</Value> */}
+          </Card>
+
+          <Card onClick={() => onNavigate("submissions")}>
+            <Icon>
+              <FaBook />
+            </Icon>
+            <Label>Submit your Assignments / Quizes / Examinations</Label>
+            {/* <Value>View & submit assignments</Value> */}
+          </Card>
+
+      
+
+          <Card onClick={() => onNavigate("onlineclass")}>
+            <Icon>
+              <FaLaptop />
+            </Icon>
+            <Label>Online Meeting / Class</Label>
+            <Value>Join your live Meeting /class</Value>
+          </Card>
+
+          <Card onClick={() => onNavigate("email")}>
+            <Icon>
+              <FaEnvelope />
+            </Icon>
+            <Label>Email Center</Label>
+            <Value>Send and check messages</Value>
+          </Card>
+
+          <Card onClick={() => onNavigate("forum")}>
+            <Icon>
+              <FaComments />
+            </Icon>
+            <Label>Forum</Label>
+            <Value>Join academic discussions</Value>
+          </Card>
+
+          <Card onClick={onLogout}>
+            <Icon style={{ color: "red" }}>
+              <FaSignOutAlt />
+            </Icon>
+            <Label>Logout</Label>
+            <Value>Sign out securely</Value>
+          </Card>
+        </Grid>
+
+        {/* ✅ Modal */}
+        {isModalOpen && (
+          <ModalOverlay>
+            <Modal>
+              <h3>Edit Phone Number</h3>
+              <Input
+                type="text"
+                value={newPhone}
+                onChange={(e) => setNewPhone(e.target.value)}
+              />
+              <div>
+                <SaveButton onClick={handleSave}>Save</SaveButton>
+                <CancelButton onClick={() => setModalOpen(false)}>
+                  Cancel
+                </CancelButton>
+              </div>
+            </Modal>
+          </ModalOverlay>
+        )}
+      </Wrapper>
     </Container>
   );
 };
 
-
-export default StudentProfile2
+export default StudentProfile2;

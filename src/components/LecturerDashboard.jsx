@@ -23,6 +23,9 @@ import EnrollLecturerPage from './LecturerCourseEnrollmentPage';
 import AllLecturerStudents from './AllLecturerStudents';
 import axios from 'axios';
 import EmailPage from './EmailPage.jsx';
+import ForumPage from './ForumPage.jsx';
+import DashboardHomeButton from './DashboardHomeButton.jsx';
+import SubmissionsToLecturer from './SubmissionsToLecturer.jsx';
 
 
 // Styled Components
@@ -135,6 +138,7 @@ const Overlay = styled.div`
   z-index: 50;
 `;
 
+
 // Content Components
 const HomeContent = () => <h1 style={{color:"purple"}}>Home Content</h1>;
 const ProfileContent = () => <h1>Profile Content</h1>;
@@ -234,7 +238,11 @@ getLecturerById();
   const renderContent = () => {
     switch (activeMenu) {
       case 'profile':
-        return <LecturerDetailsPage lecturerId={lecturerInfo?.id}/>;
+        return <LecturerDetailsPage 
+        lecturerId={lecturerInfo?.id}
+         onNavigate={handleMenuClick}
+      onLogout={handleLogout}
+        />;
         case 'alladmin':
         return <AllAdmin />;
 
@@ -259,6 +267,12 @@ getLecturerById();
         return <AdminSignup/>;
           case 'email':
         return <EmailPage userEmail={lecturerInfo.email} user={lecturerInfo}/>;
+
+             case 'forum':
+        return <ForumPage userEmail={lecturerInfo.email} user={lecturerInfo}/>;
+
+              case 'submissions':
+        return <SubmissionsToLecturer lecturerId={lecturerInfo.id}/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;
@@ -336,13 +350,13 @@ getLecturerById();
             LiveLecture
           </SidebarMenuItem>
 
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'assignments'}
             onClick={() => handleMenuClick('assignments')}
           >
 
             Assignments
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
           <SidebarMenuItem
             active={activeMenu === 'lecturenotes'}
@@ -365,6 +379,13 @@ getLecturerById();
           >
             Emails
           </SidebarMenuItem>
+
+            <SidebarMenuItem
+            active={activeMenu === 'forum'}
+            onClick={() => handleMenuClick('forum')}
+          >
+            Forum
+          </SidebarMenuItem>
  
           
           <SidebarMenuItem
@@ -374,6 +395,7 @@ getLecturerById();
           </SidebarMenuItem>
         </SidebarMenu>
       </Sidebar>
+           <DashboardHomeButton onGoHome={() => setActiveMenu('profile')} />
       <ContentArea isOpen={menuOpen}>{renderContent()}</ContentArea>
     </DashboardContainer>
   );

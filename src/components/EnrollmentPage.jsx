@@ -573,7 +573,7 @@ const EnrollPage = ({ studentId }) => {
   const filteredCourses = courses.filter(
     (course) =>
       course.level_id == selectedLevel &&
-      course.semester_id == selectedSemester &&
+      // course.semester_id == selectedSemester &&
       course.program_id == student.program
   );
 
@@ -670,7 +670,7 @@ const EnrollPage = ({ studentId }) => {
                 setSelectedCourse("");
               }}
             >
-              <option value="">Select Level</option>
+              {/* <option value="">Select Level</option> */}
               {levels.map((level) => (
                 <option key={level.id} value={level.id}>
                   {level.name}
@@ -678,7 +678,7 @@ const EnrollPage = ({ studentId }) => {
               ))}
             </Select>
 
-            <Label>Semester</Label>
+            {/* <Label>Semester</Label>
             <Select
               value={selectedSemester}
               onChange={(e) => {
@@ -692,16 +692,16 @@ const EnrollPage = ({ studentId }) => {
                   {sem.name}
                 </option>
               ))}
-            </Select>
+            </Select> */}
 
             <Label>Course</Label>
             <Select
               value={selectedCourse}
               onChange={(e) => setSelectedCourse(e.target.value)}
-              disabled={!selectedLevel || !selectedSemester}
+              // disabled={!selectedLevel || !selectedSemester}
             >
               <option value="">Select Course</option>
-              {filteredCourses.map((course) => (
+              {courses.map((course) => (
                 <option key={course.id} value={course.id}>
                   {course.code} — {course.title}
                 </option>

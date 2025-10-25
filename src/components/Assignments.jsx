@@ -555,9 +555,9 @@ const CloseButton = styled.button`
 
 const PostAssignment = () => {
   const { courses } = useContext(Context);
-  const adminInfo = useSelector((state) => state.adminInfo);
+  const lecturer = useSelector((state) => state.lecturerInfo);
   const [assignments, setAssignments] = useState([]);
-  const lecturer = adminInfo;
+  // const lecturer = adminInfo;
   const [openForm, setOpenForm] = useState(false);
 
   const [selectedCourseId, setSelectedCourseId] = useState("");
@@ -573,7 +573,7 @@ const PostAssignment = () => {
 
     const formData = new FormData();
     formData.append("course_id", selectedCourseId);
-    formData.append("lecturer_id", adminInfo?.id);
+    formData.append("lecturer_id", lecturer?.id);
     formData.append("title", title);
     formData.append("description", description);
     if (file) formData.append("file", file);

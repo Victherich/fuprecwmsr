@@ -249,6 +249,7 @@ import {
   FaSignOutAlt,
   FaPhoneAlt,
   FaIdCard,
+  FaClock,
 } from "react-icons/fa";
 
 // 🌿 Styled Components
@@ -498,6 +499,12 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
             {/* <StatValue>Post assignments</StatValue> */}
           </StatCard>
 
+           <StatCard onClick={() => onNavigate("managevideolessons")}>
+            <StatIcon><FaVideo /></StatIcon>
+            <StatLabel>Manage Video Lessons / Courses</StatLabel>
+            {/* <StatValue>Post </StatValue> */}
+          </StatCard>
+
 
            <StatCard onClick={() => onNavigate("submissions")}>
             <StatIcon><FaBook /></StatIcon>
@@ -516,6 +523,14 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
             <StatLabel>Online Live Class / Meeting / Examination / Quiz</StatLabel>
             <StatValue>Start or join a session</StatValue>
           </StatCard>
+
+            <StatCard onClick={() => onNavigate("clockin")}>
+                      <StatIcon>
+                        <FaClock />
+                      </StatIcon>
+                      <StatLabel>Clock-in to your Classes and meetings</StatLabel>
+                      <StatValue></StatValue>
+                    </StatCard>
 
           <StatCard onClick={() => onNavigate("email")}>
             <StatIcon><FaEnvelope /></StatIcon>

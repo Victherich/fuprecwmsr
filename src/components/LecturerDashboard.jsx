@@ -26,6 +26,8 @@ import EmailPage from './EmailPage.jsx';
 import ForumPage from './ForumPage.jsx';
 import DashboardHomeButton from './DashboardHomeButton.jsx';
 import SubmissionsToLecturer from './SubmissionsToLecturer.jsx';
+import ActiveAttendancePage from './ActiveAttendancePage.jsx';
+import PostVideoLesson from './PostVideoLesson.jsx';
 
 
 // Styled Components
@@ -273,6 +275,12 @@ getLecturerById();
 
               case 'submissions':
         return <SubmissionsToLecturer lecturerId={lecturerInfo.id}/>;
+
+         case 'clockin':
+                return <ActiveAttendancePage userId={lecturerInfo.id} userType={"lecturer"} />;
+
+        case 'managevideolessons':
+                return <PostVideoLesson/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

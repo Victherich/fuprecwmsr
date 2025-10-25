@@ -242,6 +242,8 @@ import {
   FaSignOutAlt,
   FaPhoneAlt,
   FaIdCard,
+  FaSchool,
+  FaClock,
 } from "react-icons/fa";
 
 const Container = styled.div`
@@ -490,6 +492,21 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
             <StatLabel>Access Codes</StatLabel>
             <StatValue>Access management</StatValue>
           </StatCard>
+
+            <StatCard onClick={() => onNavigate("manageattendance")}>
+            <StatIcon><FaSchool /></StatIcon>
+            <StatLabel>Manage Attendance</StatLabel>
+            <StatValue>Manage Attendances
+            </StatValue>
+          </StatCard>
+
+          <StatCard onClick={() => onNavigate("clockin")}>
+                                <StatIcon>
+                                  <FaClock />
+                                </StatIcon>
+                                <StatLabel>Clock-in to your Classes and meetings</StatLabel>
+                                <StatValue></StatValue>
+                              </StatCard>
 
           <StatCard onClick={() => onNavigate("email")}>
             <StatIcon><FaEnvelope /></StatIcon>

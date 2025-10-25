@@ -24,6 +24,9 @@ import EmailPage from './EmailPage';
 import ForumPage from './ForumPage';
 import DashboardHomeButton from './DashboardHomeButton';
 import StudentSubmissions from './StudentSubmissions';
+import StudentClockIn from './StudentClockIn';
+import ActiveAttendancePage from './ActiveAttendancePage';
+import StudentVideoLessons from './StudentVideoLessons';
 // import Departments from './Departments';
 // import Classes from './Classes';
 // import Subjects from './Subjects';
@@ -250,6 +253,12 @@ const StudentDashboard = () => {
 
              case 'submissions':
         return <StudentSubmissions/>;
+
+           case 'clockin':
+        return <ActiveAttendancePage userId={studentInfo.id} userType={"student"} />;
+
+          case 'videolessons':
+        return <StudentVideoLessons studentId={studentInfo.id}/>;
 
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

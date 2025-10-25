@@ -13,6 +13,8 @@ import {
   FaUser,
   FaLaptop,
   FaComments,
+  FaClock,
+  FaVideo,
 } from "react-icons/fa";
 import { Context } from "./Context";
 
@@ -277,6 +279,14 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
             {/* <Value>View & submit assignments</Value> */}
           </Card>
 
+            <Card onClick={() => onNavigate("videolessons")}>
+            <Icon>
+              <FaVideo />
+            </Icon>
+            <Label>Explore Video Lessons</Label>
+            {/* <Value>View & submit assignments</Value> */}
+          </Card>
+
           <Card onClick={() => onNavigate("submissions")}>
             <Icon>
               <FaBook />
@@ -293,6 +303,14 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
             </Icon>
             <Label>Online Meeting / Class</Label>
             <Value>Join your live Meeting /class</Value>
+          </Card>
+
+          <Card onClick={() => onNavigate("clockin")}>
+            <Icon>
+              <FaClock />
+            </Icon>
+            <Label>Clock-in to your Classes and meetings</Label>
+            <Value></Value>
           </Card>
 
           <Card onClick={() => onNavigate("email")}>

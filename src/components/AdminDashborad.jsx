@@ -25,6 +25,9 @@ import AllLecturers from './AllLecturers';
 import EmailPage from './EmailPage.jsx';
 import ForumPage from './ForumPage.jsx';
 import DashboardHomeButton from './DashboardHomeButton.jsx';
+import CreateAttendanceForm from './CreateAttendanceForm.jsx';
+import AttendanceManagement from './AttendanceManagement.jsx';
+import ActiveAttendancePage from './ActiveAttendancePage.jsx';
 
 
 // Styled Components
@@ -238,6 +241,14 @@ const SchoolManagementDashboard = () => {
 
            case 'forum':
         return <ForumPage userEmail={adminInfo.email} user={adminInfo}/>;
+
+     
+
+           case 'manageattendance':
+        return <AttendanceManagement adminId={adminInfo.id}/>;
+
+        case 'clockin':
+        return <ActiveAttendancePage userId={adminInfo.id} userType={"admin"} />;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

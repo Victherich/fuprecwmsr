@@ -520,6 +520,12 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
             <StatValue>Join discussions</StatValue>
           </StatCard>
 
+           <StatCard onClick={() => onNavigate("adminsignup")}>
+            <StatIcon><FaComments /></StatIcon>
+            <StatLabel>Add Admin</StatLabel>
+            <StatValue>Register another admin</StatValue>
+          </StatCard>
+
           <StatCard onClick={onLogout}>
             <StatIcon style={{ color: "red" }}><FaSignOutAlt /></StatIcon>
             <StatLabel>Logout</StatLabel>

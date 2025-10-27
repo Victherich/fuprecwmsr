@@ -352,12 +352,12 @@ const SchoolManagementDashboard = () => {
             Emails
           </SidebarMenuItem>
 
-          {/* <SidebarMenuItem
+          <SidebarMenuItem
             active={activeMenu === 'adminsignup'}
             onClick={() => handleMenuClick('adminsignup')}
           >
             Register Admin
-          </SidebarMenuItem> */}
+          </SidebarMenuItem>
 
   {/*        <SidebarMenuItem
             active={activeMenu === 'registerTeacher'}

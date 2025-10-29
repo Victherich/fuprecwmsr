@@ -335,12 +335,12 @@ getLecturerById();
             Students
           </SidebarMenuItem>
  
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'scoring'}
             onClick={() => handleMenuClick('scoring')}
           >
             Scoring
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
    
 
           <SidebarMenuItem

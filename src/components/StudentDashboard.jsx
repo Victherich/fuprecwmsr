@@ -13,7 +13,7 @@ import AllStudents from './AllStudents';
 import StudentProfile from './StudentProfile';
 import StudentProfile2 from './StudentProfile2';
 import EnrollPage from './EnrollmentPage';
-import StudentResult from './StudentResult';
+import StudentResult2 from './StudentResult2';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Announcements from './Announcements';
@@ -235,7 +235,7 @@ const StudentDashboard = () => {
         case 'enrollment':
         return <EnrollPage studentId={studentInfo.id}/>;
         case 'myresults':
-        return <StudentResult studentId={studentInfo.id} />;
+        return <StudentResult2 studentId={studentInfo.id} />;
         case 'announcements':
         return <Announcements />;
         case 'assignments':

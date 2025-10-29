@@ -487,11 +487,11 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
             <StatValue>View all your students</StatValue>
           </StatCard>
 
-          <StatCard onClick={() => onNavigate("scoring")}>
+          {/* <StatCard onClick={() => onNavigate("scoring")}>
             <StatIcon><FaClipboardList /></StatIcon>
             <StatLabel>Scoring</StatLabel>
             <StatValue>Upload and manage scores</StatValue>
-          </StatCard>
+          </StatCard> */}
 
           <StatCard onClick={() => onNavigate("assignments")}>
             <StatIcon><FaBook /></StatIcon>

@@ -107,6 +107,7 @@ import LecturerDashboard from './components/LecturerDashboard';
 import LecturerSignup from './components/LecturerSignup';
 import AnnouncementTicker from './components/AnnouncementTicker';
 import AnnouncementsPage from './components/AnnouncementsPage';
+import StudentResultByAdmNo from './components/StudentResultByAdmNo';
 
 
 function App() {
@@ -193,6 +194,7 @@ function App() {
         <Route path='/studentresetpassword/:token' element={<StudentResetPassword/>}/>
         <Route path='/research' element={<ResearchPage/>}/>
         <Route path='/announcements' element={<AnnouncementsPage/>}/>
+        <Route path='/resultverification' element={<StudentResultByAdmNo/>}/>
         
 
         <Route path='/studentlogin' element={<StudentLogin/>}/>

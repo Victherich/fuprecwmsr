@@ -27,6 +27,7 @@ import StudentSubmissions from './StudentSubmissions';
 import StudentClockIn from './StudentClockIn';
 import ActiveAttendancePage from './ActiveAttendancePage';
 import StudentVideoLessons from './StudentVideoLessons';
+import GeneralAssets from './GeneralAssets';
 // import Departments from './Departments';
 // import Classes from './Classes';
 // import Subjects from './Subjects';
@@ -259,6 +260,12 @@ const StudentDashboard = () => {
 
           case 'videolessons':
         return <StudentVideoLessons studentId={studentInfo.id}/>;
+
+
+          case 'generalassets':
+                return <GeneralAssets/>;
+
+        
 
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

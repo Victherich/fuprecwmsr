@@ -28,6 +28,7 @@ import DashboardHomeButton from './DashboardHomeButton.jsx';
 import CreateAttendanceForm from './CreateAttendanceForm.jsx';
 import AttendanceManagement from './AttendanceManagement.jsx';
 import ActiveAttendancePage from './ActiveAttendancePage.jsx';
+import GeneralAssets from './GeneralAssets.jsx';
 
 
 // Styled Components
@@ -249,6 +250,11 @@ const SchoolManagementDashboard = () => {
 
         case 'clockin':
         return <ActiveAttendancePage userId={adminInfo.id} userType={"admin"} />;
+
+        
+        case 'generalassets':
+        return <GeneralAssets/>;
+      
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

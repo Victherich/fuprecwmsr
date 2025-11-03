@@ -15,6 +15,7 @@ import {
   FaComments,
   FaClock,
   FaVideo,
+  FaFileCsv,
 } from "react-icons/fa";
 import { Context } from "./Context";
 
@@ -311,6 +312,14 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
             </Icon>
             <Label>Clock-in to your Classes and meetings</Label>
             <Value></Value>
+          </Card>
+
+           <Card onClick={() => onNavigate("generalassets")}>
+            <Icon>
+              <FaFileCsv />
+            </Icon>
+            <Label>General Assets</Label>
+            <Value style={{fontSize:"0.8rem"}}>Access General Files (eg. Academic Calender, time tables e.t.c.)</Value>
           </Card>
 
           <Card onClick={() => onNavigate("email")}>

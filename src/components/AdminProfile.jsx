@@ -244,6 +244,7 @@ import {
   FaIdCard,
   FaSchool,
   FaClock,
+  FaFileCsv,
 } from "react-icons/fa";
 
 const Container = styled.div`
@@ -507,6 +508,14 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
                                 <StatLabel>Clock-in to your Classes and meetings</StatLabel>
                                 <StatValue></StatValue>
                               </StatCard>
+
+                                <StatCard onClick={() => onNavigate("generalassets")}>
+                                          <StatIcon>
+                                            <FaFileCsv />
+                                          </StatIcon>
+                                          <StatLabel>General Assets</StatLabel>
+                                          <StatValue style={{fontSize:"0.8rem"}}>Manage and Access General Files (eg. Academic Calender, time tables e.t.c.)</StatValue>
+                                        </StatCard>
 
           <StatCard onClick={() => onNavigate("email")}>
             <StatIcon><FaEnvelope /></StatIcon>

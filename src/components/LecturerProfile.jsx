@@ -250,6 +250,7 @@ import {
   FaPhoneAlt,
   FaIdCard,
   FaClock,
+  FaFileCsv,
 } from "react-icons/fa";
 
 // 🌿 Styled Components
@@ -532,6 +533,15 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
                       <StatValue></StatValue>
                     </StatCard>
 
+                   
+                                                   <StatCard onClick={() => onNavigate("generalassets")}>
+                                                             <StatIcon>
+                                                               <FaFileCsv />
+                                                             </StatIcon>
+                                                             <StatLabel>General Assets</StatLabel>
+                                                             <StatValue style={{fontSize:"0.8rem"}}>Access General Files (eg. Academic Calender, time tables e.t.c.)</StatValue>
+                                                           </StatCard>
+
           <StatCard onClick={() => onNavigate("email")}>
             <StatIcon><FaEnvelope /></StatIcon>
             <StatLabel>Email Center</StatLabel>
@@ -543,6 +553,8 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
             <StatLabel>Forum</StatLabel>
             <StatValue>Join community discussions</StatValue>
           </StatCard>
+
+
 
           <StatCard onClick={onLogout}>
             <StatIcon style={{ color: "red" }}><FaSignOutAlt /></StatIcon>

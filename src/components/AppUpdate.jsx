@@ -32,23 +32,32 @@ const fetchAppVersion = async () => {
       const prevVersion = storedVersions[appId];
   
       // If version changed, alert the user
-      if (prevVersion && prevVersion !== latestVersion) {
-        Swal.fire({
-          title: 'Update Available!',
-          text: `This site has a new update by the Developer, Kindly click the 'UPDATE" button to catch up`,
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonText: 'Update',
-          cancelButtonText: 'Remind me later',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            // Save new version and reload
-            storedVersions[appId] = latestVersion;
-            localStorage.setItem('app_versions', JSON.stringify(storedVersions));
-            window.location.reload();
-          }
-        });
-      } else {
+    if (prevVersion && prevVersion !== latestVersion) {
+  // Delay execution by 1 second
+  setTimeout(() => {
+    // Save new version and reload
+    storedVersions[appId] = latestVersion;
+    localStorage.setItem('app_versions', JSON.stringify(storedVersions));
+    window.location.reload();
+
+    // If you want to use the SweetAlert version later, you can move it here too.
+    // Swal.fire({
+    //   title: 'Update Available!',
+    //   text: `This site has a new update by the Developer. Click "UPDATE" to catch up.`,
+    //   icon: 'info',
+    //   showCancelButton: true,
+    //   confirmButtonText: 'Update',
+    //   cancelButtonText: 'Remind me later',
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     storedVersions[appId] = latestVersion;
+    //     localStorage.setItem('app_versions', JSON.stringify(storedVersions));
+    //     window.location.reload();
+    //   }
+    // });
+  }, 1000);
+}
+ else {
         // No previous version or it's the same — just save it
         storedVersions[appId] = latestVersion;
         localStorage.setItem('app_versions', JSON.stringify(storedVersions));
@@ -63,7 +72,7 @@ const fetchAppVersion = async () => {
   
   useEffect(() => {
     fetchAppVersion(); // Fetch app version on load and check for updates
-    const interval = setInterval(() => fetchAppVersion(),5*60*1000); // Poll every 5 minutes
+    const interval = setInterval(() => fetchAppVersion(),3*60*1000); // Poll every 5 minutes
     return () => clearInterval(interval);
   }, []); // Empty dependency array ensures it only runs once on mount
 

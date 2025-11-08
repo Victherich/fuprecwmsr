@@ -130,6 +130,81 @@ const Button = styled.button`
   }
 `;
 
+
+
+
+
+
+
+
+
+
+const FilterBar = styled.div`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: center;
+`;
+
+const FilterSelect = styled.select`
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  outline: none;
+  background: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 4px rgba(46, 204, 113, 0.4);
+  }
+`;
+
+const FilterInput = styled.input`
+  width: 300px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: #2ecc71;
+    box-shadow: 0 0 4px rgba(46, 204, 113, 0.4);
+  }
+
+  &::placeholder {
+    color: #aaa;
+  }
+`;
+
+const ClearButton = styled.button`
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-bottom: 20px;
+
+  &:hover {
+    background: #c0392b;
+  }
+`;
+
+
+
+
+
+
+
+
 // === Main Component ===
 const SubmissionsToLecturer = ({ lecturerId }) => {
   const [submissions, setSubmissions] = useState([]);
@@ -139,9 +214,15 @@ const SubmissionsToLecturer = ({ lecturerId }) => {
   const [score, setScore] = useState("");
   const [saving, setSaving] = useState(false);
   const { categories, courses } = useContext(Context);
-  const [lecturer, setLecturer]=useState([])
+  const [lecturer, setLecturer]=useState([]);
 
-  useEffect(() => {
+  const [filterCourse, setFilterCourse] = useState("");
+const [filterCategory, setFilterCategory] = useState("");
+const [filterStudent, setFilterStudent] = useState("");
+const [filterStatus, setFilterStatus] = useState(""); // "marked" or "unmarked"
+
+
+ 
     const fetchSubmissions = async () => {
       try {
         const response = await axios.post(
@@ -156,6 +237,8 @@ const SubmissionsToLecturer = ({ lecturerId }) => {
         setLoading(false);
       }
     };
+
+     useEffect(() => {
     fetchSubmissions();
   }, [lecturerId]);
 
@@ -205,6 +288,7 @@ const SubmissionsToLecturer = ({ lecturerId }) => {
           )
         );
         closeModal();
+        fetchSubmissions();
       } else {
         Swal.fire({text:response.data.error});
       }
@@ -250,6 +334,31 @@ const SubmissionsToLecturer = ({ lecturerId }) => {
   }, [submissions]);
 
 
+
+
+
+const filteredSubmissions = submissions.filter((sub) => {
+  const matchesCourse =
+    !filterCourse || parseInt(sub.course_id) === parseInt(filterCourse);
+  const matchesCategory =
+    !filterCategory || parseInt(sub.category_id) === parseInt(filterCategory);
+  const matchesStudent =
+    !filterStudent ||
+    sub.student_name.toLowerCase().includes(filterStudent.toLowerCase()) ||
+    sub.admission_number.toLowerCase().includes(filterStudent.toLowerCase());
+  const matchesStatus =
+    !filterStatus ||
+    (filterStatus === "marked" && sub.score) ||
+    (filterStatus === "unmarked" && !sub.score);
+
+  return matchesCourse && matchesCategory && matchesStudent && matchesStatus;
+});
+
+
+
+
+
+
   return (
     <Container>
       <Title>Student Submissions (Your Courses)</Title>
@@ -257,7 +366,67 @@ const SubmissionsToLecturer = ({ lecturerId }) => {
       {loading && <Message>Loading...</Message>}
       {error && <Message>{error}</Message>}
 
-      {submissions.map((sub, i) => (
+
+
+<FilterBar>
+  <FilterSelect
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+  >
+    <option value="">All Courses</option>
+    {courses.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.code} - {c.title}
+      </option>
+    ))}
+  </FilterSelect>
+
+  <FilterSelect
+    value={filterCategory}
+    onChange={(e) => setFilterCategory(e.target.value)}
+  >
+    <option value="">All Categories</option>
+    {categories.map((cat) => (
+      <option key={cat.id} value={cat.id}>
+        {cat.name}
+      </option>
+    ))}
+  </FilterSelect>
+
+  <FilterInput
+    type="text"
+    placeholder="Search student by name or admission number..."
+    value={filterStudent}
+    onChange={(e) => setFilterStudent(e.target.value)}
+  />
+
+  <FilterSelect
+    value={filterStatus}
+    onChange={(e) => setFilterStatus(e.target.value)}
+  >
+    <option value="">All</option>
+    <option value="marked">Marked</option>
+    <option value="unmarked">Unmarked</option>
+  </FilterSelect>
+</FilterBar>
+
+{(filterCourse || filterCategory || filterStudent || filterStatus) && (
+  <ClearButton
+    onClick={() => {
+      setFilterCourse("");
+      setFilterCategory("");
+      setFilterStudent("");
+      setFilterStatus("");
+    }}
+  >
+    Clear Filters
+  </ClearButton>
+)}
+
+
+
+
+      {filteredSubmissions.map((sub, i) => (
         <SubmissionCard key={i}>
           <StudentInfo>
             <strong>Student:</strong> {sub.student_name} ({sub.admission_number})

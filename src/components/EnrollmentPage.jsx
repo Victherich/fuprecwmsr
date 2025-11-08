@@ -533,6 +533,31 @@ const EnrollButton = styled.button`
   }
 `;
 
+
+
+
+
+const ClearButton = styled.button`
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-bottom: 20px;
+
+  &:hover {
+    background: #c0392b;
+  }
+`;
+
+
+
+
+
+
 const EnrollPage = ({ studentId }) => {
   const { levels, semesters, courses } = useContext(Context);
   const [student, setStudent] = useState({});
@@ -601,6 +626,75 @@ const EnrollPage = ({ studentId }) => {
     }
   };
 
+
+
+
+
+
+
+
+
+const deleteEnrollment = async (enrollmentId) => {
+  const confirm = await Swal.fire({
+    title: "Unenroll from this course?",
+    text: "This will remove you from the course permanently.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#e74c3c",
+    cancelButtonColor: "#aaa",
+    confirmButtonText: "Yes, Unenroll",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  Swal.fire({
+    title: "Processing...",
+    text: "Unenrolling, please wait",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
+
+  try {
+    const res = await axios.post(
+      "https://www.cwmsrfupre.com.ng/api/delete_enrollment.php",
+      { enrollment_id: enrollmentId }
+    );
+
+    if (res.data.success) {
+      Swal.fire({
+        icon: "success",
+        title: "Unenrolled",
+        text: "You have been unenrolled from the course.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      // Update UI
+      fetchEnrolledCourses();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: res.data.error || "Failed to unenroll.",
+      });
+    }
+  } catch (err) {
+    Swal.fire({
+      icon: "error",
+      title: "Network Error",
+      text: "Could not connect to the server.",
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
   return (
     <>
       <Container>
@@ -625,7 +719,7 @@ const EnrollPage = ({ studentId }) => {
                     <CardLabel>Title:</CardLabel>
                     <CardValue>{course?.title || "N/A"}</CardValue>
                   </CardRow>
-                  <CardRow>
+                  {/* <CardRow>
                     <CardLabel>Assignment:</CardLabel>
                     <CardValue>{enroll.assignment_score}</CardValue>
                   </CardRow>
@@ -640,7 +734,12 @@ const EnrollPage = ({ studentId }) => {
                   <CardRow>
                     <CardLabel>Total:</CardLabel>
                     <CardValue>{enroll.total_score}</CardValue>
-                  </CardRow>
+                  </CardRow> */}
+                  <ClearButton
+    onClick={() => deleteEnrollment(enroll.id)}
+  >
+    Delete
+  </ClearButton>
                 </Card>
               );
             })

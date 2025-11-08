@@ -194,45 +194,131 @@ const StudentSubmissions = () => {
     console.log(submissions)
 
   // ---------- SUBMIT HANDLER ----------
+  // const handleSubmit = async () => {
+  //   if (!selectedCourseId || !selectedCategory || !file) {
+  //     Swal.fire("Please fill in all required fields and attach a file.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("student_id", studentInfo.id);
+  //   formData.append("course_id", selectedCourseId);
+  //   formData.append("category", selectedCategory);
+  //   formData.append("file", file);
+
+  //   try {
+  //     Swal.fire({ text: "Uploading..." });
+  //     Swal.showLoading();
+
+  //     const res = await axios.post(
+  //       "https://www.cwmsrfupre.com.ng/api/create_student_submission.php",
+  //       formData,
+  //       { headers: { "Content-Type": "multipart/form-data" } }
+  //     );
+
+  //     Swal.close();
+
+  //     if (res.data.success) {
+  //       Swal.fire("Success", "Submission uploaded successfully!", "success");
+  //       setFile(null);
+  //       setSelectedCourseId("");
+  //       setSelectedCategory("");
+  //       setOpenForm(false);
+  //       fetchSubmissions();
+  //     } else {
+  //       Swal.fire("Failed", res.data.error || "Submission failed.", "error");
+  //     }
+  //   } catch (err) {
+  //     Swal.fire("Error", "An error occurred while uploading.", "error");
+  //     console.error(err);
+  //   }
+  // };
+
+
   const handleSubmit = async () => {
-    if (!selectedCourseId || !selectedCategory || !file) {
-      Swal.fire("Please fill in all required fields and attach a file.");
-      return;
+  if (!selectedCourseId || !selectedCategory || !file) {
+    Swal.fire({
+      icon: "warning",
+      title: "Incomplete fields",
+      text: "Please fill in all required fields and attach a file before submitting.",
+    });
+    return;
+  }
+
+  // ⚠️ Step 1 — Ask for confirmation before proceeding
+  const confirm = await Swal.fire({
+    title: "Are you sure you want to submit?",
+    text: "Once you submit, you cannot unsubmit. Please make sure everything is correct.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#2ecc71",
+    cancelButtonColor: "#aaa",
+    confirmButtonText: "Yes, submit",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!confirm.isConfirmed) return; // stop if cancelled
+
+  // 📤 Step 2 — Proceed with upload
+  const formData = new FormData();
+  formData.append("student_id", studentInfo.id);
+  formData.append("course_id", selectedCourseId);
+  formData.append("category", selectedCategory);
+  formData.append("file", file);
+
+  try {
+    // 🔄 Show loading state
+    Swal.fire({
+      title: "Uploading your submission...",
+      text: "Please wait while your file is being uploaded.",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const res = await axios.post(
+      "https://www.cwmsrfupre.com.ng/api/create_student_submission.php",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    Swal.close();
+
+    // ✅ Success response
+    if (res.data.success) {
+      Swal.fire({
+        icon: "success",
+        title: "Submission Successful!",
+        text: "Your submission has been uploaded successfully.",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      // Reset form and refresh data
+      setFile(null);
+      setSelectedCourseId("");
+      setSelectedCategory("");
+      setOpenForm(false);
+      fetchSubmissions();
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: res.data.error || "An error occurred while submitting.",
+      });
     }
+  } catch (err) {
+    Swal.close();
+    Swal.fire({
+      icon: "error",
+      title: "Network Error",
+      text: "An error occurred while uploading. Please try again.",
+    });
+    console.error(err);
+  }
+};
 
-    const formData = new FormData();
-    formData.append("student_id", studentInfo.id);
-    formData.append("course_id", selectedCourseId);
-    formData.append("category", selectedCategory);
-    formData.append("file", file);
 
-    try {
-      Swal.fire({ text: "Uploading..." });
-      Swal.showLoading();
 
-      const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/create_student_submission.php",
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      Swal.close();
-
-      if (res.data.success) {
-        Swal.fire("Success", "Submission uploaded successfully!", "success");
-        setFile(null);
-        setSelectedCourseId("");
-        setSelectedCategory("");
-        setOpenForm(false);
-        fetchSubmissions();
-      } else {
-        Swal.fire("Failed", res.data.error || "Submission failed.", "error");
-      }
-    } catch (err) {
-      Swal.fire("Error", "An error occurred while uploading.", "error");
-      console.error(err);
-    }
-  };
 
   // ---------- FETCH SUBMISSIONS ----------
   const fetchSubmissions = async () => {

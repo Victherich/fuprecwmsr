@@ -1053,6 +1053,24 @@ const Select = styled.select`
   font-size: 16px;
 `;
 
+
+const ClearButton = styled.button`
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-bottom: 20px;
+
+  &:hover {
+    background: #c0392b;
+  }
+`;
+
+
 // ---------- Component ----------
 const EnrollLecturerPage = ({ lecturerId }) => {
   const { levels, semesters, courses } = useContext(Context);
@@ -1127,6 +1145,76 @@ const EnrollLecturerPage = ({ lecturerId }) => {
       Swal.fire("Error", "Something went wrong.", "error");
     }
   };
+
+
+
+
+
+
+
+// deleteEnrollment function
+const deleteEnrollment = async (enrollmentId) => {
+  // Step 1️⃣ — Ask for confirmation
+  const confirm = await Swal.fire({
+    title: "Are you sure?",
+    text: "This will remove your enrollment from the course.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#e74c3c",
+    cancelButtonColor: "#aaa",
+    confirmButtonText: "Yes, delete it",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  // Step 2️⃣ — Show loading alert
+  Swal.fire({
+    title: "Deleting enrollment...",
+    text: "Please wait",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
+
+  try {
+    // Step 3️⃣ — Send delete request
+    const response = await axios.post(
+      "https://www.cwmsrfupre.com.ng/api/lecturer_delete_enrollment.php",
+      { enrollment_id: enrollmentId }
+    );
+
+    // Step 4️⃣ — Handle response
+    if (response.data.success) {
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Enrollment deleted successfully.",
+        timer: 1800,
+        showConfirmButton: false,
+      });
+
+   fetchAssignedCourses();
+
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: response.data.error || "Failed to delete enrollment.",
+      });
+    }
+  } catch (err) {
+    console.error("Delete error:", err);
+    Swal.fire({
+      icon: "error",
+      title: "Network Error",
+      text: "Could not connect to the server.",
+    });
+  }
+};
+
+
+
+
 
   return (
     <Container>
@@ -1216,6 +1304,11 @@ const EnrollLecturerPage = ({ lecturerId }) => {
                   <CardLabel>Title:</CardLabel>
                   <CardValue>{course?.title || "N/A"}</CardValue>
                 </CardRow>
+                 <ClearButton
+    onClick={() => deleteEnrollment(assignment.id)}
+  >
+    Delete
+  </ClearButton>
               </Card>
             );
           })

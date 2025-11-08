@@ -237,6 +237,26 @@ const Footer = () => {
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} CWMSR - All Rights Reserved.</p>
       </div>
+         <div
+         style={{
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        width:"100%",
+        paddingTop:"50px",
+        paddingBottom:"20px"
+         }}
+         >
+         <a style={{fontSize:"0.7rem",
+          color:"rgba(255,255,255,0.6)",
+          textDecoration:"underline",
+          cursor:"pointer"
+          }}
+          onClick={()=>window.open("https://elexdontech.com", "_blank")}
+          >
+            <span style={{color:"rgba(0,255,0,0.7)"}}>POWERED BY </span> 
+             ELEXDON DIGITAL TECHNOLOGIES LIMITED</a>
+      </div>
     </footer>
   );
 };

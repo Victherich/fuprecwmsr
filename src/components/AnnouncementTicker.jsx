@@ -58,20 +58,32 @@ const AnnouncementTicker = () => {
   const [latest, setLatest] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchLatest = async () => {
-      try {
-        const res = await fetch(`https://www.cwmsrfupre.com.ng/api/fetch_announcements.php`);
-        const data = await res.json();
-        if (data.success && data.announcements.length > 0) {
-          setLatest(data.announcements[0]); // Latest announcement
-        }
-      } catch (err) {
-        console.error("Failed to fetch announcements", err);
+useEffect(() => {
+  const fetchLatest = async () => {
+    try {
+      const res = await fetch(`https://www.cwmsrfupre.com.ng/api/fetch_announcements.php`);
+      const data = await res.json();
+
+      if (data.success && data.announcements.length > 0) {
+        // Reverse the array so latest is first
+        const reversed = [...data.announcements].reverse();
+        setLatest(reversed[0]); // latest announcement
+      } else {
+        setLatest(null); // no announcements, hide ticker
       }
-    };
-    fetchLatest();
-  }, []);
+    } catch (err) {
+      console.error("Failed to fetch announcements", err);
+      setLatest(null); // optionally clear on error
+    }
+  };
+
+  fetchLatest();
+
+  const intervalId = setInterval(fetchLatest, 5000); // every 3 minutes
+
+  return () => clearInterval(intervalId);
+}, []);
+
 
   if (!latest) return null;
 

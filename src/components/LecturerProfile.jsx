@@ -251,6 +251,8 @@ import {
   FaIdCard,
   FaClock,
   FaFileCsv,
+  FaSpeakerDeck,
+  FaReply,
 } from "react-icons/fa";
 
 // 🌿 Styled Components
@@ -533,6 +535,15 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
                       <StatValue></StatValue>
                     </StatCard>
 
+                    
+                                 <StatCard onClick={() => onNavigate("announcements")}>
+                                                              <StatIcon>
+                                                                <FaSpeakerDeck/>
+                                                              </StatIcon>
+                                                              <StatLabel>Announcements</StatLabel>
+                                                              <StatValue style={{fontSize:"0.8rem"}}>Manage Announcements</StatValue>
+                                                            </StatCard>
+
                    
                                                    <StatCard onClick={() => onNavigate("generalassets")}>
                                                              <StatIcon>
@@ -540,6 +551,15 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
                                                              </StatIcon>
                                                              <StatLabel>General Assets</StatLabel>
                                                              <StatValue style={{fontSize:"0.8rem"}}>Access General Files (eg. Academic Calender, time tables e.t.c.)</StatValue>
+                                                           </StatCard>
+
+                                                             
+                                                   <StatCard onClick={() => onNavigate("feedback")}>
+                                                             <StatIcon>
+                                                               <FaReply />
+                                                             </StatIcon>
+                                                             <StatLabel>Assessment forms and Feedback</StatLabel>
+                                                             <StatValue style={{fontSize:"0.8rem"}}></StatValue>
                                                            </StatCard>
 
           <StatCard onClick={() => onNavigate("email")}>

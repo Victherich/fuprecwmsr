@@ -16,6 +16,9 @@ import {
   FaClock,
   FaVideo,
   FaFileCsv,
+  FaEdit,
+  FaSpeakerDeck,
+  FaReply,
 } from "react-icons/fa";
 import { Context } from "./Context";
 
@@ -183,8 +186,12 @@ const CancelButton = styled.button`
 const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
   const [student, setStudent] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+   const [isModalOpen2, setModalOpen2] = useState(false);
   const [newPhone, setNewPhone] = useState("");
+   const [newName, setNewName] = useState('');
   const { programs } = useContext(Context);
+
+  console.log(student)
 
   useEffect(() => {
     if (!studentId) return;
@@ -193,10 +200,15 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
       .then((res) => {
         if (res.data.success) {
           setStudent(res.data.student);
+          setNewName(res.data.student.full_name);
         }
       })
       .catch(() => Swal.fire("Error", "Failed to fetch student details", "error"));
   }, [studentId]);
+
+
+
+
 
   const handleSave = () => {
     axios
@@ -215,6 +227,69 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
       });
   };
 
+
+
+
+
+
+
+const handleSaveName = () => {
+  if (!newName || newName.trim() === "") {
+    Swal.fire("Error", "Name cannot be empty", "error");
+    return;
+  }
+
+  axios
+    .post("https://www.cwmsrfupre.com.ng/api/update_student_name.php", {
+      id: student.id,
+      full_name: newName.trim(),
+    })
+    .then((res) => {
+      if (res.data.success) {
+        // Update student state with new name
+        setStudent((prev) => ({ ...prev, full_name: newName.trim() }));
+        setModalOpen2(false);
+        Swal.fire("Updated", "Student name updated successfully", "success");
+      } else {
+        Swal.fire("Error", res.data.error, "error");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      Swal.fire("Error", "Something went wrong while updating the name", "error");
+    });
+};
+
+
+
+
+
+ const [allowEdit, setAllowEdit] = useState(false);
+
+  useEffect(() => {
+    const fetchSetting = async () => {
+      try {
+        const res = await axios.get(
+          `https://www.cwmsrfupre.com.ng/api/get_edit_setting.php?nocache=${Date.now()}`
+        ); // timestamp to avoid caching
+        if (res.data.success) setAllowEdit(res.data.allow_edit);
+      } catch (err) {
+        console.error("Failed to fetch setting", err);
+      }
+    };
+
+    // Fetch immediately
+    fetchSetting();
+
+    // Fetch every 5 seconds
+    const interval = setInterval(fetchSetting, 5000);
+
+    // Cleanup interval when component unmounts
+    return () => clearInterval(interval);
+  }, []);
+
+
+
   if (!student)
     return <p style={{ textAlign: "center", color: "green" }}>Loading...</p>;
 
@@ -224,7 +299,13 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
         {/* ✅ Profile Card */}
         <ProfileCard>
           <Info>
-            <Name>🎓 {student.full_name}</Name>
+            <Name>🎓 {student.full_name} 
+              
+              {allowEdit&&<span 
+            style={{cursor:"pointer"}}
+            onClick={()=>setModalOpen2(true)}> <FaEdit/></span>}
+            
+            </Name>
             <Email>{student.email}</Email>
             <EditButton
               onClick={() => {
@@ -314,6 +395,14 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
             <Value></Value>
           </Card>
 
+           <Card onClick={() => onNavigate("announcements")}>
+            <Icon>
+              <FaSpeakerDeck />
+            </Icon>
+            <Label>Announcements</Label>
+            {/* <Value style={{fontSize:"0.8rem"}}></Value> */}
+          </Card>
+
            <Card onClick={() => onNavigate("generalassets")}>
             <Icon>
               <FaFileCsv />
@@ -321,6 +410,17 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
             <Label>General Assets</Label>
             <Value style={{fontSize:"0.8rem"}}>Access General Files (eg. Academic Calender, time tables e.t.c.)</Value>
           </Card>
+
+
+          {["13", "14", "15", "16"].includes(student.program) && (
+  <Card onClick={() => onNavigate("feedback")}>
+    <Icon>
+      <FaReply />
+    </Icon>
+    <Label>Assessment Forms and Feedbacks</Label>
+  </Card>
+)}
+
 
           <Card onClick={() => onNavigate("email")}>
             <Icon>
@@ -366,6 +466,27 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
             </Modal>
           </ModalOverlay>
         )}
+
+        
+      {/* ✅ Modal */}
+      {isModalOpen2 && (
+        <ModalOverlay>
+          <Modal>
+            <h3>Edit Name</h3>
+            <Input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+            />
+            <div>
+              <SaveButton onClick={handleSaveName}>Save</SaveButton>
+              <CancelButton onClick={() => setModalOpen2(false)}>
+                Cancel
+              </CancelButton>
+            </div>
+          </Modal>
+        </ModalOverlay>
+      )}
       </Wrapper>
     </Container>
   );

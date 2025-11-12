@@ -146,6 +146,7 @@ const courses = [
   { id: 68, code: "PWM 814", title: "Environmental Impact Assessment in Oil and Gas", unit: 3, status: "R", program_id: 5, level_id: 1, semester_id: 1 },
   { id: 69, code: "PWM 815", title: "Risk Assessment and Management in Petroleum Sector", unit: 2, status: "R", program_id: 5, level_id: 1, semester_id: 1 },
   { id: 70, code: "PWM 816", title: "Petroleum Hydrocarbon Spill Management", unit: 3, status: "C", program_id: 5, level_id: 1, semester_id: 1 },
+ 
   { id: 71, code: "PWM 819", title: "Seminar in Petroleum Waste Management", unit: 3, status: "C", program_id: 5, level_id: 1, semester_id: 1 },
 
   // Second Semester
@@ -221,6 +222,14 @@ const courses = [
         { id: 119, code: "EHM 825", title: "Advanced Geographic Information Systems (GIS) in Health", unit: 3, status: "E", program_id: 8, level_id: 1, semester_id: 2 },
         { id: 120, code: "EHM 826", title: "Climate Change and Health", unit: 3, status: "E", program_id: 8, level_id: 1, semester_id: 2 },
         { id: 121, code: "EHM 899", title: "Research Project", unit: 6, status: "C", program_id: 8, level_id: 1, semester_id: 2 },
+
+
+        {id:122, code:"WM 818", title:"Environmental Politics, Governance, and Social Innovation"},
+        {id:123, code:"PWM 818", title:"Environmental Politics, Governance, and Social Innovation"},
+        {id:124, code:"ESW 818", title:"Environmental Politics, Governance, and Social Innovation"},
+        {id:125, code:"EHM 818", title:"Environmental Politics, Governance, and Social Innovation"},
+        {id:126, code:"WM 833", title:"Artificial Intelligence in Waste Management"},
+        {id:127, code:"PWM 833", title:"Artificial intelligent in petroleum waste management"},
       
       
 

@@ -245,7 +245,10 @@ import {
   FaSchool,
   FaClock,
   FaFileCsv,
+  FaSpeakerDeck,
+  FaReply,
 } from "react-icons/fa";
+import AdminEditControl from "./AdminEditControl";
 
 const Container = styled.div`
   background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%);
@@ -488,6 +491,14 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
             <StatValue>View student list</StatValue>
           </StatCard>
 
+             <StatCard onClick={() => onNavigate("announcements")}>
+                                          <StatIcon>
+                                            <FaSpeakerDeck/>
+                                          </StatIcon>
+                                          <StatLabel>Announcements</StatLabel>
+                                          <StatValue style={{fontSize:"0.8rem"}}>Manage Announcements</StatValue>
+                                        </StatCard>
+
           <StatCard onClick={() => onNavigate("manageaccesscode")}>
             <StatIcon><FaKey /></StatIcon>
             <StatLabel>Access Codes</StatLabel>
@@ -514,8 +525,17 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
                                             <FaFileCsv />
                                           </StatIcon>
                                           <StatLabel>General Assets</StatLabel>
-                                          <StatValue style={{fontSize:"0.8rem"}}>Manage and Access General Files (eg. Academic Calender, time tables e.t.c.)</StatValue>
-                                        </StatCard>
+      <StatValue style={{fontSize:"0.8rem"}}></StatValue>
+     </StatCard>
+
+ <StatCard onClick={() => onNavigate("feedback")}>
+    <StatIcon>
+    <FaReply />
+    </StatIcon>
+      <StatLabel>Assessment forms and Feedback</StatLabel>
+      <StatValue style={{fontSize:"0.8rem"}}></StatValue>
+      </StatCard>
+
 
           <StatCard onClick={() => onNavigate("email")}>
             <StatIcon><FaEnvelope /></StatIcon>
@@ -541,6 +561,8 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
             <StatValue>Sign out securely</StatValue>
           </StatCard>
         </StatsGrid>
+
+        <AdminEditControl/>
 
         {/* ✅ Edit Modal */}
         {isModalOpen && (

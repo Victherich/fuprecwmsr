@@ -29,6 +29,7 @@ import SubmissionsToLecturer from './SubmissionsToLecturer.jsx';
 import ActiveAttendancePage from './ActiveAttendancePage.jsx';
 import PostVideoLesson from './PostVideoLesson.jsx';
 import GeneralAssets from './GeneralAssets.jsx';
+import AssessmentAndFeedbacks from './AssessmentAndFeedbacks.jsx';
 
 
 // Styled Components
@@ -285,6 +286,9 @@ getLecturerById();
 
                   case 'generalassets':
                         return <GeneralAssets/>;
+
+                         case 'feedback':
+                        return <AssessmentAndFeedbacks/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

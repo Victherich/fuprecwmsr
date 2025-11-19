@@ -62,37 +62,75 @@ const StudentAssignments = ({ studentId }) => {
   const [error, setError] = useState(null);
   const {courses}=useContext(Context);
 
-  useEffect(() => {
-    if (!studentId) {
-      setError("No student ID provided.");
-      setLoading(false);
-      return;
-    }
+  // useEffect(() => {
+  //   if (!studentId) {
+  //     setError("No student ID provided.");
+  //     setLoading(false);
+  //     return;
+  //   }
 
-    const fetchAssignments = async () => {
-      try {
-        const response = await axios.get(
-          `https://www.cwmsrfupre.com.ng/api/get_assignments_for_student.php?student_id=${studentId}`
-        );
+  //   const fetchAssignments = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `https://www.cwmsrfupre.com.ng/api/get_assignments_for_student.php?student_id=${studentId}`
+  //       );
 
-        if (response.data.success) {
-          setAssignments(response.data.assignments);
-          console.log(response.data.assignments)
+  //       if (response.data.success) {
+  //         setAssignments(response.data.assignments);
+  //         console.log(response.data.assignments)
           
-        } else {
-          setError(response.data.error || "Failed to fetch posts.");
-          console.log(response.data)
-        }
-      } catch (err) {
-        setError("An error occurred while fetching post.");
-      } finally {
-        setLoading(false);
+  //       } else {
+  //         setError(response.data.error || "Failed to fetch posts.");
+  //         console.log(response.data)
+  //       }
+  //     } catch (err) {
+  //       setError("An error occurred while fetching post.");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchAssignments();
+  // }, [studentId]);
+
+useEffect(() => {
+  if (!studentId) {
+    setError("No student ID provided.");
+    setLoading(false);
+    return;
+  }
+
+  const fetchAssignments = async () => {
+    try {
+      const response = await axios.get(
+        `https://www.cwmsrfupre.com.ng/api/get_assignments_for_student.php?student_id=${studentId}`
+      );
+
+      if (response.data.success) {
+        setAssignments(response.data.assignments);
+        console.log(response.data.assignments);
+      } else {
+        setError(response.data.error || "Failed to fetch posts.");
       }
-    };
+    } catch (err) {
+      setError("An error occurred while fetching post.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // Run immediately on mount
+  fetchAssignments();
+
+  // Run every 5 seconds
+  const interval = setInterval(() => {
     fetchAssignments();
-  }, [studentId]);
+  }, 5000);
 
+  // Cleanup on unmount
+  return () => clearInterval(interval);
+
+}, [studentId]);
 
 
 

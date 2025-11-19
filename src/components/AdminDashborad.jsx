@@ -340,12 +340,7 @@ const SchoolManagementDashboard = () => {
             Lecture Notes
           </SidebarMenuItem> */}
 
-         {/* {adminInfo?.name?.trim()==="Esther Nnenna Esom" &&<SidebarMenuItem
-            active={activeMenu === 'meetinglinkupload'}
-            onClick={() => handleMenuClick('meetinglinkupload')}
-          >
-            Upload Meeting Link
-          </SidebarMenuItem>} */}
+     
 
            <SidebarMenuItem
             active={activeMenu === 'manageaccesscode'}
@@ -415,6 +410,13 @@ const SchoolManagementDashboard = () => {
           >
             Logout
           </SidebarMenuItem>
+
+              {<SidebarMenuItem
+            active={activeMenu === 'meetinglinkupload'}
+            onClick={() => handleMenuClick('meetinglinkupload')}
+          >
+            Upload Meeting Link
+          </SidebarMenuItem>}
         </SidebarMenu>
       </Sidebar>
       <DashboardHomeButton onGoHome={() => setActiveMenu('profile')} />

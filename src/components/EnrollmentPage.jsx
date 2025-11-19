@@ -736,6 +736,12 @@ const deleteEnrollment = async (enrollmentId) => {
                     <CardValue>{enroll.total_score}</CardValue>
                   </CardRow> */}
                   <ClearButton
+    onClick={() =>window.open(course?.link, "_blank")}
+    style={{backgroundColor:"green", marginRight:"20px"}}
+  >
+    Enter Class
+  </ClearButton>
+                  <ClearButton
     onClick={() => deleteEnrollment(enroll.id)}
   >
     Delete

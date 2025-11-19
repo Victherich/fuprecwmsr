@@ -174,6 +174,7 @@ const StudentOnlineClass = () => {
           return (
             <ClassCard key={item.id}>
               <Title>Lecturer: {lecturerName}</Title>
+              <Title>Title: {item.title.toUpperCase()}</Title>
               <Text><strong>Created At:</strong> {new Date(item.created_at).toLocaleString()}</Text>
               <Button onClick={() => window.open(item.meeting_link, "_blank")}>
                 Join Meeting / Class

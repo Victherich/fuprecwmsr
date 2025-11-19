@@ -1304,6 +1304,14 @@ const deleteEnrollment = async (enrollmentId) => {
                   <CardLabel>Title:</CardLabel>
                   <CardValue>{course?.title || "N/A"}</CardValue>
                 </CardRow>
+
+  <ClearButton
+    onClick={() =>window.open(course?.link, "_blank")}
+    style={{backgroundColor:"green", marginRight:"20px"}}
+  >
+    Enter Class
+  </ClearButton>
+
                  <ClearButton
     onClick={() => deleteEnrollment(assignment.id)}
   >

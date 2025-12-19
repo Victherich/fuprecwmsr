@@ -347,6 +347,25 @@ const LecturerExamsManagement = ({ lecturerId }) => {
 
   const [editingExamId, setEditingExamId] = useState(null); // NEW
 
+
+// Convert MySQL DATETIME → datetime-local
+const toDateTimeLocal = (mysqlDateTime) => {
+  if (!mysqlDateTime || mysqlDateTime.includes("0000")) return "";
+  return mysqlDateTime.replace(" ", "T").slice(0, 16);
+};
+
+// Convert datetime-local → MySQL DATETIME
+const toMySQLDateTime = (dateTimeLocal) => {
+  if (!dateTimeLocal) return null;
+  return dateTimeLocal.replace("T", ":") + ":00";
+};
+
+
+
+
+
+
+
   // Fetch exams
   const fetchExams = async () => {
     try {
@@ -387,8 +406,18 @@ const LecturerExamsManagement = ({ lecturerId }) => {
     setTitle(exam.title);
     setDescription(exam.description);
     setDuration(exam.duration);
-    setStartTime(exam.start_time);
-    setEndTime(exam.end_time);
+    // setStartTime(exam.start_time);
+    // setEndTime(exam.end_time);
+
+
+    setStartTime(toDateTimeLocal(exam.start_time));
+setEndTime(toDateTimeLocal(exam.end_time));
+
+
+
+console.log(exam.start_time)
+console.log(toDateTimeLocal(exam.start_time))
+
     setOpen(true);
   };
 
@@ -410,8 +439,11 @@ const LecturerExamsManagement = ({ lecturerId }) => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("duration", duration);
-    formData.append("start_time", startTime);
-    formData.append("end_time", endTime);
+    // formData.append("start_time", startTime);
+    // formData.append("end_time", endTime);
+    formData.append("start_time", toMySQLDateTime(startTime));
+formData.append("end_time", toMySQLDateTime(endTime));
+
 
     try {
       Swal.fire({ title: editingExamId ? "Updating exam..." : "Creating exam...", allowOutsideClick: false });
@@ -445,6 +477,11 @@ const LecturerExamsManagement = ({ lecturerId }) => {
       Swal.fire("Error", "Server error occurred", "error");
     }
   };
+
+
+
+
+
 
   return (
     <Container>
@@ -506,7 +543,7 @@ const LecturerExamsManagement = ({ lecturerId }) => {
             <Label>Duration (minutes)</Label>
             <Input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} />
 
-            <Label>Start Time</Label>
+           <Label>Start Time</Label>
             <Input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
 
             <Label>End Time</Label>

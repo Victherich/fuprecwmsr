@@ -30,6 +30,7 @@ import ActiveAttendancePage from './ActiveAttendancePage.jsx';
 import PostVideoLesson from './PostVideoLesson.jsx';
 import GeneralAssets from './GeneralAssets.jsx';
 import AssessmentAndFeedbacks from './AssessmentAndFeedbacks.jsx';
+import LecturerExamsManagement from './LecturerExamsManagement.jsx';
 
 
 // Styled Components
@@ -289,6 +290,9 @@ getLecturerById();
 
                          case 'feedback':
                         return <AssessmentAndFeedbacks/>;
+
+                        case 'exams':
+                        return <LecturerExamsManagement lecturerId={lecturerInfo.id}/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

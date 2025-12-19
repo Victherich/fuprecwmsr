@@ -253,6 +253,7 @@ import {
   FaFileCsv,
   FaSpeakerDeck,
   FaReply,
+  FaPaperPlane,
 } from "react-icons/fa";
 
 // 🌿 Styled Components
@@ -525,6 +526,13 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
             <StatIcon><FaVideo /></StatIcon>
             <StatLabel>Online Live Class / Meeting / Examination / Quiz</StatLabel>
             <StatValue>Start or join a session</StatValue>
+          </StatCard>
+
+
+           <StatCard onClick={() => onNavigate("exams")}>
+            <StatIcon><FaPaperPlane /></StatIcon>
+            <StatLabel>Online Exams / Tests / Assessments</StatLabel>
+            <StatValue>Manage Online exams</StatValue>
           </StatCard>
 
             <StatCard onClick={() => onNavigate("clockin")}>

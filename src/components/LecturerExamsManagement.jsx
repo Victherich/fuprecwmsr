@@ -4,6 +4,8 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Context } from "./Context";
+import ExamQuestionsModal from "./ExamQuestionsModal";
+
 
 /* ================= STYLES ================= */
 const Container = styled.div`
@@ -29,6 +31,8 @@ const ExamCard = styled.div`
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+
+
 `;
 
 const ExamTitle = styled.h4`
@@ -125,210 +129,6 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-// /* ================= COMPONENT ================= */
-// const LecturerExamsManagement = ({lecturerId}) => {
-//   const [exams, setExams] = useState([]);
-//   const [open, setOpen] = useState(false);
-//   const {courses} = useContext(Context)
-
-//   const [title, setTitle] = useState("");
-//   const [description, setDescription] = useState("");
-//   const [duration, setDuration] = useState("");
-//   const [startTime, setStartTime] = useState("");
-//   const [endTime, setEndTime] = useState("");
-//  const [lecturer, setLecturer] = useState({});
-//  const [assignedCourses, setAssignedCourses] = useState([]);
-//  const [selectedCourseId, setSelectedCourseId] = useState("");
-
-
-//   const fetchExams = async () => {
-//     try {
-//       const res = await axios.get("https://www.cwmsrfupre.com.ng/api/get_exams_by_lecturer.php", {
-//         params: { lecturer_id: lecturerId }
-//       });
-//       if (res.data.success) {
-//         setExams(res.data.exams);
-//       }
-//     } catch (err) {
-//       Swal.fire("Error", "Failed to load exams", "error");
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchExams();
-//   }, []);
-
-//   const createExam = async () => {
-//     if (!title || !duration || !startTime || !endTime || !selectedCourseId) {
-//       Swal.fire("Validation", "Please fill all required fields", "warning");
-//       return;
-//     }
-
-//     const formData = new FormData();
-//     formData.append("course_id", selectedCourseId);
-//     formData.append("lecturer_id", lecturerId);
-//     formData.append("title", title);
-//     formData.append("description", description);
-//     formData.append("duration", duration);
-//     formData.append("start_time", startTime);
-//     formData.append("end_time", endTime);
-
-//     try {
-//       Swal.fire({ title: "Creating exam...", allowOutsideClick: false });
-//       Swal.showLoading();
-
-//       const res = await axios.post("https://www.cwmsrfupre.com.ng/api/create_exam.php", formData);
-
-//       Swal.close();
-
-//       if (res.data.success) {
-//         Swal.fire("Success", "Exam created successfully", "success");
-//         setOpen(false);
-//         setTitle("");
-//         setDescription("");
-//         setDuration("");
-//         setStartTime("");
-//         setEndTime("");
-//         fetchExams();
-//       } else {
-//         Swal.fire("Failed", res.data.error || "Could not create exam", "error");
-//       }
-//     } catch (err) {
-//       Swal.close();
-//       Swal.fire("Error", "Server error occurred", "error");
-//     }
-//   };
-  
-
-
-
-//  useEffect(() => {
-//     if (!lecturerId) return;
-
-//     axios
-//       .get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerId}`)
-//       .then((res) => {
-//         if (res.data.success) setLecturer(res.data.lecturer);
-//       })
-//       .catch(() => {
-//         Swal.fire("Error", "Failed to fetch lecturer details.", "error");
-//       });
-//   }, [lecturerId]);
-
-//   const fetchAssignedCourses = () => {
-//     axios
-//       .get(
-//         `https://www.cwmsrfupre.com.ng/api/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
-//       )
-//       .then((res) => {
-//         if (res.data.success) {
-//           setAssignedCourses(res.data.enrollments);
-//         } else {
-//           setAssignedCourses([]);
-//         }
-//       });
-//   };
-
-//   useEffect(() => {
-//     if (lecturerId) fetchAssignedCourses();
-//   }, [lecturer]);
-
-
-// // Helper function
-// const capitalizeFirst = (str) => {
-//   if (!str) return "";
-//   return str.charAt(0).toUpperCase() + str.slice(1);
-// };
-
-
-//   return (
-//     <Container>
-//       <PageTitle>Your Created Examinations</PageTitle>
-
-//       <ExamGrid>
-//         {exams.length === 0 && <p>No exams created yet.</p>}
-
-//         {exams.map((exam) => {
-//   const course = courses.find((c) => c.id == exam.course_id);
-
-//   return (
-//     <ExamCard key={exam.id}>
-//       <ExamTitle>
-//         {course ? `${course.code} - ${course.title}` : `Course ID: ${exam.course_id}`}
-//       </ExamTitle>
-//        <ExamMeta><strong>Title:</strong> {capitalizeFirst(exam.title)}</ExamMeta>
-//       <ExamMeta><strong>Description:</strong> {capitalizeFirst(exam.description)}</ExamMeta>
-//       <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
-//       <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
-//       <ExamMeta><strong>End:</strong> {exam.end_time}</ExamMeta>
-//     </ExamCard>
-//   );
-// })}
-
-//       </ExamGrid>
-
-//       <FloatingButton onClick={() => setOpen(true)}>
-//         <FaPlus />
-//       </FloatingButton>
-
-//       {open && (
-//         <Overlay>
-//           <Modal>
-//             <CloseBtn onClick={() => setOpen(false)}><FaTimes /></CloseBtn>
-
-//             <h3 style={{ textAlign: "center", color: "green" }}>Create New Exam</h3>
-
-          
-
-// <Label>Select Course</Label>
-// <select
-//   style={{
-//     width: "100%",
-//     padding: "10px",
-//     marginTop: "5px",
-//     borderRadius: "6px",
-//     border: "1px solid #ccc",
-//   }}
-//   value={selectedCourseId}
-//   onChange={(e) => setSelectedCourseId(e.target.value)}
-// >
-//   <option value="">-- Select Course --</option>
-//   {assignedCourses.map((enrollment) => {
-//     const course = courses.find(
-//       (c) => c.id == enrollment.course_id
-//     );
-//     if (!course) return null;
-//     return (
-//       <option key={course.id} value={course.id}>
-//         {course.code} - {course.title}
-//       </option>
-//     );
-//   })}
-// </select>
-
-
-//             <Label>Exam Title</Label>
-//             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-
-//             <Label>Description</Label>
-//             <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
-
-//             <Label>Duration (minutes)</Label>
-//             <Input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} />
-
-//             <Label>Start Time</Label>
-//             <Input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-
-//             <Label>End Time</Label>
-//             <Input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-
-//             <Button onClick={createExam}>Create Exam</Button>
-//           </Modal>
-//         </Overlay>
-//       )}
-//     </Container>
-//   );
-// };
 
 
 /* ================= COMPONENT ================= */
@@ -347,6 +147,11 @@ const LecturerExamsManagement = ({ lecturerId }) => {
 
   const [editingExamId, setEditingExamId] = useState(null); // NEW
 
+const [showQuestionsModal, setShowQuestionsModal] = useState(false);
+const [selectedExam, setSelectedExam] = useState(null);
+
+
+
 
 // Convert MySQL DATETIME → datetime-local
 const toDateTimeLocal = (mysqlDateTime) => {
@@ -354,11 +159,14 @@ const toDateTimeLocal = (mysqlDateTime) => {
   return mysqlDateTime.replace(" ", "T").slice(0, 16);
 };
 
+
+// Convert datetime-local → MySQL DATETIME
 // Convert datetime-local → MySQL DATETIME
 const toMySQLDateTime = (dateTimeLocal) => {
   if (!dateTimeLocal) return null;
-  return dateTimeLocal.replace("T", ":") + ":00";
+  return dateTimeLocal.replace("T", " ") + ":00";
 };
+
 
 
 
@@ -406,10 +214,6 @@ const toMySQLDateTime = (dateTimeLocal) => {
     setTitle(exam.title);
     setDescription(exam.description);
     setDuration(exam.duration);
-    // setStartTime(exam.start_time);
-    // setEndTime(exam.end_time);
-
-
     setStartTime(toDateTimeLocal(exam.start_time));
 setEndTime(toDateTimeLocal(exam.end_time));
 
@@ -439,8 +243,6 @@ console.log(toDateTimeLocal(exam.start_time))
     formData.append("title", title);
     formData.append("description", description);
     formData.append("duration", duration);
-    // formData.append("start_time", startTime);
-    // formData.append("end_time", endTime);
     formData.append("start_time", toMySQLDateTime(startTime));
 formData.append("end_time", toMySQLDateTime(endTime));
 
@@ -483,6 +285,52 @@ formData.append("end_time", toMySQLDateTime(endTime));
 
 
 
+const deleteExam = async (examId) => {
+  const confirm = await Swal.fire({
+    title: "Delete Exam?",
+    text: "This action cannot be undone.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Yes, delete it",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  try {
+    Swal.fire({
+      title: "Deleting exam...",
+      allowOutsideClick: false,
+      didOpen: () => Swal.showLoading(),
+    });
+
+    const formData = new FormData();
+    formData.append("exam_id", examId);
+    formData.append("lecturer_id", lecturerId);
+
+    const res = await axios.post(
+      "https://www.cwmsrfupre.com.ng/api/delete_exam.php",
+      formData
+    );
+
+    Swal.close();
+
+    if (res.data.success) {
+      Swal.fire("Deleted!", "Exam deleted successfully.", "success");
+      fetchExams(); // refresh list
+    } else {
+      Swal.fire("Failed", res.data.error || "Could not delete exam", "error");
+    }
+  } catch (err) {
+    Swal.close();
+    Swal.fire("Error", "Server error occurred", "error");
+  }
+};
+
+
+
+
   return (
     <Container>
       <PageTitle>Your Created Examinations</PageTitle>
@@ -502,8 +350,49 @@ formData.append("end_time", toMySQLDateTime(endTime));
               <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
               <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
               <ExamMeta><strong>End:</strong> {exam.end_time}</ExamMeta>
-              <Button onClick={() => openEditModal(exam)} style={{marginTop:"10px"}}>Edit Exam</Button>
-            </ExamCard>
+            <div style={{ marginTop: "10px" }}>
+  <span
+    style={{
+      marginRight: "15px",
+      textDecoration: "underline",
+      cursor: "pointer",
+      color: "green",
+      fontWeight: "bold",
+    }}
+    onClick={() => openEditModal(exam)}
+  >
+    Edit Exam
+  </span>
+  <br/>
+<span
+  style={{
+    textDecoration: "underline",
+    cursor: "pointer",
+    color: "#0cc0e0",
+    marginTop: "8px",
+    fontWeight: "bold",
+  }}
+  onClick={() => {
+    setSelectedExam(exam);
+    setShowQuestionsModal(true);
+  }}
+>
+  Manage Questions
+</span>
+<br/>
+  <span
+    style={{
+      textDecoration: "underline",
+      cursor: "pointer",
+      color: "red",
+      fontWeight: "bold",
+    }}
+    onClick={() => deleteExam(exam.id)}
+  >
+    Delete Exam
+  </span>
+</div>
+</ExamCard>
           );
         })}
       </ExamGrid>
@@ -553,6 +442,14 @@ formData.append("end_time", toMySQLDateTime(endTime));
           </Modal>
         </Overlay>
       )}
+
+      {showQuestionsModal && selectedExam && (
+  <ExamQuestionsModal
+    exam={selectedExam}
+    onClose={() => setShowQuestionsModal(false)}
+  />
+)}
+
     </Container>
   );
 };

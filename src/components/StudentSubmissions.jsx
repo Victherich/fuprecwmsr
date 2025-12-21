@@ -421,8 +421,10 @@ const StudentSubmissions = () => {
                   <strong>Score:</strong> {sub.score?sub.score:"Not marked"}
                  
                 <br/>
-            <strong>Marked by:</strong>{" "}
-            {lecturer[sub?.marked_by] || "Not marked..."}
+            {sub.marked_by==0?<><strong>Marked by: </strong> System</>
+            :
+            <><strong>Marked by:</strong>{" "}
+            {lecturer[sub?.marked_by] || "Not marked..."}</>}
       
 
                 </SubmissionMeta>

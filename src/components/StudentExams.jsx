@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Context } from "./Context";
+import TakeExamModal from "./TakeExamModal";
 
 /* ================= STYLES ================= */
 const Container = styled.div`
@@ -47,6 +48,10 @@ const StudentExams = ({ studentId}) => {
     const {courses} = useContext(Context)
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeExam, setActiveExam] = useState(null);
+
+
+
 
   const fetchExams = async () => {
     try {
@@ -99,10 +104,27 @@ const getCourseName = (courseId) => {
               <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
               <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
               <ExamMeta><strong>End:</strong> {exam.end_time}</ExamMeta>
+
+              <button
+    style={{ marginTop: "10px", padding: "8px", background: "green", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
+    onClick={() => setActiveExam(exam)}
+  >
+    Take Exam
+  </button>
             </ExamCard>
           ))}
-        </ExamGrid>
+      {activeExam && (
+  <TakeExamModal
+    examId={activeExam.exam_id}
+    studentId={studentId}
+    courseId={activeExam.course_id}
+    categoryId={activeExam.course_id} //will change it 
+    onClose={() => setActiveExam(null)}
+  />
+)}  </ExamGrid>
       )}
+
+
     </Container>
   );
 };

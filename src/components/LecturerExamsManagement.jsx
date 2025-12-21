@@ -135,7 +135,7 @@ const Button = styled.button`
 const LecturerExamsManagement = ({ lecturerId }) => {
   const [exams, setExams] = useState([]);
   const [open, setOpen] = useState(false);
-  const { courses } = useContext(Context);
+  const { courses, categories } = useContext(Context);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -149,6 +149,8 @@ const LecturerExamsManagement = ({ lecturerId }) => {
 
 const [showQuestionsModal, setShowQuestionsModal] = useState(false);
 const [selectedExam, setSelectedExam] = useState(null);
+
+
 
 
 

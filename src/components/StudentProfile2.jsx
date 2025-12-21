@@ -19,6 +19,7 @@ import {
   FaEdit,
   FaSpeakerDeck,
   FaReply,
+  FaGlobe,
 } from "react-icons/fa";
 import { Context } from "./Context";
 
@@ -359,6 +360,14 @@ const handleSaveName = () => {
             </Icon>
             <Label>Assignments / Quizes / Exam papers / Lecture notes / Handouts</Label>
             {/* <Value>View & submit assignments</Value> */}
+          </Card>
+
+          <Card onClick={() => onNavigate("exams")}>
+            <Icon>
+              <FaGlobe />
+            </Icon>
+            <Label>Online Exams / Tests / Assessments</Label>
+            <Value>View and partake in your online Exam, Test , Assessment</Value>
           </Card>
 
             <Card onClick={() => onNavigate("videolessons")}>

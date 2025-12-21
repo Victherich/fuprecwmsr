@@ -248,7 +248,7 @@ formData.append("end_time", toMySQLDateTime(endTime));
 
 
     try {
-      Swal.fire({ title: editingExamId ? "Updating exam..." : "Creating exam...", allowOutsideClick: false });
+      Swal.fire({ title: editingExamId ? "Updating..." : "Creating...", allowOutsideClick: false });
       Swal.showLoading();
 
       let url = editingExamId
@@ -272,7 +272,7 @@ formData.append("end_time", toMySQLDateTime(endTime));
         setSelectedCourseId("");
         fetchExams();
       } else {
-        Swal.fire("Failed", res.data.error || "Could not save exam", "error");
+        Swal.fire("Failed", res.data.error || "Could not save", "error");
       }
     } catch (err) {
       Swal.close();
@@ -287,8 +287,8 @@ formData.append("end_time", toMySQLDateTime(endTime));
 
 const deleteExam = async (examId) => {
   const confirm = await Swal.fire({
-    title: "Delete Exam?",
-    text: "This action cannot be undone.",
+    title: "Delete?",
+    text: "This and all its questions will be delete and this action cannot be undone.",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#d33",
@@ -300,7 +300,7 @@ const deleteExam = async (examId) => {
 
   try {
     Swal.fire({
-      title: "Deleting exam...",
+      title: "Deleting...",
       allowOutsideClick: false,
       didOpen: () => Swal.showLoading(),
     });
@@ -317,10 +317,10 @@ const deleteExam = async (examId) => {
     Swal.close();
 
     if (res.data.success) {
-      Swal.fire("Deleted!", "Exam deleted successfully.", "success");
+      Swal.fire("Deleted!", " Deleted successfully.", "success");
       fetchExams(); // refresh list
     } else {
-      Swal.fire("Failed", res.data.error || "Could not delete exam", "error");
+      Swal.fire("Failed", res.data.error || "Could not delete ", "error");
     }
   } catch (err) {
     Swal.close();
@@ -333,10 +333,10 @@ const deleteExam = async (examId) => {
 
   return (
     <Container>
-      <PageTitle>Your Created Examinations</PageTitle>
+      <PageTitle>Your Created Exam / Test / Assessment</PageTitle>
 
       <ExamGrid>
-        {exams.length === 0 && <p>No exams created yet.</p>}
+        {exams.length === 0 && <p>No exams / test or assessment created yet.</p>}
 
         {exams.map((exam) => {
           const course = courses.find((c) => c.id == exam.course_id);
@@ -345,7 +345,7 @@ const deleteExam = async (examId) => {
               <ExamTitle>
                 {course ? `${course.code} - ${course.title}` : `Course ID: ${exam.course_id}`}
               </ExamTitle>
-              <ExamMeta><strong>Title:</strong> {capitalizeFirst(exam.title)}</ExamMeta>
+              <ExamMeta><strong> {capitalizeFirst(exam.title)}</strong></ExamMeta>
               <ExamMeta><strong>Description:</strong> {capitalizeFirst(exam.description)}</ExamMeta>
               <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
               <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
@@ -361,7 +361,7 @@ const deleteExam = async (examId) => {
     }}
     onClick={() => openEditModal(exam)}
   >
-    Edit Exam
+    Edit
   </span>
   <br/>
 <span
@@ -389,7 +389,7 @@ const deleteExam = async (examId) => {
     }}
     onClick={() => deleteExam(exam.id)}
   >
-    Delete Exam
+    Delete
   </span>
 </div>
 </ExamCard>
@@ -405,7 +405,7 @@ const deleteExam = async (examId) => {
         <Overlay>
           <Modal>
             <CloseBtn onClick={() => setOpen(false)}><FaTimes /></CloseBtn>
-            <h3 style={{ textAlign: "center", color: "green" }}>{editingExamId ? "Edit Exam" : "Create New Exam"}</h3>
+            <h3 style={{ textAlign: "center", color: "green" }}>{editingExamId ? "Edit Exam, Test or Assessment" : "Create New Exam, Test or Assessment"}</h3>
 
             <Label>Select Course</Label>
             <select
@@ -423,7 +423,7 @@ const deleteExam = async (examId) => {
               })}
             </select>
 
-            <Label>Exam Title</Label>
+            <Label>Exam , Test or Assessment: Please specify</Label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
 
             <Label>Description</Label>
@@ -438,7 +438,7 @@ const deleteExam = async (examId) => {
             <Label>End Time</Label>
             <Input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
 
-            <Button onClick={saveExam}>{editingExamId ? "Update Exam" : "Create Exam"}</Button>
+            <Button onClick={saveExam}>{editingExamId ? "Update" : "Create"}</Button>
           </Modal>
         </Overlay>
       )}

@@ -29,6 +29,7 @@ import ActiveAttendancePage from './ActiveAttendancePage';
 import StudentVideoLessons from './StudentVideoLessons';
 import GeneralAssets from './GeneralAssets';
 import AssessmentAndFeedbacks from './AssessmentAndFeedbacks';
+import StudentExams from './StudentExams';
 // import Departments from './Departments';
 // import Classes from './Classes';
 // import Subjects from './Subjects';
@@ -268,6 +269,9 @@ const StudentDashboard = () => {
 
          case 'feedback':
                 return <AssessmentAndFeedbacks/>;
+
+                   case 'exams':
+                return <StudentExams studentId={studentInfo.id}/>;
 
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

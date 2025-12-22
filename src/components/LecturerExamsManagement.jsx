@@ -151,7 +151,7 @@ const [showQuestionsModal, setShowQuestionsModal] = useState(false);
 const [selectedExam, setSelectedExam] = useState(null);
 
 
-
+const [selectedCategoryId, setSelectedCategoryId]= useState('');
 
 
 
@@ -213,7 +213,8 @@ const toMySQLDateTime = (dateTimeLocal) => {
   const openEditModal = (exam) => {
     setEditingExamId(exam.id);
     setSelectedCourseId(exam.course_id);
-    setTitle(exam.title);
+    setSelectedCategoryId(exam.category_id);
+
     setDescription(exam.description);
     setDuration(exam.duration);
     setStartTime(toDateTimeLocal(exam.start_time));
@@ -229,12 +230,27 @@ console.log(toDateTimeLocal(exam.start_time))
 
 
 
+   const closeEditModal = () => {
+    setEditingExamId('');
+    setSelectedCourseId('');
+    setSelectedCategoryId('');
+
+    setDescription('');
+    setDuration('');
+    setStartTime(toDateTimeLocal(''));
+setEndTime(toDateTimeLocal(''));
+
+    setOpen(false);
+  };
+
+
+
 
 
 
   // Create or update exam
   const saveExam = async () => {
-    if (!title || !duration || !startTime || !endTime || !selectedCourseId) {
+    if (!selectedCategoryId || !duration || !startTime || !endTime || !selectedCourseId) {
       Swal.fire("Validation", "Please fill all required fields", "warning");
       return;
     }
@@ -242,7 +258,7 @@ console.log(toDateTimeLocal(exam.start_time))
     const formData = new FormData();
     formData.append("course_id", selectedCourseId);
     formData.append("lecturer_id", lecturerId);
-    formData.append("title", title);
+    formData.append("category_id", selectedCategoryId);
     formData.append("description", description);
     formData.append("duration", duration);
     formData.append("start_time", toMySQLDateTime(startTime));
@@ -342,12 +358,15 @@ const deleteExam = async (examId) => {
 
         {exams.map((exam) => {
           const course = courses.find((c) => c.id == exam.course_id);
+          const category = categories.find(
+              (cat) => cat.id === Number(exam.category_id)
+            );
           return (
             <ExamCard key={exam.id}>
               <ExamTitle>
                 {course ? `${course.code} - ${course.title}` : `Course ID: ${exam.course_id}`}
               </ExamTitle>
-              <ExamMeta><strong> {capitalizeFirst(exam.title)}</strong></ExamMeta>
+              <ExamMeta><strong> {category?.name}</strong></ExamMeta>
               <ExamMeta><strong>Description:</strong> {capitalizeFirst(exam.description)}</ExamMeta>
               <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
               <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
@@ -406,7 +425,7 @@ const deleteExam = async (examId) => {
       {open && (
         <Overlay>
           <Modal>
-            <CloseBtn onClick={() => setOpen(false)}><FaTimes /></CloseBtn>
+            <CloseBtn onClick={() => closeEditModal()}><FaTimes /></CloseBtn>
             <h3 style={{ textAlign: "center", color: "green" }}>{editingExamId ? "Edit Exam, Test or Assessment" : "Create New Exam, Test or Assessment"}</h3>
 
             <Label>Select Course</Label>
@@ -425,8 +444,24 @@ const deleteExam = async (examId) => {
               })}
             </select>
 
-            <Label>Exam , Test or Assessment: Please specify</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+
+             <Label>Select Category</Label>
+            <select
+              style={{ width: "100%", padding: "10px", marginTop: "5px", borderRadius: "6px", border: "1px solid #ccc" }}
+              value={selectedCategoryId}
+              onChange={(e) => setSelectedCategoryId(e.target.value)}
+              required
+            >
+              <option value="">-- Select Category --</option>
+             {categories.map((c)=>(
+                <option value={c.id}>
+                    {c.name}
+                </option>
+             ))}
+            </select>
+
+            {/* <Label>Exam , Test or Assessment: Please specify</Label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} /> */}
 
             <Label>Description</Label>
             <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />

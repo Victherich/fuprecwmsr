@@ -45,7 +45,7 @@ const ExamMeta = styled.p`
 
 /* ================= COMPONENT ================= */
 const StudentExams = ({ studentId}) => {
-    const {courses} = useContext(Context)
+    const {courses, categories} = useContext(Context)
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeExam, setActiveExam] = useState(null);
@@ -87,9 +87,14 @@ const getCourseName = (courseId) => {
     return course ? `${course.code} - ${course.title}` : `Course ID: ${courseId}`;
   };
 
+  const getCategoryName = (categoryId) => {
+    const category = categories.find(c => c.id === parseInt(categoryId));
+    return category ? `${category.name} ` : `Category ID: ${categoryId}`;
+  };
+
   return (
     <Container>
-      <PageTitle>Your Enrolled Exams</PageTitle>
+      <PageTitle>Your Online Exams / Quizes / Assessments</PageTitle>
       {loading ? (
         <p style={{ textAlign: "center" }}>Loading exams...</p>
       ) : exams.length === 0 ? (
@@ -98,8 +103,8 @@ const getCourseName = (courseId) => {
         <ExamGrid>
           {exams.map((exam) => (
             <ExamCard key={exam.exam_id}>
-              <ExamTitle>{getCourseName(exam.course_id)}</ExamTitle>
-              <ExamMeta><strong>Title:</strong> {exam.title}</ExamMeta>
+              <ExamTitle><strong>{getCourseName(exam.course_id)}</strong></ExamTitle>
+              <ExamMeta><strong>{getCategoryName(exam.category_id)}</strong> </ExamMeta>
               <ExamMeta><strong>Description:</strong> {exam.description}</ExamMeta>
               <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
               <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
@@ -118,7 +123,7 @@ const getCourseName = (courseId) => {
     examId={activeExam.exam_id}
     studentId={studentId}
     courseId={activeExam.course_id}
-    categoryId={activeExam.course_id} //will change it 
+    categoryId={activeExam.category_id} //will change it 
     onClose={() => setActiveExam(null)}
   />
 )}  </ExamGrid>

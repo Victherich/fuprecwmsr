@@ -382,8 +382,8 @@ const handleSaveName = () => {
             <Icon>
               <FaBook />
             </Icon>
-            <Label>Submit your Assignments / Quizes / Examinations</Label>
-            {/* <Value>View & submit assignments</Value> */}
+            <Label>Submissions</Label>
+            <Value>Submit and View your submissions</Value>
           </Card>
 
       

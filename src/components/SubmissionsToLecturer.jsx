@@ -444,9 +444,15 @@ const filteredSubmissions = submissions.filter((sub) => {
             <strong>Score:</strong>{" "}
             {sub.score ? `${sub.score}` : "Not marked"}
           </StudentInfo>
+
+
            <StudentInfo>
-            <strong>Marked by:</strong>{" "}
+          
+            {sub.marked_by==0?<><strong>Marked by: </strong> System</>:
+            
+           <> <strong>Marked by:</strong>{" "}
             {lecturer[sub?.marked_by] || "Not marked..."}
+            </>}
           </StudentInfo>
            {/* <StudentInfo>
             <strong>Marked At:</strong> {sub.marked_at?sub.marked_at:"Not marked"}

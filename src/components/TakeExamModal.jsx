@@ -55,22 +55,27 @@ const SubmitBtn = styled.button`
   cursor: pointer;
 `;
 
-const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId }) => {
+const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId, courseName, examEndTime }) => {
   const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState({0:"no answer"});
   const [score, setScore] = useState(null);
+
+  const [remainingSeconds, setRemainingSeconds] = useState(null);
+const [autoSubmitted, setAutoSubmitted] = useState(false);
+// const [examEndTime, setExamEndTime] = useState(null);
+
 
   // Fetch exam questions
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_exam_questions.php",
-        { params: { exam_id: examId, _t: Date.now() } }
+        "https://www.cwmsrfupre.com.ng/api/get_exam_questions_for_student.php",
+        { params: { exam_id: examId, _t: Date.now(),student_id:studentId } }
       );
       if (res.data.success) {
         setQuestions(res.data.questions);
       } else {
-        Swal.fire("Error", res.data.error || "Failed to fetch questions", "error");
+        Swal.fire({text: res.data.error || "Failed to fetch questions", icon:"info", allowOutsideClick:false});
       }
     } catch (err) {
       Swal.fire("Error", "Server error occurred", "error");
@@ -81,16 +86,85 @@ const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId }) => 
     fetchQuestions();
   }, []);
 
+
+
+// UTC COUNTDOWN CALCULATION
+const getRemainingSeconds = (endTimeUTC) => {
+  const now = new Date();
+  const end = new Date(endTimeUTC + "Z"); // force UTC
+  return Math.max(0, Math.floor((end - now) / 1000));
+};
+
+
+
+// START TIMER WHEN END TIME IS AVAILABLE
+useEffect(() => {
+  if (!examEndTime) return;
+
+  setRemainingSeconds(getRemainingSeconds(examEndTime));
+}, [examEndTime]);
+
+
+
+// AUTO-SUBMIT WHEN TIME ELAPSES
+useEffect(() => {
+  if (remainingSeconds === null) return;
+
+  if (remainingSeconds <= 0 && !autoSubmitted) {
+    setAutoSubmitted(true);
+    handleAutoSubmit();
+    return;
+  }
+
+  const timer = setInterval(() => {
+    setRemainingSeconds(prev => prev - 1);
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, [remainingSeconds]);
+
+
+
+// AUTO-SUBMIT FUNCTION (NO CONFIRMATION)
+const handleAutoSubmit = async () => {
+await  Swal.fire({
+    title: "Time Up!",
+    text: "Exam time has ended. Submitting automatically...",
+    icon: "warning",
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    timer:5000
+  });
+
+//   await submitExam(true);
+handleSubmit2();
+};
+
+
+
+
   const handleChange = (questionId, value) => {
     setAnswers({ ...answers, [questionId]: value });
   };
 
+
+
   const handleSubmit = async () => {
-    // Ensure all questions answered
-    if (questions.some(q => !answers[q.id])) {
-      Swal.fire("Warning", "Please answer all questions", "warning");
-      return;
-    }
+      // ✅ Confirmation before submit
+  const confirm = await Swal.fire({
+    title: "Submit?",
+    text: "Once submitted, you will not be able to change your answers.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#0a8f3d",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, submit",
+    cancelButtonText: "Cancel"
+  });
+
+  if (!confirm.isConfirmed) {
+    return; // stop if student cancels
+  }
 
     try {
       Swal.fire({ title: "Submitting...", allowOutsideClick: false });
@@ -105,7 +179,7 @@ const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId }) => 
 
       if (res.data.success) {
         setScore(res.data.score);
-        Swal.fire("Done", `You scored ${res.data.score} out of ${res.data.total}`, "success");
+        Swal.fire({title:"Done", text:`You scored ${res.data.score} out of ${res.data.total}`, icon:"success", allowOutsideClick:false});
         onClose();
       } else {
         Swal.fire("Error", res.data.error || "Submission failed", "error");
@@ -116,11 +190,107 @@ const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId }) => 
     }
   };
 
+
+
+  const handleSubmit2 = async () => {
+
+    try {
+      Swal.fire({ title: "Submitting...", allowOutsideClick: false });
+      Swal.showLoading();
+
+      const res = await axios.post(
+        "https://www.cwmsrfupre.com.ng/api/submit_exam.php",
+        { exam_id: examId, student_id: studentId, answers, course_id: courseId, category_id:categoryId}
+      );
+
+      Swal.close();
+
+      if (res.data.success) {
+        setScore(res.data.score);
+        Swal.fire({title:"Done", text:`You scored ${res.data.score} out of ${res.data.total}`, icon:"success", allowOutsideClick:false});
+        onClose();
+      } else {
+        Swal.fire("Error", res.data.error || "Submission failed", "error");
+      }
+    } catch (err) {
+      Swal.close();
+      Swal.fire("Error", "Server error occurred", "error");
+    }
+  };
+
+
+
+// const submitExam = async (forced = false) => {
+//   try {
+//     if (!forced) {
+//       const confirm = await Swal.fire({
+//         title: "Submit?",
+//         text: "Once submitted, you cannot change your answers.",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonColor: "#0a8f3d",
+//         cancelButtonColor: "#d33",
+//         confirmButtonText: "Yes, submit"
+//       });
+
+//       if (!confirm.isConfirmed) return;
+//     }
+
+//     Swal.fire({ title: "Submitting...", allowOutsideClick: false });
+//     Swal.showLoading();
+
+//     const res = await axios.post(
+//       "https://www.cwmsrfupre.com.ng/api/submit_exam.php",
+//       {
+//         exam_id: examId,
+//         student_id: studentId,
+//         answers,
+//         // forced,
+//         course_id: courseId,
+//         category_id: categoryId
+//       }
+//     );
+
+//     Swal.close();
+
+//     if (res.data.success) {
+//       Swal.fire("Done", "Exam submitted successfully", "success");
+//       onClose();
+//     } else {
+//       Swal.fire("Error", res.data.error, "error");
+//     }
+//   } catch {
+//     Swal.close();
+//     Swal.fire("Error", "Submission failed", "error");
+//   }
+// };
+
+
+
+
+
   return (
     <Overlay>
       <Modal>
         <CloseBtn onClick={onClose}><FaTimes /></CloseBtn>
-        <h3 style={{ textAlign: "center", color: "green" }}>Take Exam</h3>
+
+         <h3 style={{ textAlign: "center", color: "green" }}>Take Exam</h3>
+        {remainingSeconds !== null && (
+  <p style={{ textAlign: "center", color: "red", fontWeight: "bold" }}>
+    Time Remaining: {Math.floor(remainingSeconds / 60)}:
+    {(remainingSeconds % 60).toString().padStart(2, "0")}
+  </p>
+)}
+
+       
+        <p style={{textAlign:"center", color:"green", fontWeight:"bold"}}>Course: {courseName}</p>
+        <ul style={{fontSize:"0.8rem"}}>
+            <li>Do not close the modal until you submit to avoid lossing your progress.</li>
+            <li>Do not refresh the page until you submit to avoid losing your progress.</li>
+            <li>Do not navigate away from this window as it can lead to modal closing or page refreshing which will result in lossing your progress.</li>
+        <li>Ensure to submit the exam by clicking the submit button when you are through</li>
+        <li>This exam will automatically submit if the time elpases and you haven't yet submitted.</li>
+        </ul>
 
         {score !== null && (
           <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "1.2rem" }}>
@@ -147,7 +317,8 @@ const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId }) => 
           </QuestionCard>
         ))}
 
-        {questions.length > 0 && <SubmitBtn onClick={handleSubmit}>Submit Exam</SubmitBtn>}
+
+      {questions.length > 0 && <SubmitBtn onClick={handleSubmit}>Submit Exam</SubmitBtn>}
       </Modal>
     </Overlay>
   );

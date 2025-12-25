@@ -555,6 +555,12 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
             <StatValue>Register another admin</StatValue>
           </StatCard>
 
+          <StatCard onClick={() => onNavigate("zerowaste")}>
+            <StatIcon><FaUserShield /></StatIcon>
+            <StatLabel>Zero Waste Members</StatLabel>
+            {/* <StatValue>Register </StatValue> */}
+          </StatCard>
+
           <StatCard onClick={onLogout}>
             <StatIcon style={{ color: "red" }}><FaSignOutAlt /></StatIcon>
             <StatLabel>Logout</StatLabel>

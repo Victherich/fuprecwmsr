@@ -30,6 +30,7 @@ import AttendanceManagement from './AttendanceManagement.jsx';
 import ActiveAttendancePage from './ActiveAttendancePage.jsx';
 import GeneralAssets from './GeneralAssets.jsx';
 import AssessmentAndFeedbacks from './AssessmentAndFeedbacks.jsx';
+import ZeroWasteRegistrations from './ZeroWasteRegistrations.jsx';
 
 
 // Styled Components
@@ -258,6 +259,9 @@ const SchoolManagementDashboard = () => {
 
           case 'feedback':
         return <AssessmentAndFeedbacks/>;
+
+        case 'zerowaste':
+        return <ZeroWasteRegistrations/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

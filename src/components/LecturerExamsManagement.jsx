@@ -139,7 +139,7 @@ const LecturerExamsManagement = ({ lecturerId }) => {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [duration, setDuration] = useState("");
+  const [duration, setDuration] = useState("default");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [assignedCourses, setAssignedCourses] = useState([]);
@@ -155,21 +155,37 @@ const [selectedCategoryId, setSelectedCategoryId]= useState('');
 
 
 
-// Convert MySQL DATETIME → datetime-local
-const toDateTimeLocal = (mysqlDateTime) => {
-  if (!mysqlDateTime || mysqlDateTime.includes("0000")) return "";
-  return mysqlDateTime.replace(" ", "T").slice(0, 16);
+// // Convert MySQL DATETIME → datetime-local
+// const toDateTimeLocal = (mysqlDateTime) => {
+//   if (!mysqlDateTime || mysqlDateTime.includes("0000")) return "";
+//   return mysqlDateTime.replace(" ", "T").slice(0, 16);
+// };
+
+
+// // Convert datetime-local → MySQL DATETIME
+// // Convert datetime-local → MySQL DATETIME
+// const toMySQLDateTime = (dateTimeLocal) => {
+//   if (!dateTimeLocal) return null;
+//   return dateTimeLocal.replace("T", " ") + ":00";
+// };
+
+
+
+
+
+
+
+// Convert MySQL DATETIME (UTC) → datetime-local (UTC)
+const toDateTimeLocalUTC = (mysqlDateTimeUTC) => {
+  if (!mysqlDateTimeUTC || mysqlDateTimeUTC.includes("0000")) return "";
+  return mysqlDateTimeUTC.replace(" ", "T").slice(0, 16);
 };
 
-
-// Convert datetime-local → MySQL DATETIME
-// Convert datetime-local → MySQL DATETIME
-const toMySQLDateTime = (dateTimeLocal) => {
+// Convert datetime-local (UTC) → MySQL DATETIME (UTC)
+const toMySQLDateTimeUTC = (dateTimeLocal) => {
   if (!dateTimeLocal) return null;
   return dateTimeLocal.replace("T", " ") + ":00";
 };
-
-
 
 
 
@@ -216,14 +232,15 @@ const toMySQLDateTime = (dateTimeLocal) => {
     setSelectedCategoryId(exam.category_id);
 
     setDescription(exam.description);
-    setDuration(exam.duration);
-    setStartTime(toDateTimeLocal(exam.start_time));
-setEndTime(toDateTimeLocal(exam.end_time));
+
+//     setStartTime(toDateTimeLocal(exam.start_time));
+// setEndTime(toDateTimeLocal(exam.end_time));
+
+  // UTC-safe
+  setStartTime(toDateTimeLocalUTC(exam.start_time));
+  setEndTime(toDateTimeLocalUTC(exam.end_time));
 
 
-
-console.log(exam.start_time)
-console.log(toDateTimeLocal(exam.start_time))
 
     setOpen(true);
   };
@@ -236,9 +253,9 @@ console.log(toDateTimeLocal(exam.start_time))
     setSelectedCategoryId('');
 
     setDescription('');
-    setDuration('');
-    setStartTime(toDateTimeLocal(''));
-setEndTime(toDateTimeLocal(''));
+
+  setStartTime(toDateTimeLocalUTC(''));
+  setEndTime(toDateTimeLocalUTC(''));
 
     setOpen(false);
   };
@@ -250,7 +267,7 @@ setEndTime(toDateTimeLocal(''));
 
   // Create or update exam
   const saveExam = async () => {
-    if (!selectedCategoryId || !duration || !startTime || !endTime || !selectedCourseId) {
+    if (!selectedCategoryId  || !startTime || !endTime || !selectedCourseId) {
       Swal.fire("Validation", "Please fill all required fields", "warning");
       return;
     }
@@ -261,8 +278,10 @@ setEndTime(toDateTimeLocal(''));
     formData.append("category_id", selectedCategoryId);
     formData.append("description", description);
     formData.append("duration", duration);
-    formData.append("start_time", toMySQLDateTime(startTime));
-formData.append("end_time", toMySQLDateTime(endTime));
+//     formData.append("start_time", toMySQLDateTime(startTime));
+// formData.append("end_time", toMySQLDateTime(endTime));
+formData.append("start_time", toMySQLDateTimeUTC(startTime));
+formData.append("end_time", toMySQLDateTimeUTC(endTime));
 
 
     try {
@@ -349,6 +368,7 @@ const deleteExam = async (examId) => {
 
 
 
+
   return (
     <Container>
       <PageTitle>Your Created Exam / Test / Assessment</PageTitle>
@@ -368,9 +388,9 @@ const deleteExam = async (examId) => {
               </ExamTitle>
               <ExamMeta><strong> {category?.name}</strong></ExamMeta>
               <ExamMeta><strong>Description:</strong> {capitalizeFirst(exam.description)}</ExamMeta>
-              <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
-              <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
-              <ExamMeta><strong>End:</strong> {exam.end_time}</ExamMeta>
+              {/* <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta> */}
+              <ExamMeta><strong>Start:</strong> {exam.start_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
+              <ExamMeta><strong>End:</strong> {exam.end_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
             <div style={{ marginTop: "10px" }}>
   <span
     style={{
@@ -460,20 +480,39 @@ const deleteExam = async (examId) => {
              ))}
             </select>
 
-            {/* <Label>Exam , Test or Assessment: Please specify</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} /> */}
-
             <Label>Description</Label>
             <TextArea value={description} onChange={(e) => setDescription(e.target.value)} />
-
+{/* 
             <Label>Duration (minutes)</Label>
-            <Input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} />
+            <Input type="number" value={duration} onChange={(e) => setDuration(e.target.value)} disabled/> */}
 
-           <Label>Start Time</Label>
+           {/* <Label>Start Time</Label>
             <Input type="datetime-local" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
 
             <Label>End Time</Label>
-            <Input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+            <Input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)} /> */}
+
+<Label>Start Time (UTC) - ***THIS IS INTERNATIONAL TIME-ZONE (UTC)***</Label>
+<Input
+  type="datetime-local"
+  value={startTime}
+  onChange={(e) => setStartTime(e.target.value)}
+/>
+<p style={{ fontSize: "12px", color: "#555" }}>
+  Local Time: {startTime ? new Date(startTime + "Z").toLocaleString() : ""}
+</p>
+
+
+<Label>End Time (UTC) - ***THIS IS INTERNATIONAL TIME-ZONE (UTC)***</Label>
+<Input
+  type="datetime-local"
+  value={endTime}
+  onChange={(e) => setEndTime(e.target.value)}
+/>
+<p style={{ fontSize: "12px", color: "#555" }}>
+  Local Time: {endTime ? new Date(endTime + "Z").toLocaleString() : ""}
+</p>
+
 
             <Button onClick={saveExam}>{editingExamId ? "Update" : "Create"}</Button>
           </Modal>

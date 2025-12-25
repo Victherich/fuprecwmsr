@@ -50,7 +50,7 @@ const StudentExams = ({ studentId}) => {
   const [loading, setLoading] = useState(true);
   const [activeExam, setActiveExam] = useState(null);
 
-
+console.log(activeExam)
 
 
   const fetchExams = async () => {
@@ -72,9 +72,22 @@ const StudentExams = ({ studentId}) => {
     }
   };
 
-  useEffect(() => {
+
+
+useEffect(() => {
+  // Always fetch once on mount
+  fetchExams();
+
+  // DO NOT start interval if student is taking an exam
+  if (activeExam) return;
+
+  const interval = setInterval(() => {
     fetchExams();
-  }, []);
+  }, 60*1000);
+
+  return () => clearInterval(interval);
+}, [activeExam]);
+
 
 //   const getCourseName = (courseId) => {
 //     const course = courses.find(c => String(c.id) === String(courseId));
@@ -95,24 +108,27 @@ const getCourseName = (courseId) => {
   return (
     <Container>
       <PageTitle>Your Online Exams / Quizes / Assessments</PageTitle>
+       <p style={{fontSize:"0.8rem", marginBottom:"10px",textAlign: "center" }}>Note that the exam timings are in UTC TIME-ZONE to accomodate all students internationally, ensure you correctly match with your local timimg. If the time for your exam reaches and you have not seen your exam here , you can refresh the page. If it your exam still doesnt show, you can contact the management, but ensure that its time for your exam.</p>
+        
       {loading ? (
         <p style={{ textAlign: "center" }}>Loading exams...</p>
       ) : exams.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No exams available.</p>
+        <p style={{ textAlign: "center" }}><span style={{color:"green", fontWeight:"bold"}}>No exams available at the moment.</span> <br/><br/>Note that the exam timings are in UTC TIME-ZONE to accomodate all students internationally, ensure you correctly match with your local timimg. If the time for your exam reaches and you have not seen your exam here , you can refresh the page. If it your exam still doesnt show, you can contact the management, but ensure that its time for your exam.</p>
       ) : (
         <ExamGrid>
-          {exams.map((exam) => (
+           {exams.map((exam) => (
             <ExamCard key={exam.exam_id}>
               <ExamTitle><strong>{getCourseName(exam.course_id)}</strong></ExamTitle>
               <ExamMeta><strong>{getCategoryName(exam.category_id)}</strong> </ExamMeta>
               <ExamMeta><strong>Description:</strong> {exam.description}</ExamMeta>
-              <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta>
-              <ExamMeta><strong>Start:</strong> {exam.start_time}</ExamMeta>
-              <ExamMeta><strong>End:</strong> {exam.end_time}</ExamMeta>
+              {/* <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta> */}
+              <ExamMeta><strong>Start:</strong> {exam.start_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
+              <ExamMeta><strong>End:</strong> {exam.end_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
 
               <button
     style={{ marginTop: "10px", padding: "8px", background: "green", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
-    onClick={() => setActiveExam(exam)}
+    onClick={() => setActiveExam({ ...exam })}
+
   >
     Take Exam
   </button>
@@ -125,6 +141,8 @@ const getCourseName = (courseId) => {
     courseId={activeExam.course_id}
     categoryId={activeExam.category_id} //will change it 
     onClose={() => setActiveExam(null)}
+    courseName={getCourseName(activeExam.course_id)}
+    examEndTime={activeExam.end_time}
   />
 )}  </ExamGrid>
       )}

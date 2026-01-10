@@ -57,6 +57,7 @@ const SubmitBtn = styled.button`
 
 const TakeExamModal = ({ examId, onClose, studentId, courseId, categoryId, courseName, examEndTime }) => {
   const [questions, setQuestions] = useState([]);
+   const [essayQuestions, setEssayQuestions] = useState([]);
   const [answers, setAnswers] = useState({0:"no answer"});
   const [score, setScore] = useState(null);
 
@@ -84,6 +85,28 @@ const [autoSubmitted, setAutoSubmitted] = useState(false);
 
   useEffect(() => {
     fetchQuestions();
+  }, []);
+
+
+    // Fetch exam questions
+  const fetchEssayQuestions = async () => {
+    try {
+      const res = await axios.get(
+        "https://www.cwmsrfupre.com.ng/api/get_essay_exam_questions_for_student.php",
+        { params: { exam_id: examId, _t: Date.now(),student_id:studentId } }
+      );
+      if (res.data.success) {
+        setEssayQuestions(res.data.questions);
+      } else {
+        Swal.fire({text: res.data.error || "Failed to fetch questions", icon:"info", allowOutsideClick:false});
+      }
+    } catch (err) {
+      Swal.fire("Error", "Server error occurred", "error");
+    }
+  };
+
+  useEffect(() => {
+    fetchEssayQuestions();
   }, []);
 
 
@@ -291,12 +314,10 @@ handleSubmit2();
         <li>Ensure to submit the exam by clicking the submit button when you are through</li>
         <li>This exam will automatically submit if the time elpases and you haven't yet submitted.</li>
         </ul>
-
-        {score !== null && (
-          <p style={{ textAlign: "center", fontWeight: "bold", fontSize: "1.2rem" }}>
-            Your Score: {score} / {questions.reduce((acc, q) => acc + q.marks, 0)}
-          </p>
-        )}
+ 
+       
+<br/>
+        <h3 style={{ textAlign: "center", color: "green" }}>Objective Questions</h3>
 
         {questions.map((q, index) => (
           <QuestionCard key={q.id}>
@@ -316,6 +337,27 @@ handleSubmit2();
             </div>
           </QuestionCard>
         ))}
+<br/>
+<h3 style={{ textAlign: "center", color: "green" }}>Essay Questions</h3>
+             {essayQuestions.map((q, index) => (
+          <QuestionCard key={q.id}>
+            <p><strong>Q{index + 1}:</strong> {q.question}</p>
+            <div>
+              {['A','B','C','D'].map(opt => (
+                <label key={opt} style={{ display: "block", marginBottom: "5px" }}>
+                  <input
+                    type="radio"
+                    name={`q_${q.id}`}
+                    value={opt}
+                    checked={answers[q.id] === opt}
+                    onChange={() => handleChange(q.id, opt)}
+                  /> {opt}. {q[`option_${opt.toLowerCase()}`]}
+                </label>
+              ))}
+            </div>
+          </QuestionCard>
+        ))}
+
 
 
       {questions.length > 0 && <SubmitBtn onClick={handleSubmit}>Submit Exam</SubmitBtn>}

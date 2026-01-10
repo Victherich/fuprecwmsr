@@ -104,7 +104,7 @@ const getCourseName = (courseId) => {
     const category = categories.find(c => c.id === parseInt(categoryId));
     return category ? `${category.name} ` : `Category ID: ${categoryId}`;
   };
-
+  
   return (
     <Container>
       <PageTitle>Your Online Exams / Quizes / Assessments</PageTitle>

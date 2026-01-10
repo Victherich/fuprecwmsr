@@ -78,8 +78,8 @@ const AddEssayQuestionModal = ({ examId, onClose, onSaved, editingQuestion }) =>
       Swal.showLoading();
 
       const url = editingQuestion
-        ? "https://www.cwmsrfupre.com.ng/api/update_exam_question.php"
-        : "https://www.cwmsrfupre.com.ng/api/create_exam_question.php";
+        ? "https://www.cwmsrfupre.com.ng/api/update_essay_exam_question.php"
+        : "https://www.cwmsrfupre.com.ng/api/create_essay_exam_question.php";
 
       const payload = editingQuestion
         ? { ...form, id: editingQuestion.id }

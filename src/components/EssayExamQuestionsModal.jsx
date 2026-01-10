@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { FaTimes, FaPlus } from "react-icons/fa";
 import AddQuestionModal from "./AddQuestionModal";
 import { Context } from "./Context";
+import AddEssayQuestionModal from "./AddEssayQuestionModal";
 
 /* ================= STYLES ================= */
 const Overlay = styled.div`
@@ -87,7 +88,7 @@ const EssayExamQuestionsModal = ({ exam, onClose }) => {
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_exam_questions.php",
+        "https://www.cwmsrfupre.com.ng/api/get_essay_exam_questions.php",
         { params: { exam_id: exam.id } }
       );
       if (res.data.success) setQuestions(res.data.questions);
@@ -114,7 +115,7 @@ const EssayExamQuestionsModal = ({ exam, onClose }) => {
     try {
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/delete_exam_question.php",
+        "https://www.cwmsrfupre.com.ng/api/delete_essay_exam_question.php",
         { question_id: id }
       );
       Swal.close();
@@ -184,7 +185,7 @@ const EssayExamQuestionsModal = ({ exam, onClose }) => {
       </Overlay>
 
       {showAddModal.open && (
-        <AddQuestionModal
+        <AddEssayQuestionModal
           examId={exam.id}
           editingQuestion={showAddModal.editingQuestion}
           onClose={() => setShowAddModal({ open: false, editingQuestion: null })}

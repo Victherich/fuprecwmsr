@@ -125,13 +125,31 @@ const getCourseName = (courseId) => {
               <ExamMeta><strong>Start:</strong> {exam.start_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
               <ExamMeta><strong>End:</strong> {exam.end_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
 
-              <button
+              {/* <button
     style={{ marginTop: "10px", padding: "8px", background: "green", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
     onClick={() => setActiveExam({ ...exam })}
 
   >
     Take Exam
-  </button>
+  </button> */}
+
+  <button
+  style={{ marginTop: "10px", padding: "8px", background: "green", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
+  onClick={() => {
+    // Trigger full-screen mode on direct user click
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {
+        console.warn("Fullscreen request failed");
+      });
+    }
+
+    // Open the exam modal
+    setActiveExam({ ...exam });
+  }}
+>
+  Take Exam
+</button>
+
             </ExamCard>
           ))}
       {activeExam && (

@@ -5,6 +5,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Context } from "./Context";
 import ExamQuestionsModal from "./ExamQuestionsModal";
+import EssayExamQuestionsModal from "./EssayExamQuestionsModal";
 
 
 /* ================= STYLES ================= */
@@ -148,7 +149,9 @@ const LecturerExamsManagement = ({ lecturerId }) => {
   const [editingExamId, setEditingExamId] = useState(null); // NEW
 
 const [showQuestionsModal, setShowQuestionsModal] = useState(false);
+const [showEssayQuestionsModal, setShowEssayQuestionsModal] = useState(false);
 const [selectedExam, setSelectedExam] = useState(null);
+
 
 
 const [selectedCategoryId, setSelectedCategoryId]= useState('');
@@ -418,7 +421,23 @@ const deleteExam = async (examId) => {
     setShowQuestionsModal(true);
   }}
 >
-  Manage Questions
+  Manage OBJ Questions
+</span>
+<br/>
+<span
+  style={{
+    textDecoration: "underline",
+    cursor: "pointer",
+    color: "#0cc0e0",
+    marginTop: "8px",
+    fontWeight: "bold",
+  }}
+  onClick={() => {
+    setSelectedExam(exam);
+    setShowEssayQuestionsModal(true);
+  }}
+>
+  Manage EASSY Questions
 </span>
 <br/>
   <span
@@ -523,6 +542,13 @@ const deleteExam = async (examId) => {
   <ExamQuestionsModal
     exam={selectedExam}
     onClose={() => setShowQuestionsModal(false)}
+  />
+)}
+
+   {showEssayQuestionsModal && selectedExam && (
+  <EssayExamQuestionsModal
+    exam={selectedExam}
+    onClose={() => setShowEssayQuestionsModal(false)}
   />
 )}
 

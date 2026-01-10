@@ -346,13 +346,13 @@ const handleSaveName = () => {
             <Value>Ensure to enroll for all the courses you are offering.</Value>
           </Card>
 
-          <Card onClick={() => onNavigate("myresults")}>
+          {/* <Card onClick={() => onNavigate("myresults")}>
             <Icon>
               <FaClipboardList />
             </Icon>
             <Label>My Results</Label>
             <Value>View your results & GPA</Value>
-          </Card>
+          </Card> */}
 
           <Card onClick={() => onNavigate("assignments")}>
             <Icon>

@@ -364,12 +364,12 @@ useEffect(() => {
             Enrollments
           </SidebarMenuItem>
 
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'myresults'}
             onClick={() => handleMenuClick('myresults')}
           >
             My Results
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
    
 
           <SidebarMenuItem

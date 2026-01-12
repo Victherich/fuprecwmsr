@@ -201,6 +201,10 @@ const ClearButton = styled.button`
 
 
 
+const SubmissionTitle = styled.h3`
+  margin: 0;
+  color: #0a4d24;
+`;
 
 
 
@@ -221,6 +225,8 @@ const [filterCategory, setFilterCategory] = useState("");
 const [filterStudent, setFilterStudent] = useState("");
 const [filterStatus, setFilterStatus] = useState(""); // "marked" or "unmarked"
 
+
+console.log(submissions)
 
  
     const fetchSubmissions = async () => {
@@ -428,6 +434,10 @@ const filteredSubmissions = submissions.filter((sub) => {
 
       {filteredSubmissions.map((sub, i) => (
         <SubmissionCard key={i}>
+           <SubmissionTitle>
+                  {getCategoryInfo(sub.category_id)} {sub.exam_type?<span>- ({sub.exam_type})</span>:""}
+                </SubmissionTitle>
+              
           <StudentInfo>
             <strong>Student:</strong> {sub.student_name} ({sub.admission_number})
           </StudentInfo>
@@ -437,9 +447,7 @@ const filteredSubmissions = submissions.filter((sub) => {
           <StudentInfo>
             <strong>Course:</strong> {getCourseInfo(sub.course_id)}
           </StudentInfo>
-          <StudentInfo>
-            <strong>Category:</strong> {getCategoryInfo(sub.category_id)}
-          </StudentInfo>
+       
           <StudentInfo>
             <strong>Score:</strong>{" "}
             {sub.score ? `${sub.score}` : "Not marked"}
@@ -464,7 +472,7 @@ const filteredSubmissions = submissions.filter((sub) => {
             </FileLink>
           )}
 <br/>
-          <MarkButton onClick={() => openModal(sub)}>Mark / Edit Score</MarkButton>
+          {sub.exam_type!=='objective'&&<MarkButton onClick={() => openModal(sub)}>Mark / Edit Score</MarkButton>}
         </SubmissionCard>
       ))}
 

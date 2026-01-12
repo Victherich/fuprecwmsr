@@ -1,6 +1,6 @@
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +30,7 @@ import StudentVideoLessons from './StudentVideoLessons';
 import GeneralAssets from './GeneralAssets';
 import AssessmentAndFeedbacks from './AssessmentAndFeedbacks';
 import StudentExams from './StudentExams';
+import { Context } from './Context';
 // import Departments from './Departments';
 // import Classes from './Classes';
 // import Subjects from './Subjects';
@@ -167,13 +168,14 @@ const HelpContent = () => <h1>Help Content</h1>;
 
 // Main Component
 const StudentDashboard = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState('profile');
+
   const studentInfo = useSelector(state=>state.studentInfo)
   const location = useLocation();
   const [student, setStudent]=useState({});
   const studentId = studentInfo.id;
   const [error, setError]=useState('');
+
+  const {menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb}=useContext(Context)
 
   console.log(student)
   
@@ -214,11 +216,11 @@ const StudentDashboard = () => {
 
 
 
-  const handleMenuClick = (menu) => {
-    window.scroll(0,0);
-    setActiveMenu(menu);
-    setMenuOpen(false); // Close menu on mobile when a menu item is clicked
-  };
+  // const handleMenuClick = (menu) => {
+  //   window.scroll(0,0);
+  //   setActiveMenu(menu);
+  //   setMenuOpen(false); // Close menu on mobile when a menu item is clicked
+  // };
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 
@@ -473,7 +475,7 @@ useEffect(() => {
           </SidebarMenuItem>
         </SidebarMenu>
       </Sidebar>
-          <DashboardHomeButton onGoHome={() => setActiveMenu('profile')} />
+      <DashboardHomeButton onGoHome={() => setActiveMenu('profile')} />
       <ContentArea isOpen={menuOpen}>{renderContent()}</ContentArea>
     </DashboardContainer>
   );

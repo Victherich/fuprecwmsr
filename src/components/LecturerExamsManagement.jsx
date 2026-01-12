@@ -156,6 +156,12 @@ const [selectedExam, setSelectedExam] = useState(null);
 
 const [selectedCategoryId, setSelectedCategoryId]= useState('');
 
+const [filterCourse, setFilterCourse] = useState("");
+const [filterCategory, setFilterCategory] = useState("");
+const [filterSearch, setFilterSearch] = useState("");
+const [filterStatus, setFilterStatus] = useState("");
+
+
 
 
 // // Convert MySQL DATETIME → datetime-local
@@ -370,16 +376,135 @@ const deleteExam = async (examId) => {
 
 
 
+const nowUTC = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+const filteredExams = exams.filter((exam) => {
+  const matchesCourse =
+    !filterCourse || Number(exam.course_id) === Number(filterCourse);
+
+  const matchesCategory =
+    !filterCategory || Number(exam.category_id) === Number(filterCategory);
+
+  const matchesSearch =
+    !filterSearch ||
+    exam.description?.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    courses
+      .find((c) => c.id === Number(exam.course_id))
+      ?.code?.toLowerCase()
+      .includes(filterSearch.toLowerCase());
+
+  const matchesStatus =
+    !filterStatus ||
+    (filterStatus === "upcoming" && exam.start_time > nowUTC) ||
+    (filterStatus === "ongoing" &&
+      exam.start_time <= nowUTC &&
+      exam.end_time >= nowUTC) ||
+    (filterStatus === "ended" && exam.end_time < nowUTC);
+
+  return (
+    matchesCourse &&
+    matchesCategory &&
+    matchesSearch &&
+    matchesStatus
+  );
+});
+
 
 
   return (
     <Container>
-      <PageTitle>Your Created Exam / Test / Assessment</PageTitle>
+      <PageTitle>Your Created Exam / Assessment</PageTitle>
+
+      <div
+  style={{
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+    marginBottom: "25px",
+  }}
+>
+  {/* Course Filter */}
+  <select
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+    style={{ padding: "8px", minWidth: "200px" }}
+  >
+    <option value="">All Courses</option>
+    {assignedCourses.map((enr) => {
+      const course = courses.find((c) => c.id == enr.course_id);
+      if (!course) return null;
+      return (
+        <option key={course.id} value={course.id}>
+          {course.code} - {course.title}
+        </option>
+      );
+    })}
+  </select>
+
+  {/* Category Filter */}
+  <select
+    value={filterCategory}
+    onChange={(e) => setFilterCategory(e.target.value)}
+    style={{ padding: "8px", minWidth: "180px" }}
+  >
+    <option value="">All Categories</option>
+    {categories.slice(1).map((cat) => (
+      <option key={cat.id} value={cat.id}>
+        {cat.name}
+      </option>
+    ))}
+  </select>
+
+  {/* Status Filter */}
+  <select
+    value={filterStatus}
+    onChange={(e) => setFilterStatus(e.target.value)}
+    style={{ padding: "8px", minWidth: "160px" }}
+  >
+    <option value="">All Status</option>
+    <option value="upcoming">Upcoming</option>
+    <option value="ongoing">Ongoing</option>
+    <option value="ended">Ended</option>
+  </select>
+
+  {/* Search */}
+  <input
+    type="text"
+    placeholder="Search by description or course code..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={{ padding: "8px", flex: 1, minWidth: "250px" }}
+  />
+
+  {(filterCourse || filterCategory || filterSearch || filterStatus) && (
+  <button
+    onClick={() => {
+      setFilterCourse("");
+      setFilterCategory("");
+      setFilterSearch("");
+      setFilterStatus("");
+    }}
+    style={{
+      padding: "8px 14px",
+      backgroundColor: "red",
+      border: "1px solid #ccc",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontWeight: "bold",
+      color: "white",
+    }}
+  >
+    Clear Filters
+  </button>
+)}
+
+</div>
+
 
       <ExamGrid>
-        {exams.length === 0 && <p>No exams / test or assessment created yet.</p>}
+        {exams.length === 0 && <p>No exams / assessment created yet.</p>}
 
-        {exams.map((exam) => {
+        {filteredExams.map((exam) => {
           const course = courses.find((c) => c.id == exam.course_id);
           const category = categories.find(
               (cat) => cat.id === Number(exam.category_id)
@@ -389,7 +514,7 @@ const deleteExam = async (examId) => {
               <ExamTitle>
                 {course ? `${course.code} - ${course.title}` : `Course ID: ${exam.course_id}`}
               </ExamTitle>
-              <ExamMeta><strong> {category?.name}</strong></ExamMeta>
+              <ExamMeta style={{color:"green", fontSize:"1.2rem"}}><strong> {category?.name}</strong></ExamMeta>
               <ExamMeta><strong>Description:</strong> {capitalizeFirst(exam.description)}</ExamMeta>
               {/* <ExamMeta><strong>Duration:</strong> {exam.duration} mins</ExamMeta> */}
               <ExamMeta><strong>Start:</strong> {exam.start_time} <strong>UTC TIME-ZONE</strong></ExamMeta>
@@ -465,7 +590,7 @@ const deleteExam = async (examId) => {
         <Overlay>
           <Modal>
             <CloseBtn onClick={() => closeEditModal()}><FaTimes /></CloseBtn>
-            <h3 style={{ textAlign: "center", color: "green" }}>{editingExamId ? "Edit Exam, Test or Assessment" : "Create New Exam, Test or Assessment"}</h3>
+            <h3 style={{ textAlign: "center", color: "green" }}>{editingExamId ? "Edit Exam / Assessment" : "Create New Exam / Assessment"}</h3>
 
             <Label>Select Course</Label>
             <select
@@ -492,7 +617,7 @@ const deleteExam = async (examId) => {
               required
             >
               <option value="">-- Select Category --</option>
-             {categories.map((c)=>(
+             {categories.slice(1).map((c)=>(
                 <option value={c.id}>
                     {c.name}
                 </option>

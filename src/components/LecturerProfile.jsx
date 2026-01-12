@@ -500,7 +500,7 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
 
           <StatCard onClick={() => onNavigate("assignments")}>
             <StatIcon><FaBook /></StatIcon>
-            <StatLabel>Post Assignments / Quizes / Exam papers / Lecture notes / Handouts</StatLabel>
+            <StatLabel>Post Assignments / Handouts</StatLabel>
             {/* <StatValue>Post assignments</StatValue> */}
           </StatCard>
 
@@ -532,8 +532,8 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
 
            <StatCard onClick={() => onNavigate("exams")}>
             <StatIcon><FaGlobeEurope /></StatIcon>
-            <StatLabel>Online Exams / Tests / Assessments</StatLabel>
-            <StatValue>Manage Online exams / Tests /Assesments</StatValue>
+            <StatLabel>Online Exams / Assessments</StatLabel>
+            <StatValue>Manage Online exams / Assesments</StatValue>
           </StatCard>
 
             <StatCard onClick={() => onNavigate("clockin")}>

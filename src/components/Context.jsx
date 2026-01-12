@@ -407,26 +407,31 @@ const courses = [
 
 ];
 
-
+//NEVER CHANGE THE SEQUENCE OR IT WILL CHANGE ALOT
 const categories = [
   {id:1, name:"Assignment"},
-  {id:2, name:"Quiz"},
+  {id:2, name:"Quiz / Assessment-Test"},
   {id:3, name:"Exam"}
 ]
 
 
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeMenu, setActiveMenu] = useState('profile');
 
+ const handleMenuClick = (menu) => {
+    window.scroll(0,0);
+    setActiveMenu(menu);
+    setMenuOpen(false); // Close menu on mobile when a menu item is clicked
+  };
 
-
-
-
-
+const [dhb, setDhb]=useState(true)
 
   return (
     <Context.Provider value={{adminToken,setAdminToken,admin,setAdmin,adminMenu,
     setAdminMenu,trackingID,setTrackingID,
-    programs, levels, semesters, courses, categories}}>
+    programs, levels, semesters, courses, categories,
+    menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb, setDhb}}>
 
         {children}
     </Context.Provider>

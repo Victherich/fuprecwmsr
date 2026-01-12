@@ -564,6 +564,9 @@ const PostAssignment = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
+  const [filterCourse, setFilterCourse] = useState("");
+const [filterSearch, setFilterSearch] = useState("");
+
 
   const handleSubmit = async () => {
     if (!selectedCourseId || !title || !description) {
@@ -661,12 +664,80 @@ const PostAssignment = () => {
     }
   };
 
+
+  const filteredAssignments = assignments.filter((a) => {
+  const matchesCourse =
+    !filterCourse || Number(a.course_id) === Number(filterCourse);
+
+  const matchesSearch =
+    !filterSearch ||
+    a.title.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    a.description.toLowerCase().includes(filterSearch.toLowerCase());
+
+  return matchesCourse && matchesSearch;
+});
+
+
   return (
     <Container>
       <AssignmentList>
         <h2 style={{ textAlign: "center", marginBottom: "25px", color:"green" }}>
-          Your Posted Assignments / Quizes / Exam papers / Lecture notes / Handouts
+          Your Posted Assignments / Handouts
         </h2>
+
+        <div
+  style={{
+    display: "flex",
+    gap: "10px",
+    marginBottom: "20px",
+    flexWrap: "wrap",
+  }}
+>
+  {/* Course Filter */}
+  <select
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+    style={{ padding: "8px", minWidth: "220px" }}
+  >
+    <option value="">All Courses</option>
+    {courses.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.code} - {c.title}
+      </option>
+    ))}
+  </select>
+
+  {/* Search Filter */}
+  <input
+    type="text"
+    placeholder="Search by title or description..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={{ padding: "8px", flex: 1, minWidth: "250px" }}
+  />
+
+    {/* Clear Filters Button */}
+  {(filterCourse || filterSearch) && (
+    <button
+      onClick={() => {
+        setFilterCourse("");
+        setFilterSearch("");
+      }}
+      style={{
+        padding: "8px 14px",
+        backgroundColor: "red",
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        color:"white"
+      }}
+    >
+      Clear Filters
+    </button>
+  )}
+</div>
+
 
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <NewPostButton onClick={() => setOpenForm(true)}>
@@ -680,7 +751,7 @@ const PostAssignment = () => {
         {assignments.length === 0 ? (
           <p style={{ textAlign: "center" }}>No posts found.</p>
         ) : (
-          assignments.map((assignment) => {
+          filteredAssignments.map((assignment) => {
             const course = courses.find(
               (c) => c.id === Number(assignment.course_id)
             );

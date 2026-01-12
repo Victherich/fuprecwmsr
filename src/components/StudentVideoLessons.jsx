@@ -67,6 +67,10 @@ const StudentVideoLessons = ({ studentId }) => {
   const [error, setError] = useState(null);
   const { courses } = useContext(Context);
 
+  const [filterCourse, setFilterCourse] = useState("");
+const [filterSearch, setFilterSearch] = useState("");
+
+
   useEffect(() => {
     if (!studentId) {
       setError("No student ID provided.");
@@ -100,9 +104,89 @@ const StudentVideoLessons = ({ studentId }) => {
     return course ? `${course.code} - ${course.title}` : `Course ID: ${courseId}`;
   };
 
+  const filteredVideos = videos.filter((v) => {
+  const matchesCourse =
+    !filterCourse || String(v.course_id) === String(filterCourse);
+
+  const matchesSearch =
+    !filterSearch ||
+    v.title.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    v.description.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    (v.lecturer_name || "").toLowerCase().includes(filterSearch.toLowerCase());
+
+  return matchesCourse && matchesSearch;
+});
+
+
   return (
     <Container>
       <Title>Your Video Lessons / Courses</Title>
+
+      <div
+  style={{
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+    marginBottom: "20px",
+    alignItems: "center",
+  }}
+>
+  {/* Course Filter */}
+  <select
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+    style={{
+      padding: "8px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      minWidth: "220px",
+    }}
+  >
+    <option value="">All Courses</option>
+    {courses.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.code} - {c.title}
+      </option>
+    ))}
+  </select>
+
+  {/* Search Filter */}
+  <input
+    type="text"
+    placeholder="Search by title, description, or lecturer..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={{
+      padding: "8px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      minWidth: "260px",
+      flex: 1,
+    }}
+  />
+
+  {/* Clear Filters */}
+  {(filterCourse || filterSearch) && (
+    <button
+      onClick={() => {
+        setFilterCourse("");
+        setFilterSearch("");
+      }}
+      style={{
+        padding: "8px 14px",
+        backgroundColor: 'red',
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        color:"white"
+      }}
+    >
+      Clear Filters
+    </button>
+  )}
+</div>
+
 
       {loading && <Message>Loading videos...</Message>}
       {error && <Message>{error}</Message>}
@@ -110,7 +194,7 @@ const StudentVideoLessons = ({ studentId }) => {
         <Message>No video lessons available for your enrolled courses.</Message>
       )}
 
-      {videos.map((video) => (
+      {filteredVideos.map((video) => (
         <VideoCard key={video.video_id}>
           <VideoTitle>{video.title}</VideoTitle>
           <Description><strong>Course:</strong> {getCourseInfo(video.course_id)}</Description>

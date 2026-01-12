@@ -124,6 +124,9 @@ const StudentOnlineClass = () => {
   const [classes, setClasses] = useState([]);
   const [lecturers, setLecturers] = useState([]);
 
+  const [filterSearch, setFilterSearch] = useState("");
+
+
   const fetchClasses = async () => {
     try {
       const res = await fetch(
@@ -155,6 +158,23 @@ const StudentOnlineClass = () => {
   };
 
 
+  const filteredClasses = classes.filter((item) => {
+  const lecturer = lecturers.find(
+    (l) => parseInt(l.id) === parseInt(item.lecturer_id)
+  );
+
+  const lecturerName = lecturer?.name?.toLowerCase() || "";
+  const title = item.title?.toLowerCase() || "";
+
+  if (!filterSearch) return true;
+
+  return (
+    title.includes(filterSearch.toLowerCase()) ||
+    lecturerName.includes(filterSearch.toLowerCase())
+  );
+});
+
+
 
   useEffect(() => {
     fetchClasses();
@@ -164,10 +184,58 @@ const StudentOnlineClass = () => {
   return (
     <Container>
       <h2>All Online Meeting / Classes</h2>
+
+<div
+  style={{
+    display: "flex",
+    gap: "12px",
+    marginBottom: "20px",
+    padding: "12px",
+    border: "1px solid #e0e0e0",
+    borderRadius: "8px",
+    background: "#fafafa",
+    alignItems: "center",
+    flexWrap: "wrap",
+  }}
+>
+  <input
+    type="text"
+    placeholder="Search by class title or lecturer..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={{
+      padding: "8px 10px",
+      minWidth: "260px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      fontSize: "14px",
+    }}
+  />
+
+  {filterSearch && (
+    <button
+      onClick={() => setFilterSearch("")}
+      style={{
+        padding: "8px 14px",
+        borderRadius: "6px",
+        border: "1px solid #bfc7bf",
+        background: "red",
+        cursor: "pointer",
+        fontSize: "14px",
+        fontWeight: "600",
+        color: "white",
+      }}
+    >
+      Clear Filter
+    </button>
+  )}
+</div>
+
+
       {classes.length === 0 ? (
         <p>No online meeting / classes available.</p>
       ) : (
-        classes.map((item) => {
+        filteredClasses.map((item) => {
           const lecturer = lecturers.find(lecturer => parseInt(lecturer.id) === parseInt(item.lecturer_id));
           const lecturerName = lecturer ? lecturer.name : `Lecturer ID ${item.lecturer_id}`;
 

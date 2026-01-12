@@ -189,7 +189,13 @@ const StudentSubmissions = () => {
   const [selectedCourseId, setSelectedCourseId] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [file, setFile] = useState(null);
-    const [lecturer, setLecturer]=useState([])
+    const [lecturer, setLecturer]=useState([]);
+
+    const [filterCourse, setFilterCourse] = useState("");
+const [filterCategory, setFilterCategory] = useState("");
+const [filterStatus, setFilterStatus] = useState("");
+const [filterSearch, setFilterSearch] = useState("");
+
 
     
 
@@ -380,17 +386,129 @@ const StudentSubmissions = () => {
 
 
 
+const filteredSubmissions = submissions.filter((sub) => {
+  const matchesCourse =
+    !filterCourse || String(sub.course_id) === String(filterCourse);
+
+  const matchesCategory =
+    !filterCategory || String(sub.category_id) === String(filterCategory);
+
+  const matchesStatus =
+    !filterStatus ||
+    (filterStatus === "marked" && sub.score !== null) ||
+    (filterStatus === "unmarked" && sub.score === null);
+
+  const course = courses.find((c) => c.id === Number(sub.course_id));
+  const category = categories.find((c) => c.id === Number(sub.category_id));
+  const lecturerName = lecturer[sub.marked_by] || "";
+
+  const matchesSearch =
+    !filterSearch ||
+    course?.title?.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    course?.code?.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    category?.name?.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    lecturerName.toLowerCase().includes(filterSearch.toLowerCase());
+
+  return (
+    matchesCourse &&
+    matchesCategory &&
+    matchesStatus &&
+    matchesSearch
+  );
+});
+
+
+
   // ---------- RENDER ----------
   return (
     <Container>
       <Title>Your Submissions</Title>
+
+<div
+  style={{
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "12px",
+    marginBottom: "24px",
+    padding: "14px",
+    background: "#fafafa",
+    border: "1px solid #e0e0e0",
+    borderRadius: "8px",
+    alignItems: "center",
+  }}
+>
+  {/* Course Filter */}
+  <select
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+    style={selectStyle}
+  >
+    <option value="">All Courses</option>
+    {courses.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.code} - {c.title}
+      </option>
+    ))}
+  </select>
+
+  {/* Category Filter */}
+  <select
+    value={filterCategory}
+    onChange={(e) => setFilterCategory(e.target.value)}
+    style={selectStyle}
+  >
+    <option value="">All Categories</option>
+    {categories.map((cat) => (
+      <option key={cat.id} value={cat.id}>
+        {cat.name}
+      </option>
+    ))}
+  </select>
+
+  {/* Status Filter */}
+  <select
+    value={filterStatus}
+    onChange={(e) => setFilterStatus(e.target.value)}
+    style={selectStyle}
+  >
+    <option value="">All Status</option>
+    <option value="marked">Marked</option>
+    <option value="unmarked">Not Marked</option>
+  </select>
+
+  {/* Search */}
+  <input
+    type="text"
+    placeholder="Search course, category, or lecturer..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={inputStyle}
+  />
+
+  {/* Clear Filters */}
+  {(filterCourse || filterCategory || filterStatus || filterSearch) && (
+    <button
+      onClick={() => {
+        setFilterCourse("");
+        setFilterCategory("");
+        setFilterStatus("");
+        setFilterSearch("");
+      }}
+      style={clearButtonStyle}
+    >
+      Clear Filters
+    </button>
+  )}
+</div>
+
+
 
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <NewPostButton onClick={() => setOpenForm(true)}>
           <IconWrapper>
             <FaPlus />
           </IconWrapper>
-          New Submission
+          Submit Assignment
         </NewPostButton>
       </div>
 
@@ -398,7 +516,7 @@ const StudentSubmissions = () => {
         {submissions.length === 0 ? (
           <p style={{ textAlign: "center" }}>No submissions found.</p>
         ) : (
-          submissions.map((sub) => {
+          filteredSubmissions.map((sub) => {
             const course = courses.find(
               (c) => c.id === Number(sub.course_id)
             );
@@ -409,7 +527,7 @@ const StudentSubmissions = () => {
             return (
               <SubmissionItem key={sub.id}>
                 <SubmissionTitle>
-                  {category ? category.name : "Submission"}
+                  {category ? category.name : "Submission"} {sub.exam_type?<span>- ({sub.exam_type})</span>:""}
                 </SubmissionTitle>
                 <SubmissionMeta>
                   <strong>Course:</strong>{" "}
@@ -453,7 +571,7 @@ const StudentSubmissions = () => {
               <FaTimes />
             </CloseButton>
 
-            <Title>New Submission</Title>
+            <Title>Submit Assignment</Title>
 
             <Label>Select Course</Label>
             <Select
@@ -474,7 +592,7 @@ const StudentSubmissions = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <option value="">-- Select --</option>
-              {categories.map((cat) => (
+              {categories.slice(0,1).map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
                 </option>
@@ -497,3 +615,35 @@ const StudentSubmissions = () => {
 };
 
 export default StudentSubmissions;
+
+
+const selectStyle = {
+  padding: "8px 10px",
+  minWidth: "180px",
+  borderRadius: "6px",
+  border: "1px solid #ccc",
+  background: "#fff",
+  fontSize: "14px",
+  outline: "none",
+};
+
+const inputStyle = {
+  padding: "8px 10px",
+  minWidth: "220px",
+  borderRadius: "6px",
+  border: "1px solid #ccc",
+  fontSize: "14px",
+  outline: "none",
+};
+
+const clearButtonStyle = {
+  padding: "8px 14px",
+  borderRadius: "6px",
+  border: "1px solid #bfc7bf",
+  background: "red",
+  cursor: "pointer",
+  fontSize: "14px",
+  fontWeight: "600",
+  color: "white",
+  transition: "all 0.2s ease",
+};

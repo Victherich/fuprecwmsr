@@ -109,6 +109,8 @@ import AnnouncementTicker from './components/AnnouncementTicker';
 import AnnouncementsPage from './components/AnnouncementsPage';
 import StudentResultByAdmNo from './components/StudentResultByAdmNo';
 import ZeroWastePage from './components/ZeroWastePage';
+import ExamPortalLogin from './components/ExamPortalLogin';
+import StudentResultPortalLogin from './components/StudentResultPortalLogin';
 
 
 function App() {
@@ -197,6 +199,8 @@ function App() {
         <Route path='/announcements' element={<AnnouncementsPage/>}/>
         <Route path='/resultverification' element={<StudentResultByAdmNo/>}/>
         <Route path='/zerowasteclub' element={<ZeroWastePage/>}/>
+        <Route path='/examsportalaccess' element={<ExamPortalLogin/>}/>
+        <Route path='/studentresultportallogin' element={<StudentResultPortalLogin/>}/>
         
 
         <Route path='/studentlogin' element={<StudentLogin/>}/>

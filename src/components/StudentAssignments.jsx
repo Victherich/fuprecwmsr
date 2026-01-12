@@ -61,6 +61,9 @@ const StudentAssignments = ({ studentId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const {courses}=useContext(Context);
+  const [filterCourse, setFilterCourse] = useState("");
+const [filterSearch, setFilterSearch] = useState("");
+
 
   // useEffect(() => {
   //   if (!studentId) {
@@ -139,9 +142,88 @@ useEffect(() => {
     return course ? `${course.code} - ${course.title}` : `Course ID: ${courseId}`;
   };
 
+  const filteredAssignments = assignments.filter((a) => {
+  const matchesCourse =
+    !filterCourse || String(a.course_id) === String(filterCourse);
+
+  const matchesSearch =
+    !filterSearch ||
+    a.title.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    a.description.toLowerCase().includes(filterSearch.toLowerCase());
+
+  return matchesCourse && matchesSearch;
+});
+
+
   return (
     <Container>
-      <Title>Your Assignments / Quizes / Exam papers / Lecture notes / Handouts</Title>
+      <Title>Your Assignments / Handouts</Title>
+
+      <div
+  style={{
+    display: "flex",
+    gap: "10px",
+    flexWrap: "wrap",
+    marginBottom: "20px",
+    alignItems: "center",
+  }}
+>
+  {/* Course Filter */}
+  <select
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+    style={{
+      padding: "8px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      minWidth: "220px",
+    }}
+  >
+    <option value="">All Courses</option>
+    {courses.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.code} - {c.title}
+      </option>
+    ))}
+  </select>
+
+  {/* Search Filter */}
+  <input
+    type="text"
+    placeholder="Search by title or description..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={{
+      padding: "8px",
+      borderRadius: "6px",
+      border: "1px solid #ccc",
+      minWidth: "250px",
+      flex: 1,
+    }}
+  />
+
+  {/* Clear Filters Button */}
+  {(filterCourse || filterSearch) && (
+    <button
+      onClick={() => {
+        setFilterCourse("");
+        setFilterSearch("");
+      }}
+      style={{
+        padding: "8px 14px",
+        backgroundColor: "red",
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        color:"white"
+      }}
+    >
+      Clear Filters
+    </button>
+  )}
+</div>
+
 
       {loading && <Message>Loading...</Message>}
       {error && <Message>{error}</Message>}
@@ -149,7 +231,7 @@ useEffect(() => {
         <Message>No post found for your enrolled courses.</Message>
       )}
 
-      {assignments.map((assignment) => (
+      {filteredAssignments.map((assignment) => (
         <AssignmentCard key={assignment.assignment_id}>
           <AssignmentTitle>{assignment.title}</AssignmentTitle>
           <AssignmentDescription><strong>Course:</strong> {getCourseInfo(assignment.course_id)}</AssignmentDescription>

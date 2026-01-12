@@ -434,6 +434,65 @@ const StudentResult2 = () => {
 
   const grandTotal = groupedResults.reduce((acc, r) => acc + r.total, 0);
 
+
+
+
+
+
+const payWithPaystack = (amount, onSuccess) => {
+  const handler = window.PaystackPop.setup({
+    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+     key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    email: studentInfo?.email,
+    amount: amount * 100, // kobo
+    currency: "NGN",
+    channels: ["card"],
+
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Student Name",
+          variable_name: "student_name",
+          value: student?.full_name || "Student",
+        },
+        {
+          display_name: "Purpose",
+          variable_name: "purpose",
+          value: "Result Download",
+        },
+      ],
+    },
+
+    callback: function (response) {
+      Swal.fire({
+        icon: "success",
+        title: "Payment Successful",
+        text: "Payment confirmed. Generating your result...",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      onSuccess(); // ✅ proceed to PDF generation
+    },
+
+    onClose: function () {
+      Swal.fire({
+        icon: "info",
+        title: "Payment Cancelled",
+        text: "You must complete payment to download your result.",
+      });
+    },
+  });
+
+  handler.openIframe();
+};
+
+
+
+
+
+
+
   // 🔹 Generate Beautiful PDF with QR code
   const generatePDF = async () => {
     if (groupedResults.length === 0) {
@@ -521,6 +580,13 @@ const StudentResult2 = () => {
     });
 
     doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+
+    Swal.fire({
+  icon: "success",
+  title: "Download Successful",
+  text: "Your result has been downloaded successfully. Please check your Downloads folder.",
+});
+
   };
 
   return (
@@ -533,7 +599,15 @@ const StudentResult2 = () => {
         <Message>No results available yet.</Message>
       ) : (
         <>
-          <Button onClick={generatePDF}>Download Result as PDF</Button>
+          {/* <Button onClick={generatePDF}>Download Result</Button> */}
+          <Button
+  onClick={() =>
+    payWithPaystack(5000, generatePDF) // ₦1000 example fee
+  }
+>
+  Download Result (₦5,000)
+</Button>
+
 
           <Table>
             <thead>

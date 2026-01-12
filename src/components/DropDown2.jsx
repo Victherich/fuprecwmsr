@@ -194,10 +194,11 @@
 
 
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { Context } from "./Context";
 
 /* ---------- animations ---------- */
 const slideFadeIn = keyframes`
@@ -217,6 +218,7 @@ const Wrapper = styled.div`
   display: inline-block;
   font-family: Inter, sans-serif;
   user-select: none;
+  margin-right:10px;
 `;
 
 const Trigger = styled.button`
@@ -305,14 +307,13 @@ const Item = styled.li`
 `;
 
 /* ---------- component ---------- */
-export default function BeautifulDropdown({
-  label = "MORE",
+export default function BeautifulDropdown2({
+  label = "EXAMS / RESULTS",
   placement = "bottom",
   options = [
-      { label: "EVENTS", href: "/events" },
-    { label: "RESEARCH", href: "/research" },
-    { label: "GALLERY", href: "/gallery" },
-    { label: "ZERO WASTE CLUB", href: "/zerowasteclub" },
+      { label: "EXAMS", href: "/examsportalaccess" },
+    { label: "RESULTS", href: "/studentresultportallogin" },
+  
     
     
   ],
@@ -329,6 +330,7 @@ export default function BeautifulDropdown({
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
         setOpen(false);
         setFocusedIndex(-1);
+    
       }
     };
     document.addEventListener("mousedown", handleClick);
@@ -390,7 +392,7 @@ export default function BeautifulDropdown({
               data-focused={focusedIndex === i}
               onMouseEnter={() => setFocusedIndex(i)}
               onClick={() => {
-                navigate(opt.href);
+                 navigate(opt.href);
                 setOpen(false);
               }}
             >

@@ -186,6 +186,11 @@ const PostVideoLesson = () => {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
 
+const [filterCourse, setFilterCourse] = useState("");
+const [filterSearch, setFilterSearch] = useState("");
+
+
+
   const fetchVideos = async () => {
     if (!lecturer?.id) return;
     try {
@@ -382,12 +387,81 @@ const deleteVideo = async (videoId) => {
     }
   };
 
+
+const filteredVideos = videos.filter((v) => {
+  const matchesCourse =
+    !filterCourse || Number(v.course_id) === Number(filterCourse);
+
+  const matchesSearch =
+    !filterSearch ||
+    v.title.toLowerCase().includes(filterSearch.toLowerCase()) ||
+    v.description.toLowerCase().includes(filterSearch.toLowerCase());
+
+  return matchesCourse && matchesSearch;
+});
+
+
+
   return (
     <Container>
       <VideoList>
         <h2 style={{ textAlign: "center", color: "green" }}>
           Your Uploaded Video Lessons / Courses
         </h2>
+
+        <div
+  style={{
+    display: "flex",
+    gap: "10px",
+    margin: "15px 0 25px",
+    flexWrap: "wrap",
+  }}
+>
+  {/* Course Filter */}
+  <select
+    value={filterCourse}
+    onChange={(e) => setFilterCourse(e.target.value)}
+    style={{ padding: "8px", minWidth: "220px" }}
+  >
+    <option value="">All Courses</option>
+    {courses.map((c) => (
+      <option key={c.id} value={c.id}>
+        {c.code} - {c.title}
+      </option>
+    ))}
+  </select>
+
+  {/* Search Filter */}
+  <input
+    type="text"
+    placeholder="Search by title or description..."
+    value={filterSearch}
+    onChange={(e) => setFilterSearch(e.target.value)}
+    style={{ padding: "8px", flex: 1, minWidth: "260px" }}
+  />
+
+   {/* Clear Filters */}
+  {(filterCourse || filterSearch) && (
+    <button
+      onClick={() => {
+        setFilterCourse("");
+        setFilterSearch("");
+      }}
+      style={{
+        padding: "8px 14px",
+        backgroundColor: 'red',
+        border: "1px solid #ccc",
+        borderRadius: "6px",
+        cursor: "pointer",
+        fontWeight: "bold",
+        color:"white"
+      }}
+    >
+      Clear Filters
+    </button>
+  )}
+</div>
+
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <NewPostButton onClick={() => setOpenForm(true)}>
             <IconWrapper><FaPlus /></IconWrapper>New Video
@@ -397,7 +471,7 @@ const deleteVideo = async (videoId) => {
         {videos.length === 0 ? (
           <p style={{ textAlign: "center" }}>No videos uploaded yet.</p>
         ) : (
-          videos.map((v) => {
+          filteredVideos.map((v) => {
             const course = courses.find((c) => c.id === Number(v.course_id));
             return (
               <VideoItem key={v.id}>

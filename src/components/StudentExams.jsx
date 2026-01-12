@@ -107,7 +107,7 @@ const getCourseName = (courseId) => {
   
   return (
     <Container>
-      <PageTitle>Your Online Exams / Quizes / Assessments</PageTitle>
+      <PageTitle>Your Online Exams / Assessments</PageTitle>
        <p style={{fontSize:"0.8rem", marginBottom:"10px",textAlign: "center" }}>Note that the exam timings are in UTC TIME-ZONE to accomodate all students internationally, ensure you correctly match with your local timimg. If the time for your exam reaches and you have not seen your exam here , you can refresh the page. If it your exam still doesnt show, you can contact the management, but ensure that its time for your exam.</p>
         
       {loading ? (
@@ -133,7 +133,7 @@ const getCourseName = (courseId) => {
     Take Exam
   </button> */}
 
-  <button
+  {/* <button
   style={{ marginTop: "10px", padding: "8px", background: "green", color: "white", border: "none", borderRadius: "6px", cursor: "pointer" }}
   onClick={() => {
     // Trigger full-screen mode on direct user click
@@ -148,7 +148,67 @@ const getCourseName = (courseId) => {
   }}
 >
   Take Exam
+</button> */}
+
+<button
+  style={{
+    marginTop: "10px",
+    padding: "8px",
+    background: "green",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer"
+  }}
+  onClick={async () => {
+
+    try {
+      Swal.fire({
+        title: "Checking exam status...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      const res = await axios.post(
+        "https://www.cwmsrfupre.com.ng/api/check_exam_taken.php",
+        {
+          exam_id: exam.exam_id,
+          student_id: studentId
+        }
+      );
+
+      Swal.close();
+
+      if (res.data.success && res.data.taken) {
+        Swal.fire({
+          icon: "info",
+          title: "Exam Already Taken",
+          text: res.data.message,
+          allowOutsideClick: false
+        });
+        return;
+      }
+
+      /* ===== SAFE TO START EXAM ===== */
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+
+      setActiveExam({ ...exam });
+
+    } catch (error) {
+      Swal.close();
+      Swal.fire(
+        "Error",
+        "Unable to verify exam status. Please try again.",
+        "error"
+      );
+    }
+  }}
+>
+  Take Exam
 </button>
+
 
             </ExamCard>
           ))}

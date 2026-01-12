@@ -1,9 +1,10 @@
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import styled from 'styled-components';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
+import { Context } from './Context.jsx';
 
 import Swal from 'sweetalert2';
 import { lecturerLogout } from '../Features/Slice';
@@ -152,10 +153,12 @@ const HelpContent = () => <h1>Help Content</h1>;
 
 // Main Component
 const LecturerDashboard = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState('profile');
+  // const [menuOpen, setMenuOpen] = useState(false);
+  // const [activeMenu, setActiveMenu] = useState('profile');
   const lecturerInfo = useSelector(state=>state.lecturerInfo);
   const [admin, setAdmin] = useState({});
+
+   const {menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick}=useContext(Context)
   
   console.log(admin)
 
@@ -229,11 +232,11 @@ getLecturerById();
 
 
 
-  const handleMenuClick = (menu) => {
-    window.scroll(0,0);
-    setActiveMenu(menu);
-    setMenuOpen(false); // Close menu on mobile when a menu item is clicked
-  };
+  // const handleMenuClick = (menu) => {
+  //   window.scroll(0,0);
+  //   setActiveMenu(menu);
+  //   setMenuOpen(false); // Close menu on mobile when a menu item is clicked
+  // };
 
   const toggleMenu = () => setMenuOpen((prev) => !prev);
 

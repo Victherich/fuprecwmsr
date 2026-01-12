@@ -134,6 +134,7 @@ const Label = styled.h4`
 
 const Value = styled.p`
   color: #777;
+  font-size:0.8rem;
 `;
 
 const ModalOverlay = styled.div`
@@ -343,31 +344,32 @@ const handleSaveName = () => {
               <FaBook />
             </Icon>
             <Label>Enrollments</Label>
-            <Value>Ensure to enroll for all the courses you are offering.</Value>
+            <Value>-Ensure to enroll for all the courses you are offering.</Value>
           </Card>
 
-          {/* <Card onClick={() => onNavigate("myresults")}>
+          <Card onClick={() => onNavigate("myresults")}>
             <Icon>
               <FaClipboardList />
             </Icon>
             <Label>My Results</Label>
             <Value>View your results & GPA</Value>
-          </Card> */}
+          </Card>
 
           <Card onClick={() => onNavigate("assignments")}>
             <Icon>
               <FaBook />
             </Icon>
-            <Label>Assignments / Quizes / Exam papers / Lecture notes / Handouts</Label>
-            {/* <Value>View & submit assignments</Value> */}
+            <Label>Assignments / Handouts</Label>
+            <Value>-Download assignments.</Value>
+            <Value>-Download Handouts. </Value>
           </Card>
 
           <Card onClick={() => onNavigate("exams")}>
             <Icon>
               <FaGlobe />
             </Icon>
-            <Label>Online Exams / Tests / Assessments</Label>
-            <Value>View and partake in your online Exam, Test , Assessment</Value>
+            <Label>Online Exams / Assessment.</Label>
+            <Value>-View and partake in your online Exam / Assessment.</Value>
           </Card>
 
             <Card onClick={() => onNavigate("videolessons")}>
@@ -383,7 +385,8 @@ const handleSaveName = () => {
               <FaBook />
             </Icon>
             <Label>Submissions</Label>
-            <Value>Submit and View your submissions</Value>
+            <Value>-View all your submitted Assignments, Exams / Assessments.</Value>
+            <Value>-Submit your Assignments.</Value>
           </Card>
 
       
@@ -393,7 +396,7 @@ const handleSaveName = () => {
               <FaLaptop />
             </Icon>
             <Label>Online Meeting / Class</Label>
-            <Value>Join your live Meeting /class</Value>
+            <Value>-Join your live Meeting / class.</Value>
           </Card>
 
           <Card onClick={() => onNavigate("clockin")}>
@@ -417,7 +420,7 @@ const handleSaveName = () => {
               <FaFileCsv />
             </Icon>
             <Label>General Assets</Label>
-            <Value style={{fontSize:"0.8rem"}}>Access General Files (eg. Academic Calender, time tables e.t.c.)</Value>
+            <Value style={{fontSize:"0.8rem"}}>-Access General Files (eg. Academic Calender, time tables e.t.c.).</Value>
           </Card>
 
 
@@ -436,7 +439,7 @@ const handleSaveName = () => {
               <FaEnvelope />
             </Icon>
             <Label>Email Center</Label>
-            <Value>Send and check messages</Value>
+            <Value>-Send and check messages.</Value>
           </Card>
 
           <Card onClick={() => onNavigate("forum")}>
@@ -444,7 +447,7 @@ const handleSaveName = () => {
               <FaComments />
             </Icon>
             <Label>Forum</Label>
-            <Value>Join academic discussions</Value>
+            <Value>-Join academic discussions.</Value>
           </Card>
 
           <Card onClick={onLogout}>
@@ -452,7 +455,7 @@ const handleSaveName = () => {
               <FaSignOutAlt />
             </Icon>
             <Label>Logout</Label>
-            <Value>Sign out securely</Value>
+            <Value>-Sign out securely.</Value>
           </Card>
         </Grid>
 

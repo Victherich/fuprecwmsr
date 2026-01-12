@@ -79,12 +79,14 @@ import logo from "../Images/logo2.png";
 import 'animate.css';  
 import '../CSS/Header.css'
 import BeautifulDropdown from './DropDown';
+import BeautifulDropdown2 from './DropDown2';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
 
   const navRef = useRef(null);
 
@@ -160,7 +162,7 @@ const Header = () => {
           </li>
 
           {/* Regular nav items */}
-          {['Academics','Admissions','Application', 'Portal', 'Events', 'Contact Us'].map((text, index) => {
+          {['Academics','Admissions','Application', 'Portal', 'Contact Us'].map((text, index) => {
             const path = `/${text.toLowerCase().replace(' ', '')}`;
             return (
               <li key={index}>
@@ -176,7 +178,7 @@ const Header = () => {
               </li>
             );
           })}
-
+<BeautifulDropdown2/>
           <BeautifulDropdown/>
         </ul>
 
@@ -186,6 +188,7 @@ const Header = () => {
       <div className="hamburger" onClick={toggleMenu}>
         {menuOpen ? <FaTimes /> : <FaBars />}
       </div>
+
     </header>
   );
 };

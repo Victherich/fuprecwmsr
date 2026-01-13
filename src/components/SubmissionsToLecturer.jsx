@@ -3,6 +3,8 @@ import styled from "styled-components";
 import axios from "axios";
 import { Context } from "./Context";
 import Swal from "sweetalert2";
+import EssayMarkingModal from "./EssayMarkingModal";
+
 
 // === Styled Components ===
 const Container = styled.div`
@@ -225,8 +227,11 @@ const [filterCategory, setFilterCategory] = useState("");
 const [filterStudent, setFilterStudent] = useState("");
 const [filterStatus, setFilterStatus] = useState(""); // "marked" or "unmarked"
 
+const [activeEssay, setActiveEssay] = useState(null);
 
-console.log(submissions)
+
+
+// console.log(submissions)
 
  
     const fetchSubmissions = async () => {
@@ -472,9 +477,19 @@ const filteredSubmissions = submissions.filter((sub) => {
             </FileLink>
           )}
 <br/>
-          {sub.exam_type!=='objective'&&<MarkButton onClick={() => openModal(sub)}>Mark / Edit Score</MarkButton>}
+          {sub.exam_type!=='objective'&& sub.exam_type!=='essay'&&<MarkButton onClick={() => openModal(sub)}>Mark / Edit Score</MarkButton>}
+        
+             {sub.exam_type === "essay" && (
+  <MarkButton onClick={() => setActiveEssay(sub)}>
+    Mark / Review Essay Exam
+  </MarkButton>
+)}
+        
         </SubmissionCard>
       ))}
+
+ 
+
 
       {selectedSubmission && (
         <ModalOverlay>
@@ -504,6 +519,16 @@ const filteredSubmissions = submissions.filter((sub) => {
           </ModalContent>
         </ModalOverlay>
       )}
+
+      {activeEssay && (
+  <EssayMarkingModal
+    submission={activeEssay}
+    lecturerId={lecturerId}
+    onClose={() => setActiveEssay(null)}
+    onSaved={fetchSubmissions}
+  />
+)}
+
     </Container>
   );
 };

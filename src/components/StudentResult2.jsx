@@ -439,14 +439,77 @@ const StudentResult2 = () => {
 
 
 
+// const payWithPaystack = (amount, onSuccess) => {
+//   const handler = window.PaystackPop.setup({
+//     // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+//      key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+//     email: studentInfo?.email,
+//     amount: amount * 100, // kobo
+//     currency: "NGN",
+//     channels: ["card"],
+
+//     metadata: {
+//       custom_fields: [
+//         {
+//           display_name: "Student Name",
+//           variable_name: "student_name",
+//           value: student?.full_name || "Student",
+//         },
+//         {
+//           display_name: "Purpose",
+//           variable_name: "purpose",
+//           value: "Result Download",
+//         },
+//       ],
+//     },
+
+//     callback: function (response) {
+//       Swal.fire({
+//         icon: "success",
+//         title: "Payment Successful",
+//         text: "Payment confirmed. Generating your result...",
+//         timer: 2000,
+//         showConfirmButton: false,
+//       });
+
+//       onSuccess(); // ✅ proceed to PDF generation
+//     },
+
+//     onClose: function () {
+//       Swal.fire({
+//         icon: "info",
+//         title: "Payment Cancelled",
+//         text: "You must complete payment to download your result.",
+//       });
+//     },
+//   });
+
+//   handler.openIframe();
+// };
+
+
+
+
+
+
+
+  // 🔹 Generate Beautiful PDF with QR code
+  
+  
 const payWithPaystack = (amount, onSuccess) => {
+  if (!studentInfo?.email) {
+    Swal.fire("Error", "Student email not found.", "error");
+    return;
+  }
+
   const handler = window.PaystackPop.setup({
-    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-     key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-    email: studentInfo?.email,
-    amount: amount * 100, // kobo
+    key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    email: studentInfo.email,
+    amount: amount * 100,
     currency: "NGN",
     channels: ["card"],
+    subaccount: 'ACCT_4l1qt6s8whjszwk',
+    bearer: "account",
 
     metadata: {
       custom_fields: [
@@ -472,7 +535,23 @@ const payWithPaystack = (amount, onSuccess) => {
         showConfirmButton: false,
       });
 
-      onSuccess(); // ✅ proceed to PDF generation
+      // Async verification
+      (async () => {
+        try {
+          const res = await axios.post(
+            "https://www.cwmsrfupre.com.ng/api/verify_payment.php",
+            { reference: response.reference }
+          );
+
+          if (res.data.status === "success") {
+            onSuccess();
+          } else {
+            Swal.fire("Error", "Payment verification failed. Please contact support.", "error");
+          }
+        } catch (err) {
+          Swal.fire("Error", "Could not verify payment. Please try again.", "error");
+        }
+      })();
     },
 
     onClose: function () {
@@ -488,12 +567,8 @@ const payWithPaystack = (amount, onSuccess) => {
 };
 
 
-
-
-
-
-
-  // 🔹 Generate Beautiful PDF with QR code
+  
+  
   const generatePDF = async () => {
     if (groupedResults.length === 0) {
       Swal.fire("No results", "You have no results to download.", "info");

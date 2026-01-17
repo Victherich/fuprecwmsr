@@ -503,13 +503,14 @@ const payWithPaystack = (amount, onSuccess) => {
   }
 
   const handler = window.PaystackPop.setup({
-    key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
     email: studentInfo.email,
     amount: amount * 100,
     currency: "NGN",
     channels: ["card"],
-    subaccount: 'ACCT_4l1qt6s8whjszwk',
-    bearer: "account",
+    // subaccount: 'ACCT_4l1qt6s8whjszwk',  
+    // bearer: "account",
 
     metadata: {
       custom_fields: [

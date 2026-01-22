@@ -398,39 +398,75 @@ const StudentResult2 = () => {
     programs.find((p) => p.id === Number(student?.program))?.name || "—";
 
   // 🔹 Group scores by course
-  const groupedResults = courses
-    .map((course) => {
-      const courseResults = results.filter(
-        (r) => Number(r.course_id) === Number(course.id)
+  // const groupedResults = courses
+  //   .map((course) => {
+  //     const courseResults = results.filter(
+  //       (r) => Number(r.course_id) === Number(course.id)
+  //     );
+  //     if (courseResults.length === 0) return null;
+
+  //     const getScore = (catName) => {
+  //       const cat = categories.find(
+  //         (c) => c.name.toLowerCase() === catName.toLowerCase()
+  //       );
+  //       if (!cat) return 0;
+  //       const catResults = courseResults.filter(
+  //         (r) => Number(r.category_id) === Number(cat.id)
+  //       );
+  //       return catResults.reduce((sum, r) => sum + (Number(r.score) || 0), 0);
+  //     };
+
+  //     const assignment = getScore("assignment");
+  //     const quiz = getScore("Quiz / Assessment-Test");
+  //     const exam = getScore("exam");
+  //     const total = assignment + quiz + exam;
+
+  //     return {
+  //       code: course.code,
+  //       title: course.title,
+  //       assignment,
+  //       quiz,
+  //       exam,
+  //       total,
+  //     };
+  //   })
+  //   .filter(Boolean);
+
+
+
+    const groupedResults = courses
+  .map((course) => {
+    const courseResults = results.filter(
+      (r) => Number(r.course_id) === Number(course.id)
+    );
+    if (courseResults.length === 0) return null;
+
+    const getScoreById = (categoryId) => {
+      const catResults = courseResults.filter(
+        (r) => Number(r.category_id) === Number(categoryId)
       );
-      if (courseResults.length === 0) return null;
+      return catResults.reduce(
+        (sum, r) => sum + (Number(r.score) || 0),
+        0
+      );
+    };
 
-      const getScore = (catName) => {
-        const cat = categories.find(
-          (c) => c.name.toLowerCase() === catName.toLowerCase()
-        );
-        if (!cat) return 0;
-        const catResults = courseResults.filter(
-          (r) => Number(r.category_id) === Number(cat.id)
-        );
-        return catResults.reduce((sum, r) => sum + (Number(r.score) || 0), 0);
-      };
+    const assignment = getScoreById(1);
+    const quiz = getScoreById(2);
+    const exam = getScoreById(3);
+    const total = assignment + quiz + exam;
 
-      const assignment = getScore("assignment");
-      const quiz = getScore("quiz");
-      const exam = getScore("exam");
-      const total = assignment + quiz + exam;
+    return {
+      code: course.code,
+      title: course.title,
+      assignment,
+      quiz,
+      exam,
+      total,
+    };
+  })
+  .filter(Boolean);
 
-      return {
-        code: course.code,
-        title: course.title,
-        assignment,
-        quiz,
-        exam,
-        total,
-      };
-    })
-    .filter(Boolean);
 
   const grandTotal = groupedResults.reduce((acc, r) => acc + r.total, 0);
 
@@ -503,8 +539,8 @@ const payWithPaystack = (amount, onSuccess) => {
   }
 
   const handler = window.PaystackPop.setup({
-    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-    key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
+    key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    // key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
     email: studentInfo.email,
     amount: amount * 100,
     currency: "NGN",

@@ -459,6 +459,7 @@ const StudentResult2 = () => {
     return {
       code: course.code,
       title: course.title,
+      credit_unit:course.unit,
       assignment,
       quiz,
       exam,
@@ -606,100 +607,570 @@ const payWithPaystack = (amount, onSuccess) => {
 
   
   
-  const generatePDF = async () => {
-    if (groupedResults.length === 0) {
-      Swal.fire("No results", "You have no results to download.", "info");
-      return;
-    }
+//   const generatePDF = async () => {
+//     if (groupedResults.length === 0) {
+//       Swal.fire("No results", "You have no results to download.", "info");
+//       return;
+//     }
 
-    const doc = new jsPDF("p", "pt", "a4");
-    const pageWidth = doc.internal.pageSize.getWidth();
+//     const doc = new jsPDF("p", "pt", "a4");
+//     const pageWidth = doc.internal.pageSize.getWidth();
 
-    // Logo
-    const logo = "/logo2.png";
-    const logoWidth = 300;
-    const logoHeight = 60;
-    const logoX = (pageWidth - logoWidth) / 2;
-    doc.addImage(logo, "PNG", logoX, 40, logoWidth, logoHeight);
+//     // Logo
+//     const logo = "/logo2.png";
+//     const logoWidth = 300;
+//     const logoHeight = 60;
+//     const logoX = (pageWidth - logoWidth) / 2;
+//     doc.addImage(logo, "PNG", logoX, 40, logoWidth, logoHeight);
 
-    // Title
-    doc.setFontSize(18);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 128, 0);
-    doc.text("STUDENT RESULT", pageWidth / 2, 130, { align: "center" });
+//     // Title
+//     doc.setFontSize(18);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(0, 128, 0);
+//     doc.text("STUDENT RESULT", pageWidth / 2, 130, { align: "center" });
 
-    // Student info
-    doc.setFontSize(11);
-    doc.setTextColor(0, 128, 0);
-    doc.text(`Name: ${student?.full_name || "—"}`, 40, 160);
-    doc.text(`Admission No: ${student?.admission_number || "—"}`, 40, 180);
-    doc.text(`Program: ${programName}`, 40, 200);
-    // doc.text(`Level: ${student?.level || "Default"}`, 40, 220);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 40, 220);
+//     // Student info
+//     doc.setFontSize(11);
+//     doc.setTextColor(0, 128, 0);
+//     doc.text(`Name: ${student?.full_name || "—"}`, 40, 160);
+//     doc.text(`Admission No: ${student?.admission_number || "—"}`, 40, 180);
+//     doc.text(`Program: ${programName}`, 40, 200);
+//     // doc.text(`Level: ${student?.level || "Default"}`, 40, 220);
+//     doc.text(`Date: ${new Date().toLocaleDateString()}`, 40, 220);
 
-    // Table
-    const columns = ["S/N", "Course", "Assignment", "Quiz", "Exam", "Total"];
-    const rows = groupedResults.map((r, i) => [
-      i + 1,
-      `${r.code} - ${r.title}`,
-      r.assignment,
-      r.quiz,
-      r.exam,
-      r.total,
-    ]);
+//     // Table
+//     const columns = ["S/N", "Course", "Assignment", "Quiz", "Exam", "Total"];
+//     const rows = groupedResults.map((r, i) => [
+//       i + 1,
+//       `${r.code} - ${r.title}`,
+//       r.assignment,
+//       r.quiz,
+//       r.exam,
+//       r.total,
+//     ]);
 
-    doc.autoTable({
-      head: [columns],
-      body: rows,
-      startY: 270,
-      theme: "grid",
-      headStyles: { fillColor: [0, 128, 0], textColor: 255 },
-      bodyStyles: { textColor: 20 },
-      styles: { fontSize: 10, halign: "center" },
-      columnStyles: { 1: { halign: "left", cellWidth: 180 } },
-      alternateRowStyles: { fillColor: [245, 255, 245] },
-    });
+//     doc.autoTable({
+//       head: [columns],
+//       body: rows,
+//       startY: 270,
+//       theme: "grid",
+//       headStyles: { fillColor: [0, 128, 0], textColor: 255 },
+//       bodyStyles: { textColor: 20 },
+//       styles: { fontSize: 10, halign: "center" },
+//       columnStyles: { 1: { halign: "left", cellWidth: 180 } },
+//       alternateRowStyles: { fillColor: [245, 255, 245] },
+//     });
 
-    const finalY = doc.lastAutoTable.finalY + 30;
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 128, 0);
-    doc.text(`GRAND TOTAL: ${grandTotal}`, 40, finalY);
-    doc.text(
-      `AVERAGE: ${(grandTotal / groupedResults.length).toFixed(2)}%`,
-      250,
-      finalY
-    );
+//     const finalY = doc.lastAutoTable.finalY + 30;
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(0, 128, 0);
+//     doc.text(`GRAND TOTAL: ${grandTotal}`, 40, finalY);
+//     doc.text(
+//       `AVERAGE: ${(grandTotal / groupedResults.length).toFixed(2)}%`,
+//       250,
+//       finalY
+//     );
 
-    // ✅ Generate and add QR Code
-    const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
-    const qrCodeData = await QRCode.toDataURL(verifyLink);
-    const qrSize = 80;
-    const qrX = (pageWidth - qrSize) / 2;
-    const qrY = 720;
+//     // ✅ Generate and add QR Code
+//     const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
+//     const qrCodeData = await QRCode.toDataURL(verifyLink);
+//     const qrSize = 80;
+//     const qrX = (pageWidth - qrSize) / 2;
+//     const qrY = 720;
 
-    doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-    doc.setFontSize(9);
-    doc.setTextColor(80);
-    doc.text("(scan to verify)", pageWidth / 2, qrY + qrSize + 6, {
-      align: "center",
-    });
+//     doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+//     doc.setFontSize(9);
+//     doc.setTextColor(80);
+//     doc.text("(scan to verify)", pageWidth / 2, qrY + qrSize + 6, {
+//       align: "center",
+//     });
 
-    // Footer
-    doc.setFontSize(9);
-    doc.setTextColor(100);
-    doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, 830, {
-      align: "center",
-    });
+//     // Footer
+//     doc.setFontSize(9);
+//     doc.setTextColor(100);
+//     doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, 830, {
+//       align: "center",
+//     });
 
-    doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+//     doc.save(`Result_${student?.admission_number || "student"}.pdf`);
 
-    Swal.fire({
-  icon: "success",
-  title: "Download Successful",
-  text: "Your result has been downloaded successfully. Please check your Downloads folder.",
-});
+//     Swal.fire({
+//   icon: "success",
+//   title: "Download Successful",
+//   text: "Your result has been downloaded successfully. Please check your Downloads folder.",
+// });
 
+//   };
+
+const cumGPA = 1;
+const cumTCP = 1;
+const cumTNU = 1
+const currentGPA = 1;
+const currentTCP = 1;
+const currentTNU = 1;
+const prevGPA = 1;
+const prevTCP = 1;
+const prevTNU = 1;
+
+
+
+
+// const generatePDF = async () => {
+//   if (groupedResults.length === 0) {
+//     Swal.fire("No results", "You have no results to download.", "info");
+//     return;
+//   }
+
+//   // Set orientation to Landscape ('l') to match the wide table requirement
+//   const doc = new jsPDF("l", "pt", "a4");
+//   const pageWidth = doc.internal.pageSize.getWidth();
+//   const pageHeight = doc.internal.pageSize.getHeight();
+
+//   // 1. Logo (Centered)
+//   const logo = "/logo.png";
+//   const logoWidth = 50;
+//   const logoHeight = 50;
+//   doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
+
+//   // 2. Header Image (Spans from left to right)
+//   const headerImg = "/resultheader.png";
+//   const headerWidth = pageWidth - 80; // 40pt margin on each side
+//   const headerHeight = 250; 
+//   doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
+
+//   // 3. Option/Program Title
+//   doc.setFontSize(12);
+//   doc.setFont("helvetica", "bold");
+//   doc.setTextColor(0, 0, 0);
+//   doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
+
+//   // 4. Prepare Horizontal Table Data
+//   const courseHeaders = groupedResults.map(r => `${r.code}\n(${r.credit_unit || 0})`);
+  
+//   const tableHeaders = [
+//     "S/N", 
+//     "NAME OF CANDIDATE", 
+//     "REGISTRATION NUMBER", 
+//     "SEX", 
+//     ...courseHeaders,
+//     "CURRENT\nTCP, TNU, GPA",
+//     "PREVIOUS\nTCP TNU GPA",
+//     "CUMULATIVE\nTCP TNU GPA"
+//   ];
+
+//   const courseTotals = groupedResults.map(r => r.total || "0");
+  
+//   const currentStats = `${currentTCP || 0}  ${currentTNU || 0}  ${currentGPA || 0}`;
+//   const prevStats = `${prevTCP || 0}  ${prevTNU || 0}  ${prevGPA || 0}`;
+//   const cumStats = `${cumTCP || 0}  ${cumTNU || 0}  ${cumGPA || 0}`;
+
+//   const rows = [
+//     [
+//       "1.", 
+//       student?.full_name?.toUpperCase() || "—", 
+//       student?.admission_number || "—", 
+//       student?.sex || "M", 
+//       ...courseTotals,
+//       currentStats,
+//       prevStats,
+//       cumStats
+//     ]
+//   ];
+
+//   // 5. Generate Table
+//   doc.autoTable({
+//     head: [tableHeaders],
+//     body: rows,
+//     startY: 345,
+//     theme: "grid",
+//     styles: { 
+//       fontSize: 8, 
+//       cellPadding: 3, 
+//       halign: "center", 
+//       valign: "middle", 
+//       lineColor: [0, 128, 0], // Green lines
+//       lineWidth: 0.5,
+//       textColor: 0
+//     },
+//     headStyles: { 
+//       fillColor: [255, 255, 255], 
+//       textColor: [0, 0, 0], 
+//       fontStyle: "bold",
+//       fontSize: 7 
+//     },
+//     columnStyles: {
+//       1: { halign: "left", cellWidth: 100 },
+//       2: { cellWidth: 80 }
+//     }
+//   });
+
+//   // --- ADDED SUMMARY AND SIGNATURE DETAILS ---
+//   const finalY = doc.lastAutoTable.finalY + 40;
+//   doc.setFontSize(10);
+//   doc.setFont("helvetica", "bold");
+//   doc.setTextColor(0, 0, 0);
+
+//   // Summary Row
+//   doc.text(`SUMMARY: TOTAL: ${grandTotal || 0}    RANGE OF GPA: ${currentGPA || 0}    RANGE OF CGPA: ${cumGPA || 0}`, 40, finalY);
+
+//   // Signature Lines
+//   const sigLineY = finalY + 60;
+//   doc.setDrawColor(0, 0, 0); // Black lines for signatures
+//   doc.setLineWidth(1);
+  
+//   // Left Signature (Director)
+//   doc.line(40, sigLineY, 300, sigLineY);
+//   doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+
+//   // Right Signature (Dean)
+//   const rightSigX = pageWidth - 340;
+//   doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
+//   doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+//   // ------------------------------------------
+
+// // 6. QR Code (Shifted further down)
+//   const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
+//   const qrCodeData = await QRCode.toDataURL(verifyLink);
+//   const qrSize = 60;
+//   const qrX = pageWidth - 100;
+  
+//   // Changed qrY from 'pageHeight - 100' to 'pageHeight - 85' to shift it down
+//   const qrY = pageHeight - 85; 
+
+//   doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+//   doc.setFontSize(8);
+//   // The text is automatically positioned relative to the new qrY
+//   doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+
+//   // 7. Footer (Positioned at the very bottom)
+//   doc.setFontSize(9);
+//   doc.setTextColor(100);
+//   doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+
+//   doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+
+//   Swal.fire({
+//     icon: "success",
+//     title: "Download Successful",
+//     text: "The landscape horizontal result has been generated.",
+//   });
+// };
+
+
+
+
+
+
+
+// const generatePDF = async () => {
+//   if (groupedResults.length === 0) {
+//     Swal.fire("No results", "You have no results to download.", "info");
+//     return;
+//   }
+
+//   // Set orientation to Landscape ('l') to match the wide table requirement
+//   const doc = new jsPDF("l", "pt", "a4");
+//   const pageWidth = doc.internal.pageSize.getWidth();
+//   const pageHeight = doc.internal.pageSize.getHeight();
+
+//   // 1. Logo (Centered)
+//   const logo = "/logo.png";
+//   const logoWidth = 50;
+//   const logoHeight = 50;
+//   doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
+
+//   // 2. Header Image (Spans from left to right)
+//   const headerImg = "/resultheader.png";
+//   const headerWidth = pageWidth - 80; 
+//   const headerHeight = 250; 
+//   doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
+
+//   // 3. Option/Program Title
+//   doc.setFontSize(12);
+//   doc.setFont("helvetica", "bold");
+//   doc.setTextColor(0, 0, 0);
+//   doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
+
+//   // 4. Prepare Horizontal Table Data with Sub-Headers
+//   const headerRow1 = [
+//     { content: 'S/N', rowSpan: 2 },
+//     { content: 'NAME OF CANDIDATE', rowSpan: 2 },
+//     { content: 'REGISTRATION NUMBER', rowSpan: 2 },
+//     { content: 'SEX', rowSpan: 2 },
+//     ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
+//     { content: 'CURRENT', colSpan: 3 },
+//     { content: 'PREVIOUS', colSpan: 3 },
+//     { content: 'CUMULATIVE', colSpan: 3 }
+//   ];
+
+//   const headerRow2 = [
+//     'TCP', 'TNU', 'GPA', 
+//     'TCP', 'TNU', 'GPA', 
+//     'TCP', 'TNU', 'GPA'
+//   ];
+
+//   const courseTotals = groupedResults.map(r => r.total || "0");
+
+//   const rows = [
+//     [
+//       "1.", 
+//       student?.full_name?.toUpperCase() || "—", 
+//       student?.admission_number || "—", 
+//       student?.sex || "M", 
+//       ...courseTotals,
+//       currentTCP || 0, currentTNU || 0, currentGPA || 0,
+//       prevTCP || 0, prevTNU || 0, prevGPA || 0,
+//       cumTCP || 0, cumTNU || 0, cumGPA || 0
+//     ]
+//   ];
+
+//   // 5. Generate Table
+//   doc.autoTable({
+//     head: [headerRow1, headerRow2],
+//     body: rows,
+//     startY: 345,
+//     theme: "grid",
+//     styles: { 
+//       fontSize: 7.5, // Adjusted to fit more sub-columns
+//       cellPadding: 2, 
+//       halign: "center", 
+//       valign: "middle", 
+//       lineColor: [0, 128, 0], // Green lines
+//       lineWidth: 0.5,
+//       textColor: 0
+//     },
+//     headStyles: { 
+//       fillColor: [255, 255, 255], 
+//       textColor: [0, 0, 0], 
+//       fontStyle: "bold",
+//     },
+//     columnStyles: {
+//       1: { halign: "left", cellWidth: 90 },
+//       2: { cellWidth: 70 }
+//     }
+//   });
+
+//   // --- ADDED SUMMARY AND SIGNATURE DETAILS ---
+//   const finalY = doc.lastAutoTable.finalY + 40;
+//   doc.setFontSize(10);
+//   doc.setFont("helvetica", "bold");
+//   doc.setTextColor(0, 0, 0);
+
+//   // Summary Row
+//   doc.text(`SUMMARY: TOTAL: ${grandTotal || 0}    RANGE OF GPA: ${currentGPA || 0}    RANGE OF CGPA: ${cumGPA || 0}`, 40, finalY);
+
+//   // Signature Lines
+//   const sigLineY = finalY + 60;
+//   doc.setDrawColor(0, 0, 0); 
+//   doc.setLineWidth(1);
+  
+//   // Left Signature (Director)
+//   doc.line(40, sigLineY, 300, sigLineY);
+//   doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+
+//   // Right Signature (Dean)
+//   const rightSigX = pageWidth - 340;
+//   doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
+//   doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+
+//   // 6. QR Code (Shifted further down)
+//   const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
+//   const qrCodeData = await QRCode.toDataURL(verifyLink);
+//   const qrSize = 60;
+//   const qrX = pageWidth - 100;
+//   const qrY = pageHeight - 85; 
+
+//   doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+//   doc.setFontSize(8);
+//   doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+
+//   // 7. Footer
+//   doc.setFontSize(9);
+//   doc.setTextColor(100);
+//   doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+
+//   doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+
+//   Swal.fire({
+//     icon: "success",
+//     title: "Download Successful",
+//     text: "The landscape horizontal result has been generated.",
+//   });
+// };
+
+
+
+
+
+
+
+const generatePDF = async () => {
+  if (groupedResults.length === 0) {
+    Swal.fire("No results", "You have no results to download.", "info");
+    return;
+  }
+
+  // --- 1. GRADING LOGIC (Nigerian 5.0 Scale) ---
+  const getGradePoint = (score) => {
+    if (score >= 70) return 5; // A
+    if (score >= 60) return 4; // B
+    if (score >= 50) return 3; // C
+    if (score >= 45) return 2; // D (Common PG Pass mark)
+    return 0; // F
   };
+
+  // --- 2. AUTOMATIC CALCULATIONS ---
+  // Current Semester
+  const currentTNU = groupedResults.reduce((sum, r) => sum + (Number(r.credit_unit) || 0), 0);
+  const currentTCP = groupedResults.reduce((sum, r) => {
+    const gp = getGradePoint(Number(r.total) || 0);
+    return sum + (gp * (Number(r.credit_unit) || 0));
+  }, 0);
+  const currentGPA = currentTNU > 0 ? (currentTCP / currentTNU).toFixed(2) : "0.00";
+
+  // Grand Total of all scores
+  const grandTotal = groupedResults.reduce((sum, r) => sum + (Number(r.total) || 0), 0);
+
+  // Previous & Cumulative (Assuming data exists in student object)
+  const prevTCP = Number(student?.previous_tcp) || 0;
+  const prevTNU = Number(student?.previous_tnu) || 0;
+  const prevGPA = prevTNU > 0 ? (prevTCP / prevTNU).toFixed(2) : "0.00";
+
+  const cumTCP = currentTCP + prevTCP;
+  const cumTNU = currentTNU + prevTNU;
+  const cumGPA = cumTNU > 0 ? (cumTCP / cumTNU).toFixed(2) : "0.00";
+
+  // --- 3. PDF INITIALIZATION ---
+  const doc = new jsPDF("l", "pt", "a4");
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+
+  // Logo (Centered)
+  const logo = "/logo.png";
+  const logoWidth = 50;
+  const logoHeight = 50;
+  doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
+
+  // Header Image (Full width)
+  const headerImg = "/resultheader.png";
+  const headerWidth = pageWidth - 80; 
+  const headerHeight = 250; 
+  doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
+
+  // Option/Program Title
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(0, 0, 0);
+  doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
+
+  // --- 4. TABLE STRUCTURE ---
+  const headerRow1 = [
+    { content: 'S/N', rowSpan: 2 },
+    { content: 'NAME OF CANDIDATE', rowSpan: 2 },
+    { content: 'REGISTRATION NUMBER', rowSpan: 2 },
+    { content: 'SEX', rowSpan: 2 },
+    ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
+    { content: 'CURRENT', colSpan: 3 },
+    { content: 'PREVIOUS', colSpan: 3 },
+    { content: 'CUMULATIVE', colSpan: 3 }
+  ];
+
+  const headerRow2 = [
+    'TCP', 'TNU', 'GPA', 
+    'TCP', 'TNU', 'GPA', 
+    'TCP', 'TNU', 'GPA'
+  ];
+
+  const courseTotals = groupedResults.map(r => r.total || "0");
+
+  const rows = [
+    [
+      "1.", 
+      student?.full_name?.toUpperCase() || "—", 
+      student?.admission_number || "—", 
+      student?.sex || "M", 
+      ...courseTotals,
+      currentTCP, currentTNU, currentGPA,
+      prevTCP, prevTNU, prevGPA,
+      cumTCP, cumTNU, cumGPA
+    ]
+  ];
+
+  // Generate Table with Green Lines
+  doc.autoTable({
+    head: [headerRow1, headerRow2],
+    body: rows,
+    startY: 345,
+    theme: "grid",
+    styles: { 
+      fontSize: 7.5, 
+      cellPadding: 2, 
+      halign: "center", 
+      valign: "middle", 
+      lineColor: [0, 128, 0], // Green borders
+      lineWidth: 0.5,
+      textColor: 0
+    },
+    headStyles: { 
+      fillColor: [255, 255, 255], 
+      textColor: [0, 0, 0], 
+      fontStyle: "bold",
+    },
+    columnStyles: {
+      1: { halign: "left", cellWidth: 90 },
+      2: { cellWidth: 70 }
+    }
+  });
+
+  // --- 5. SUMMARY & SIGNATURES ---
+  const finalY = doc.lastAutoTable.finalY + 40;
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "bold");
+
+  doc.text(`SUMMARY: TOTAL: ${grandTotal}    RANGE OF GPA: ${currentGPA}    RANGE OF CGPA: ${cumGPA}`, 40, finalY);
+
+  const sigLineY = finalY + 60;
+  doc.setDrawColor(0, 0, 0); 
+  doc.setLineWidth(1);
+  
+  // Left: Director
+  doc.line(40, sigLineY, 300, sigLineY);
+  doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+
+  // Right: Dean
+  const rightSigX = pageWidth - 340;
+  doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
+  doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+
+  // --- 6. QR CODE & FOOTER ---
+  const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
+  const qrCodeData = await QRCode.toDataURL(verifyLink);
+  const qrSize = 60;
+  const qrX = pageWidth - 100;
+  const qrY = pageHeight - 85; 
+
+  doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+  doc.setFontSize(8);
+  doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+
+  doc.setFontSize(9);
+  doc.setTextColor(100);
+  doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+
+  // --- 7. SAVE ---
+  doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+
+  Swal.fire({
+    icon: "success",
+    title: "Download Successful",
+    text: "The landscape horizontal result has been generated.",
+  });
+};
+
+
+
+
+
 
   return (
     <Container>
@@ -711,14 +1182,14 @@ const payWithPaystack = (amount, onSuccess) => {
         <Message>No results available yet.</Message>
       ) : (
         <>
-          {/* <Button onClick={generatePDF}>Download Result</Button> */}
-          <Button
+          <Button onClick={generatePDF}>Download Result</Button>
+          {/* <Button
   onClick={() =>
     payWithPaystack(5000, generatePDF) // ₦1000 example fee
   }
 >
   Download Result (₦5,000)
-</Button>
+</Button> */}
 
 
           <Table>

@@ -540,8 +540,8 @@ const payWithPaystack = (amount, onSuccess) => {
   }
 
   const handler = window.PaystackPop.setup({
-    key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-    // key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
+    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+    key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
     email: studentInfo.email,
     amount: amount * 100,
     currency: "NGN",
@@ -702,15 +702,7 @@ const payWithPaystack = (amount, onSuccess) => {
 
 //   };
 
-const cumGPA = 1;
-const cumTCP = 1;
-const cumTNU = 1
-const currentGPA = 1;
-const currentTCP = 1;
-const currentTNU = 1;
-const prevGPA = 1;
-const prevTCP = 1;
-const prevTNU = 1;
+
 
 
 
@@ -1163,7 +1155,7 @@ const generatePDF = async () => {
   Swal.fire({
     icon: "success",
     title: "Download Successful",
-    text: "The landscape horizontal result has been generated.",
+    text: "Your result has been Downloaded, Please check your downloads folder.",
   });
 };
 
@@ -1182,14 +1174,14 @@ const generatePDF = async () => {
         <Message>No results available yet.</Message>
       ) : (
         <>
-          <Button onClick={generatePDF}>Download Result</Button>
-          {/* <Button
+          {/* <Button onClick={generatePDF}>Download Result</Button> */}
+          <Button
   onClick={() =>
     payWithPaystack(5000, generatePDF) // ₦1000 example fee
   }
 >
   Download Result (₦5,000)
-</Button> */}
+</Button>
 
 
           <Table>

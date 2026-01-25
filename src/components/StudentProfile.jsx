@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { use } from 'react';
 import { useContext } from 'react';
 import { Context } from './Context';
+import UpdateLevelSemesterModal from "./UpdateLevelSemesterModal";
+
 
 
 // ---------- Styled Components ----------
@@ -113,6 +115,8 @@ const StudentProfile = ({id, setStudentProfileId, handleGetAllstudents}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const {programs}=useContext(Context);
+  const [showModal, setShowModal] = useState(false);
+
 
 
 
@@ -124,6 +128,7 @@ const StudentProfile = ({id, setStudentProfileId, handleGetAllstudents}) => {
       .then(res => {
         if (res.data.success) {
           setStudent(res.data.student);
+          console.log(res.data.student)
         } else {
           setError(res.data.error || 'Student not found.');
         }
@@ -517,7 +522,22 @@ const graduateStudent = async (studentId) => {
             <Field><FaFileAlt /> <Label>Statement:</Label> {student.statement}</Field>
           )}
           <Field><FaEnvelope /> <Label>Admission number:</Label> {student.admission_number?student.admission_number:"Not yet Admitted"}</Field>
-          <Field ><FaCheckCircle /> <Label>Status:</Label><p style={{backgroundColor:"green", padding:"5px", color:"white", borderRadius:"5px"}}>{student.status.toUpperCase()}</p>  </Field>
+          <Field>
+  <FaEnvelope /> 
+  <Label>Level:</Label> 
+  {student.admission_number
+    ? JSON.parse(student.level_semester).level_id
+    : "Not yet Admitted"}
+</Field>
+
+  <Field>
+  <FaEnvelope /> 
+  <Label>Semester:</Label> 
+  {student.admission_number
+    ? JSON.parse(student.level_semester).semester_id
+    : "Not yet Admitted"}
+</Field>
+<Field ><FaCheckCircle /> <Label>Status:</Label><p style={{backgroundColor:"green", padding:"5px", color:"white", borderRadius:"5px"}}>{student.status.toUpperCase()}</p>  </Field>
           <Field ><FaCheckCircle /> <Label>Suspension:</Label><p style={{backgroundColor:student.suspension==="suspended"?"red":"rgba(0,0,255,0.5)", padding:"5px", color:"white", borderRadius:"5px"}}>{student.suspension.toUpperCase()}</p>  </Field>
     
     
@@ -547,15 +567,26 @@ const graduateStudent = async (studentId) => {
       <Button onClick={()=>deleteStudent(student.id)}>
         Delete
       </Button>
-    <Button onClick={()=>{setStudentProfileId(false);handleGetAllstudents()}}>
+  
+      <Button onClick={() => setShowModal(true)}>
+  Update Level / Semester
+</Button>
+  <Button onClick={()=>{setStudentProfileId(false);handleGetAllstudents()}}>
         Back
       </Button>
+
     </ButtonWrap>
           
         </Card>
       )}
 
-    
+    <UpdateLevelSemesterModal
+  show={showModal}
+  onClose={() => setShowModal(false)}
+  student={student}
+  refreshStudent={handleGetStudentById}
+/>
+
     </Container>
   );
 };

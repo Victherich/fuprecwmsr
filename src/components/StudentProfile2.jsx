@@ -331,6 +331,12 @@ const handleSaveName = () => {
               <FaGraduationCap /> <b>Status:</b> {student.status}
             </p>
             <p>
+              <FaIdCard /> <b>Level:</b>  {JSON.parse(student.level_semester).level_id}
+            </p>
+             <p>
+              <FaIdCard /> <b>Semester:</b>  {JSON.parse(student.level_semester).semester_id}
+            </p>
+            <p>
               <FaUser /> <b>Suspension:</b> {student.suspension || "Active"}
             </p>
           </Details>

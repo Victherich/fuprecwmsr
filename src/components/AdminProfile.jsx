@@ -447,6 +447,47 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
       });
   };
 
+
+
+
+
+
+const closeSemesterAndOpenNext = async () => {
+  const confirm = await Swal.fire({
+    title: "Are you sure?",
+    text: "This will close current semester and open the next level/semester for all current students.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, proceed",
+    cancelButtonText: "Cancel",
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  Swal.fire({
+    title: "Processing...",
+    text: "Please wait while we update student records.",
+    allowOutsideClick: false,
+    didOpen: () => Swal.showLoading(),
+  });
+
+  try {
+    const res = await axios.post("https://www.cwmsrfupre.com.ng/api/rollover_semester.php");
+    Swal.close();
+
+    if (res.data.success) {
+      Swal.fire("Done!", res.data.message, "success");
+    } else {
+      Swal.fire("Error!", res.data.error, "error");
+    }
+  } catch (err) {
+    Swal.close();
+    Swal.fire("Error!", "Request failed. Try again.", "error");
+  }
+};
+
+
+
   if (!admin)
     return <p style={{ textAlign: "center", color: "green" }}>Loading...</p>;
 
@@ -587,6 +628,12 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
             </Modal>
           </ModalOverlay>
         )}
+
+<button onClick={closeSemesterAndOpenNext} style={{color:"white", background:"red", cursor:"pointer", marginTop:"20px", padding:"5px", border:"none", borderRadius:"5px"}}>
+  Close Semester & Advance Students
+</button>
+
+
       </DashboardWrapper>
     </Container>
   );

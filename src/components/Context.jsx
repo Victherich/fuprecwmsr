@@ -415,6 +415,11 @@ const categories = [
 ]
 
 
+const possible_levels_for_studnet_login = [
+  {id:1, code:"current", name:"Current Semester"},
+  {id:2, code:"L1S1", name:"Last First Semester of Level"},
+]
+
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState('profile');
@@ -431,7 +436,9 @@ const [dhb, setDhb]=useState(true)
     <Context.Provider value={{adminToken,setAdminToken,admin,setAdmin,adminMenu,
     setAdminMenu,trackingID,setTrackingID,
     programs, levels, semesters, courses, categories,
-    menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb, setDhb}}>
+    menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb, setDhb, 
+    possible_levels_for_studnet_login
+    }}>
 
         {children}
     </Context.Provider>

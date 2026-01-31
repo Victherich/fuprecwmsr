@@ -330,9 +330,9 @@ const handleSaveName = () => {
             <p>
               <FaGraduationCap /> <b>Status:</b> {student.status}
             </p>
-            <p>
+            {/* <p>
               <FaIdCard /> <b>Level:</b>  {JSON.parse(student.level_semester).level_id}
-            </p>
+            </p> */}
              <p>
               <FaIdCard /> <b>Semester:</b>  {JSON.parse(student.level_semester).semester_id}
             </p>

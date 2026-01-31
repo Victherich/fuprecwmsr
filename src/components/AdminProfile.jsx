@@ -247,6 +247,8 @@ import {
   FaFileCsv,
   FaSpeakerDeck,
   FaReply,
+  FaPaperclip,
+  FaFileDownload,
 } from "react-icons/fa";
 import AdminEditControl from "./AdminEditControl";
 
@@ -574,6 +576,15 @@ const closeSemesterAndOpenNext = async () => {
     <FaReply />
     </StatIcon>
       <StatLabel>Assessment forms and Feedback</StatLabel>
+      <StatValue style={{fontSize:"0.8rem"}}></StatValue>
+      </StatCard>
+
+
+       <StatCard onClick={() => onNavigate("resultdownloadhistory")}>
+    <StatIcon>
+    <FaFileDownload />
+    </StatIcon>
+      <StatLabel>Result Download History</StatLabel>
       <StatValue style={{fontSize:"0.8rem"}}></StatValue>
       </StatCard>
 

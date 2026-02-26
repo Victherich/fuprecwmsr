@@ -234,7 +234,7 @@ const StudentLogin = () => {
       <Form onSubmit={handleLogin}>
         <h2>Student Login</h2>
 
-        <Label>Email</Label>
+        <Label>Email (Your Institutional Email)</Label>
         <Input
           type="email"
           value={email}

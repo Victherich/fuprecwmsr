@@ -308,7 +308,8 @@ const handleSaveName = () => {
             onClick={()=>setModalOpen2(true)}> <FaEdit/></span>}
             
             </Name>
-            <Email>{student.email}</Email>
+            <Email><strong>Institutional Email: </strong> {student.email}</Email>
+            <Email><strong>Personal Email: </strong>{student.email2}</Email>
             <EditButton
               onClick={() => {
                 setNewPhone(student.phone);

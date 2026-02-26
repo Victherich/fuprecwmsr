@@ -1,5 +1,6 @@
+// StudentResetPassword.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
@@ -45,7 +46,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   padding: 0.75rem;
-  background-color:green;
+  background-color: green;
   color: white;
   font-size: 1rem;
   border: none;
@@ -57,62 +58,59 @@ const Button = styled.button`
   }
 `;
 
-const Message = styled.p`
-  margin-top: 1rem;
-  color: ${({ success }) => (success ? 'green' : 'red')};
-  text-align: center;
-  font-size: 0.95rem;
-`;
-
-const StudentForgotPassword = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [success, setSuccess] = useState(false);
+const LecturerResetPassword = () => {
+  const { token } = useParams();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
-  const [buttonText, setButtonText]=useState("Send Reset Link")
-
- 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Show loading alert
+
+    if (password !== confirmPassword) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Passwords do not match',
+      });
+      return;
+    }
+
     Swal.fire({
       title: 'Please wait...',
-      text: 'Sending password reset link...',
+      text: 'Resetting your password...',
       allowOutsideClick: false,
       allowEscapeKey: false,
       didOpen: () => {
         Swal.showLoading();
       },
     });
-  
+
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/student_forgot_password.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_reset_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ token, password }),
       });
-  
+
       const data = await res.json();
-  
       Swal.close();
-  
+
       if (data.success) {
         Swal.fire({
           icon: 'success',
           title: 'Success',
-          text: data.message || 'Reset link sent successfully Please check your email inbox or spam folder!',
+          text: data.message || 'Password reset successfully!',
+        }).then(() => {
+          navigate('/lecturerlogin');
         });
-        setButtonText("Resend Reset Link");
       } else {
         Swal.fire({
           icon: 'error',
           title: 'Failed',
-          text: data.message || 'Something went wrong. Please try again.',
+          text: data.message || 'Failed to reset password.',
         });
       }
-    } catch (error) {
+    } catch (err) {
       Swal.close();
       Swal.fire({
         icon: 'error',
@@ -121,30 +119,35 @@ const StudentForgotPassword = () => {
       });
     }
   };
-  
 
+
+  
   return (
     <Container>
       <FormWrapper>
-        <Title>Student Forgot Password</Title>
+        <Title>Reset Your Password</Title>
         <Form onSubmit={handleSubmit}>
-          Your Registered Personal Email (not institutional email):
           <Input
-            type="email"
-            placeholder="Enter your email"
+            type="password"
+            placeholder="New password"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit">{buttonText}</Button>
-
+          <Input
+            type="password"
+            placeholder="Confirm new password"
+            required
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <Button type="submit">Reset Password</Button>
         </Form>
-        <p onClick={()=>navigate("/studentlogin")} style={{color:"green", cursor:"pointer"}}>Back to Login</p>
-        {message && <Message success={success}>{message}</Message>}
+        <p onClick={() => navigate("/lecturerlogin")} style={{ color: "green", cursor: "pointer" }}>Back to Login</p>
       </FormWrapper>
     </Container>
   );
 };
 
-export default StudentForgotPassword;
+export default LecturerResetPassword;
 

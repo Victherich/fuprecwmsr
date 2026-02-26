@@ -111,6 +111,8 @@ import StudentResultByAdmNo from './components/StudentResultByAdmNo';
 import ZeroWastePage from './components/ZeroWastePage';
 import ExamPortalLogin from './components/ExamPortalLogin';
 import StudentResultPortalLogin from './components/StudentResultPortalLogin';
+import LecturerForgotPassword from './components/LecturerForgotPassword';
+import LecturerResetPassword from './components/LecturerResetPassword';
 
 
 function App() {
@@ -227,6 +229,8 @@ function App() {
         {/* leccturer routes */}
         <Route path='/lecturersignup' element={<LecturerSignup/>}/>
         <Route path='/lecturerlogin' element={<LecturerLogin/>}/>
+        <Route path='/lecturerforgotpassword' element={<LecturerForgotPassword/>}/>
+         <Route path="/lecturerresetpassword/:token" element={<LecturerResetPassword/>} />
         <Route path="/lecturer" element={<PrivateLecturerDashboard />}>
           <Route path="" element={<LecturerDashboard />} />
         </Route>

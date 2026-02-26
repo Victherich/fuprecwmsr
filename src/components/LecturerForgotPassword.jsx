@@ -64,7 +64,7 @@ const Message = styled.p`
   font-size: 0.95rem;
 `;
 
-const StudentForgotPassword = () => {
+const LecturerForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
@@ -88,7 +88,7 @@ const StudentForgotPassword = () => {
     });
   
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/student_forgot_password.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_forgot_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -126,9 +126,8 @@ const StudentForgotPassword = () => {
   return (
     <Container>
       <FormWrapper>
-        <Title>Student Forgot Password</Title>
+        <Title>Lecturer Forgot Password</Title>
         <Form onSubmit={handleSubmit}>
-          Your Registered Personal Email (not institutional email):
           <Input
             type="email"
             placeholder="Enter your email"
@@ -139,12 +138,12 @@ const StudentForgotPassword = () => {
           <Button type="submit">{buttonText}</Button>
 
         </Form>
-        <p onClick={()=>navigate("/studentlogin")} style={{color:"green", cursor:"pointer"}}>Back to Login</p>
+        <p onClick={()=>navigate("/lecturerlogin")} style={{color:"green", cursor:"pointer"}}>Back to Login</p>
         {message && <Message success={success}>{message}</Message>}
       </FormWrapper>
     </Container>
   );
 };
 
-export default StudentForgotPassword;
+export default LecturerForgotPassword;
 

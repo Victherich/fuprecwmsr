@@ -286,6 +286,10 @@ dispatch(studentLogout());
         allowOutsideClick: false
       });
 
+
+
+
+
       // OPTIONAL: try to re-enter fullscreen automatically
       document.documentElement.requestFullscreen().catch(() => {});
     }

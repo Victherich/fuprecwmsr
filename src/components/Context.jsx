@@ -28,7 +28,23 @@ const ContextProvider = ({children}) => {
       { id: 13, name: "Doctor of Philosophy (Ph.D.) in Petroleum Waste Management" },
       { id: 14, name: "Doctor of Philosophy (Ph.D.) in Waste Management" },
       { id: 15, name: "Doctor of Philosophy (Ph.D.) in Environmental Social Work & Community Development" },
-      { id: 16, name: "Doctor of Philosophy (Ph.D.) in Environmental Health Management" }
+      { id: 16, name: "Doctor of Philosophy (Ph.D.) in Environmental Health Management" },
+      
+    { id: 17, name: "Professional PGD in Petroleum Waste Management" },
+{ id: 18, name: "Professional PGD in Waste Management" },
+{ id: 19, name: "Professional PGD in Environmental Social Work & Community Development" },
+{ id: 20, name: "Professional PGD in Environmental Health Management" },
+
+   { id: 21, name: "Professional Masters in Petroleum Waste Management" },
+{ id: 22, name: "Professional Masters in Waste Management" },
+{ id: 23, name: "Professional Masters in Environmental Social Work & Community Development" },
+{ id: 24, name: "Professional Masters in Environmental Health Management" },
+
+   { id: 25, name: "Professional Doctorate in Petroleum Waste Management" },
+{ id: 26, name: "Professional Doctorate in Waste Management" },
+{ id: 27, name: "Professional Doctorate in Environmental Social Work & Community Development" },
+{ id: 28, name: "Professional Doctorate in Environmental Health Management" },
+
     ];
     
     

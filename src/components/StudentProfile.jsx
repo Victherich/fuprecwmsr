@@ -119,7 +119,7 @@ const StudentProfile = ({id, setStudentProfileId, handleGetAllstudents}) => {
 
 
 
-
+console.log(student)
   // fetching a student by id
  
 
@@ -192,6 +192,26 @@ const deleteStudent = async (studentId) => {
 
 
 
+
+
+const handleAdmitStudent = (studentId)=>{
+  if(student.program>16&&student.program<21){
+    admitProfessionalPGDStudent(studentId)
+  }else if(student.program>20 && student.program<25){
+    admitProfessionalMastersStudent(studentId)
+  }else if(student.program>24&&student.program<29){
+admitProfessionalDoctorateStudent(studentId)
+  }
+  
+  else{
+    admitStudent(studentId)
+  }
+} 
+
+
+
+
+
 // admitting a student
 const admitStudent = async (studentId) => {
 
@@ -246,6 +266,181 @@ const admitStudent = async (studentId) => {
     }
   }
 };
+
+
+
+
+
+
+// admitting a student
+const admitProfessionalPGDStudent = async (studentId) => {
+
+
+  if(student.status==="admitted"){
+    Swal.fire({text:"student is already admitted"})
+    return;
+  }
+  // Confirm with the user
+  const confirmation = await Swal.fire({
+    title: 'Are you sure?',
+    text: "This will mark the student as 'Admitted'.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: 'Yes, admit student'
+  });
+
+  if (confirmation.isConfirmed) {
+    // Show loading
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Please wait while we update the student status.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    try {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_professionalPGD_student.php', {
+        id: studentId
+      });
+
+      if (response.data.success) {
+        Swal.fire({
+          title: 'Success ✅',
+          text: response.data.message || 'Student status updated to admitted.',
+          icon: 'success'
+        });
+        handleGetStudentById();
+      } else {
+        throw new Error(response.data.error || 'Unknown error occurred.');
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Error ❌',
+        text: error.message || 'Failed to update student status.',
+        icon: 'error'
+      });
+    }
+  }
+};
+
+// admitting a student
+const admitProfessionalMastersStudent = async (studentId) => {
+
+
+  if(student.status==="admitted"){
+    Swal.fire({text:"student is already admitted"})
+    return;
+  }
+  // Confirm with the user
+  const confirmation = await Swal.fire({
+    title: 'Are you sure?',
+    text: "This will mark the student as 'Admitted'.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: 'Yes, admit student'
+  });
+
+  if (confirmation.isConfirmed) {
+    // Show loading
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Please wait while we update the student status.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    try {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_professionalMasters_student.php', {
+        id: studentId
+      });
+
+      if (response.data.success) {
+        Swal.fire({
+          title: 'Success ✅',
+          text: response.data.message || 'Student status updated to admitted.',
+          icon: 'success'
+        });
+        handleGetStudentById();
+      } else {
+        throw new Error(response.data.error || 'Unknown error occurred.');
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Error ❌',
+        text: error.message || 'Failed to update student status.',
+        icon: 'error'
+      });
+    }
+  }
+};
+
+// admitting a student
+const admitProfessionalDoctorateStudent = async (studentId) => {
+
+
+  if(student.status==="admitted"){
+    Swal.fire({text:"student is already admitted"})
+    return;
+  }
+  // Confirm with the user
+  const confirmation = await Swal.fire({
+    title: 'Are you sure?',
+    text: "This will mark the student as 'Admitted'.",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#aaa',
+    confirmButtonText: 'Yes, admit student'
+  });
+
+  if (confirmation.isConfirmed) {
+    // Show loading
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Please wait while we update the student status.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    try {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_professionalDoctorate_student.php', {
+        id: studentId
+      });
+
+      if (response.data.success) {
+        Swal.fire({
+          title: 'Success ✅',
+          text: response.data.message || 'Student status updated to admitted.',
+          icon: 'success'
+        });
+        handleGetStudentById();
+      } else {
+        throw new Error(response.data.error || 'Unknown error occurred.');
+      }
+    } catch (error) {
+      Swal.fire({
+        title: 'Error ❌',
+        text: error.message || 'Failed to update student status.',
+        icon: 'error'
+      });
+    }
+  }
+};
+
+
+
+
+
 
 
 

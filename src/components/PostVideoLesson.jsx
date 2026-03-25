@@ -195,7 +195,7 @@ const [filterSearch, setFilterSearch] = useState("");
     if (!lecturer?.id) return;
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_videos_by_lecturer_id.php`,
+        `https://www.cwmsrfupre.com.ng/base/get_videos_by_lecturer_id.php`,
         { params: { lecturer_id: lecturer.id, t: Date.now() } }
       );
       if (res.data.success) setVideos(res.data.videos);
@@ -239,7 +239,7 @@ const [filterSearch, setFilterSearch] = useState("");
 //       });
 
 //       const res = await axios.post(
-//         "https://www.cwmsrfupre.com.ng/api/create_video.php",
+//         "https://www.cwmsrfupre.com.ng/base/create_video.php",
 //         formData,
 //         {
 //           headers: { "Content-Type": "multipart/form-data" },
@@ -307,7 +307,7 @@ const handleSubmit = async () => {
 
     let uploadPercent = 0;
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/create_video.php",
+      "https://www.cwmsrfupre.com.ng/base/create_video.php",
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -373,7 +373,7 @@ const deleteVideo = async (videoId) => {
       Swal.fire({ text: "Deleting..." });
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/delete_video.php",
+        "https://www.cwmsrfupre.com.ng/base/delete_video.php",
         { video_id: videoId },
         { headers: { "Content-Type": "application/json" } }
       );

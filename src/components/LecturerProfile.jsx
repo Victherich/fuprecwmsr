@@ -149,7 +149,7 @@
 //   useEffect(() => {
 //     if (!lecturerId) return;
 
-//     axios.get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerId}`)
+//     axios.get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerId}`)
 //       .then(res => {
 //         if (res.data.success) {
 //           setAdmin(res.data.user);
@@ -168,7 +168,7 @@
 //   };
 
 //   const handleSave = () => {
-//     axios.post('https://www.cwmsrfupre.com.ng/api/update_lecturer_phone.php', {
+//     axios.post('https://www.cwmsrfupre.com.ng/base/update_lecturer_phone.php', {
 //       id: admin.id,
 //       phone: newPhone,
 //     }).then(res => {
@@ -430,7 +430,7 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
   useEffect(() => {
     if (!lecturerId) return;
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerId}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerId}`)
       .then((res) => {
         if (res.data.success) setLecturer(res.data.user);
       })
@@ -439,7 +439,7 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
 
   const handleSave = () => {
     axios
-      .post("https://www.cwmsrfupre.com.ng/api/update_lecturer_phone.php", {
+      .post("https://www.cwmsrfupre.com.ng/base/update_lecturer_phone.php", {
         id: lecturer.id,
         phone: newPhone,
       })

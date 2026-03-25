@@ -165,7 +165,7 @@
 //     Swal.fire({ text: 'Submitting...' });
 //     Swal.showLoading();
 //     try {
-//       const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
+//       const response = await fetch('https://www.cwmsrfupre.com.ng/base/submit_admission_form.php', {
 //         method: 'POST',
 //         body: formDataToSend, // Sending FormData directly
 //       });
@@ -206,7 +206,7 @@
 //     });
 
 //     try {
-//       const response = await fetch('https://www.cwmsrfupre.com.ng/api/notify_admins_on_application.php', {
+//       const response = await fetch('https://www.cwmsrfupre.com.ng/base/notify_admins_on_application.php', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -812,7 +812,7 @@ const ApplicationPage = () => {
     Swal.fire({ text: 'Submitting...' });
     Swal.showLoading();
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
+      const response = await fetch('https://www.cwmsrfupre.com.ng/base/submit_admission_form.php', {
         method: 'POST',
         body: formDataToSend, // Sending FormData directly
       });
@@ -856,7 +856,7 @@ const ApplicationPage = () => {
 //   });
 
 //   try {
-//     const response = await fetch('https://www.cwmsrfupre.com.ng/api/submit_admission_form.php', {
+//     const response = await fetch('https://www.cwmsrfupre.com.ng/base/submit_admission_form.php', {
 //       method: 'POST',
 //       body: formDataToSend, // Sending FormData directly
 //     });
@@ -931,7 +931,7 @@ const ApplicationPage = () => {
     // });
 
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/api/notify_admins_on_application.php', {
+      const response = await fetch('https://www.cwmsrfupre.com.ng/base/notify_admins_on_application.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -118,7 +118,7 @@
 //       useEffect(() => {
 //         if (!studentId) return;
     
-//         axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+//         axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
 //           .then(res => {
 //             if (res.data.success) {
 //               setStudent(res.data.student);
@@ -153,7 +153,7 @@
 //           didOpen: () => Swal.showLoading()
 //         });
   
-//         const res = await axios.post('https://www.cwmsrfupre.com.ng/api/enroll_course.php', {
+//         const res = await axios.post('https://www.cwmsrfupre.com.ng/base/enroll_course.php', {
 //           student_id: student.id,
 //           course_id: selectedCourse
 //         });
@@ -174,7 +174,7 @@
     
 
 //     const fetchEnrolledCourses = () => {
-//       axios.get(`https://www.cwmsrfupre.com.ng/api/get_enrolled_courses.php?student_id=${student.id}`)
+//       axios.get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
 //         .then(res => {
 //           if (res.data.success) {
 //             setEnrolledCourses(res.data.enrollments);
@@ -439,7 +439,7 @@
 //   useEffect(() => {
 //     if (!lecturerId) return;
 
-//     axios.get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerId}`)
+//     axios.get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerId}`)
 //       .then(res => {
 //         if (res.data.success) {
 //           setLecturer(res.data.lecturer);
@@ -469,7 +469,7 @@
 //         didOpen: () => Swal.showLoading()
 //       });
 
-//       const res = await axios.post('https://www.cwmsrfupre.com.ng/api/lecturer_enroll_course.php', {
+//       const res = await axios.post('https://www.cwmsrfupre.com.ng/base/lecturer_enroll_course.php', {
 //         lecturer_id: lecturerId,
 //         course_id: selectedCourse
 //       });
@@ -486,7 +486,7 @@
 //   };
 
 //   const fetchAssignedCourses = () => {
-//     axios.get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`)
+//     axios.get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`)
 //       .then(res => {
 //         if (res.data.success) {
 //           setAssignedCourses(res.data.enrollments);
@@ -752,7 +752,7 @@
 //   useEffect(() => {
 //     if (!lecturerId) return;
 //     axios
-//       .get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerId}`)
+//       .get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerId}`)
 //       .then((res) => {
 //         if (res.data.success) setLecturer(res.data.lecturer);
 //       })
@@ -768,7 +768,7 @@
 //   const fetchAssignedCourses = () => {
 //     axios
 //       .get(
-//         `https://www.cwmsrfupre.com.ng/api/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
+//         `https://www.cwmsrfupre.com.ng/base/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
 //       )
 //       .then((res) => {
 //         if (res.data.success) {
@@ -794,7 +794,7 @@
 //       });
 
 //       const res = await axios.post(
-//         "https://www.cwmsrfupre.com.ng/api/lecturer_enroll_course.php",
+//         "https://www.cwmsrfupre.com.ng/base/lecturer_enroll_course.php",
 //         {
 //           lecturer_id: lecturerId,
 //           course_id: selectedCourse,
@@ -1085,7 +1085,7 @@ const EnrollLecturerPage = ({ lecturerId }) => {
     if (!lecturerId) return;
 
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerId}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerId}`)
       .then((res) => {
         if (res.data.success) setLecturer(res.data.lecturer);
       })
@@ -1097,7 +1097,7 @@ const EnrollLecturerPage = ({ lecturerId }) => {
   const fetchAssignedCourses = () => {
     axios
       .get(
-        `https://www.cwmsrfupre.com.ng/api/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
+        `https://www.cwmsrfupre.com.ng/base/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
       )
       .then((res) => {
         if (res.data.success) {
@@ -1127,7 +1127,7 @@ const EnrollLecturerPage = ({ lecturerId }) => {
       });
 
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/lecturer_enroll_course.php",
+        "https://www.cwmsrfupre.com.ng/base/lecturer_enroll_course.php",
         {
           lecturer_id: lecturerId,
           course_id: selectedCourse,
@@ -1179,7 +1179,7 @@ const deleteEnrollment = async (enrollmentId) => {
   try {
     // Step 3️⃣ — Send delete request
     const response = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/lecturer_delete_enrollment.php",
+      "https://www.cwmsrfupre.com.ng/base/lecturer_delete_enrollment.php",
       { enrollment_id: enrollmentId }
     );
 

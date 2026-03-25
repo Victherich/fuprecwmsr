@@ -8,7 +8,7 @@ function AdminEditControl() {
 
   useEffect(() => {
     axios
-      .get("https://www.cwmsrfupre.com.ng/api/get_edit_setting.php")
+      .get("https://www.cwmsrfupre.com.ng/base/get_edit_setting.php")
       .then((res) => {
         if (res.data.success) setAllowEdit(res.data.allow_edit);
       });
@@ -18,7 +18,7 @@ function AdminEditControl() {
     const newValue = !allowEdit;
 
     axios
-      .post("https://www.cwmsrfupre.com.ng/api/update_edit_setting.php", {
+      .post("https://www.cwmsrfupre.com.ng/base/update_edit_setting.php", {
         allow_edit: newValue,
       })
       .then((res) => {

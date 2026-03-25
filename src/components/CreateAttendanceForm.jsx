@@ -25,7 +25,7 @@ const Button = styled.button`
   &:disabled { opacity:0.6; cursor:not-allowed; }
 `;
 
-const CreateAttendanceForm = ({onClose, fetchAttendance, adminId, apiBase = "https://www.cwmsrfupre.com.ng/api" }) => {
+const CreateAttendanceForm = ({onClose, fetchAttendance, adminId, apiBase = "https://www.cwmsrfupre.com.ng/base" }) => {
   const { courses } = useContext(Context);
   const [type, setType] = useState("class");
   const [title, setTitle] = useState("");

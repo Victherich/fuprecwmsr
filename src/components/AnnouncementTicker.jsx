@@ -61,7 +61,7 @@ const AnnouncementTicker = () => {
 useEffect(() => {
   const fetchLatest = async () => {
     try {
-      const res = await fetch(`https://www.cwmsrfupre.com.ng/api/fetch_announcements.php`);
+      const res = await fetch(`https://www.cwmsrfupre.com.ng/base/fetch_announcements.php`);
       const data = await res.json();
 
       if (data.success && data.announcements.length > 0) {

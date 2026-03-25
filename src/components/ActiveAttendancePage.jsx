@@ -42,7 +42,7 @@ const Button = styled.button`
 `;
 
 const ActiveAttendancePage = ({
-  apiBase = "https://www.cwmsrfupre.com.ng/api",
+  apiBase = "https://www.cwmsrfupre.com.ng/base",
   userId,
   userType // 'student' or 'lecturer'
 }) => {

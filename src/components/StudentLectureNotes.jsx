@@ -71,7 +71,7 @@ const StudentLectureNotes = ({ studentId }) => {
     const fetchNotes = async () => {
       try {
         const res = await axios.get(
-          `https://www.cwmsrfupre.com.ng/api/get_lecture_notes_for_student.php?student_id=${studentId}`
+          `https://www.cwmsrfupre.com.ng/base/get_lecture_notes_for_student.php?student_id=${studentId}`
         );
 
         if (res.data.success) {

@@ -82,7 +82,7 @@ export default function EmailVerificationModal({ onClose, onVerified }) {
 
     try {
       const res = await fetch(
-        "https://www.cwmsrfupre.com.ng/api/student_send_email_code_mail_function.php",
+        "https://www.cwmsrfupre.com.ng/base/student_send_email_code_mail_function.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -119,7 +119,7 @@ export default function EmailVerificationModal({ onClose, onVerified }) {
 
     try {
       const res = await fetch(
-        "https://www.cwmsrfupre.com.ng/api/student_verify_email_code.php",
+        "https://www.cwmsrfupre.com.ng/base/student_verify_email_code.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

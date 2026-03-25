@@ -80,12 +80,12 @@ export default function UpdateLevelSemesterModal({
 
     // fetch levels & semesters
     axios
-      .get("https://www.cwmsrfupre.com.ng/api/get_levels.php")
+      .get("https://www.cwmsrfupre.com.ng/base/get_levels.php")
       .then((res) => setLevels(res.data.levels || []))
       .catch(() => setLevels([]));
 
     axios
-      .get("https://www.cwmsrfupre.com.ng/api/get_semesters.php")
+      .get("https://www.cwmsrfupre.com.ng/base/get_semesters.php")
       .then((res) => setSemesters(res.data.semesters || []))
       .catch(() => setSemesters([]));
 
@@ -104,7 +104,7 @@ export default function UpdateLevelSemesterModal({
 
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/update_student_level_semester.php",
+        "https://www.cwmsrfupre.com.ng/base/update_student_level_semester.php",
         {
           id: student.id,
           level_id: levelId,

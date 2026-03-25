@@ -88,7 +88,7 @@ const StudentForgotPassword = () => {
     });
   
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/student_forgot_password.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/student_forgot_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

@@ -179,7 +179,7 @@ const [userEmail, setUserEmail] = useState("");
 const fetchItems = async () => {
   try {
     const res = await axios.get(
-      "https://www.cwmsrfupre.com.ng/api/get_assessment_forms.php",
+      "https://www.cwmsrfupre.com.ng/base/get_assessment_forms.php",
       {
         headers: {
           "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -219,7 +219,7 @@ const handleSubmit = async () => {
     Swal.showLoading();
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/create_assessment_form.php",
+      "https://www.cwmsrfupre.com.ng/base/create_assessment_form.php",
       formData,
       {
         headers: {
@@ -261,7 +261,7 @@ const deleteItem = async (id) => {
 
   try {
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/delete_assessment_form.php",
+      "https://www.cwmsrfupre.com.ng/base/delete_assessment_form.php",
       { item_id: id },
       {
         headers: {
@@ -325,7 +325,7 @@ const handleSubmit2 = async () => {
     Swal.showLoading();
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/create_feedback.php",
+      "https://www.cwmsrfupre.com.ng/base/create_feedback.php",
       formData,
       {
         headers: {

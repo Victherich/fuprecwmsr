@@ -89,7 +89,7 @@ const RequestQuote = () => {
     Swal.showLoading();
 
     try {
-      const response = await axios.post('https://vinrichards.com/api2/submit_quote_request.php', formData);
+      const response = await axios.post('https://vinrichards.com/base2/submit_quote_request.php', formData);
 
       if (response.data.success) {
         Swal.fire('Success', response.data.message, 'success');

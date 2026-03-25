@@ -237,7 +237,7 @@ const [activeEssay, setActiveEssay] = useState(null);
     const fetchSubmissions = async () => {
       try {
         const response = await axios.post(
-          "https://www.cwmsrfupre.com.ng/api/get_submissions_for_lecturer.php",
+          "https://www.cwmsrfupre.com.ng/base/get_submissions_for_lecturer.php",
           { lecturer_id: lecturerId },
           { headers: { "Cache-Control": "no-cache" } }
         );
@@ -281,7 +281,7 @@ const [activeEssay, setActiveEssay] = useState(null);
     setSaving(true);
     try {
       const response = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/mark_submission.php",
+        "https://www.cwmsrfupre.com.ng/base/mark_submission.php",
         {
           submission_id: selectedSubmission.submission_id,
           lecturer_id: lecturerId,
@@ -320,7 +320,7 @@ const [activeEssay, setActiveEssay] = useState(null);
 
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${id}`
+        `https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${id}`
       );
       if (res.data.success && res.data.user?.name) {
         setLecturer((prev) => ({ ...prev, [id]: res.data.user.name }));

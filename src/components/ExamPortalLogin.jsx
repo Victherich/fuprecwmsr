@@ -116,7 +116,7 @@ const ExamPortalLogin = () => {
       /* ================= STUDENT ================= */
       if (role === 'student') {
         const res = await axios.post(
-          'https://www.cwmsrfupre.com.ng/api/student_login.php',
+          'https://www.cwmsrfupre.com.ng/base/student_login.php',
           { email, password }
         );
 
@@ -137,7 +137,7 @@ const ExamPortalLogin = () => {
       /* ================= LECTURER ================= */
       if (role === 'lecturer') {
         const res = await axios.post(
-          'https://www.cwmsrfupre.com.ng/api/lecturer_login.php',
+          'https://www.cwmsrfupre.com.ng/base/lecturer_login.php',
           { email, password }
         );
 

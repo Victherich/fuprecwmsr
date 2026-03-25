@@ -26,7 +26,7 @@ const Button = styled.button`
   font-weight: 700;
 `;
 
-const StudentClockIn = ({student, apiBase = "https://www.cwmsrfupre.com.ng/api" }) => {
+const StudentClockIn = ({student, apiBase = "https://www.cwmsrfupre.com.ng/base" }) => {
 
   const [activeSheet, setActiveSheet] = useState(null);
   const [loading, setLoading] = useState(false);

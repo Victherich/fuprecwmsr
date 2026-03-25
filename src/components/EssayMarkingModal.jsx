@@ -123,7 +123,7 @@ const EssayMarkingModal = ({
     const fetchEssay = async () => {
       try {
         const res = await axios.get(
-          "https://www.cwmsrfupre.com.ng/api/get_essay_submission_for_marking.php",
+          "https://www.cwmsrfupre.com.ng/base/get_essay_submission_for_marking.php",
           {
             params: { submission_id: submission.submission_id },
             headers: {
@@ -169,7 +169,7 @@ const EssayMarkingModal = ({
   const saveMarks = async () => {
     try {
       await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/mark_essay_submission.php",
+        "https://www.cwmsrfupre.com.ng/base/mark_essay_submission.php",
         {
           submission_id: submission.submission_id,
           lecturer_id: lecturerId,

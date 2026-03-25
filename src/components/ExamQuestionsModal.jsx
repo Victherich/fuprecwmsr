@@ -71,7 +71,7 @@
 //   const fetchQuestions = async () => {
 //     try {
 //       const res = await axios.get(
-//         "https://www.cwmsrfupre.com.ng/api/get_exam_questions.php",
+//         "https://www.cwmsrfupre.com.ng/base/get_exam_questions.php",
 //         { params: { exam_id: exam.id } }
 //       );
 
@@ -242,7 +242,7 @@ const ExamQuestionsModal = ({ exam, onClose }) => {
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_exam_questions.php",
+        "https://www.cwmsrfupre.com.ng/base/get_exam_questions.php",
         { params: { exam_id: exam.id, _t: Date.now() } } // prevent caching
       );
       if (res.data.success) setQuestions(res.data.questions);
@@ -270,7 +270,7 @@ const ExamQuestionsModal = ({ exam, onClose }) => {
       Swal.fire({ title: "Deleting...", allowOutsideClick: false });
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/delete_exam_question.php",
+        "https://www.cwmsrfupre.com.ng/base/delete_exam_question.php",
         { question_id: questionId }
       );
       Swal.close();

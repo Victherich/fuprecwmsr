@@ -134,7 +134,7 @@ const AllLecturers = () => {
   const [searchEmail, setSearchEmail] = useState('');
 
  const handleGetAllLecturers = ()=>{
-    axios.get('https://www.cwmsrfupre.com.ng/api/get_all_lecturer.php')
+    axios.get('https://www.cwmsrfupre.com.ng/base/get_all_lecturer.php')
       .then(res => {
         if (res.data.success) {
           setAdmins(res.data.lecturers);
@@ -202,7 +202,7 @@ const deleteLecturer = async (lecturerId) => {
     });
 
     try {
-      const res = await axios.post('https://www.cwmsrfupre.com.ng/api/delete_lecturer.php', { id: lecturerId });
+      const res = await axios.post('https://www.cwmsrfupre.com.ng/base/delete_lecturer.php', { id: lecturerId });
       
       if (res.data.success) {
         Swal.fire('Deleted!', 'Lecturer has been deleted.', 'success');
@@ -249,7 +249,7 @@ const suspendLecturer = async (lecturerId) => {
         }
       });
 
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/suspend_lecturer.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/suspend_lecturer.php', {
         id: lecturerId
       });
 
@@ -297,9 +297,9 @@ const unsuspendLecturer = (lecturerId) => {
       setLoading(true);
       Swal.showLoading();
 
-      // Make the API call to unsuspend the lecturer
+      // Make the base call to unsuspend the lecturer
       axios
-        .post('https://www.cwmsrfupre.com.ng/api/unsuspend_lecturer.php', { id: lecturerId })
+        .post('https://www.cwmsrfupre.com.ng/base/unsuspend_lecturer.php', { id: lecturerId })
         .then((response) => {
           setLoading(false);
           if (response.data.success) {

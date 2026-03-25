@@ -198,7 +198,7 @@ const LecturerDashboard = () => {
 const getLecturerById = ()=>{
       if (!lecturerInfo) return;
   
-      axios.get(`https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${lecturerInfo.id}`)
+      axios.get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerInfo.id}`)
         .then(res => {
           if (res.data.success) {
             setAdmin(res.data.user);

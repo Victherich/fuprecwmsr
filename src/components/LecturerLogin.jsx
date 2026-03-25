@@ -98,7 +98,7 @@ const LecturerLogin = () => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/lecturer_login.php', { email, password });
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/lecturer_login.php', { email, password });
 
       if (response.data.success) {
         Swal.fire({

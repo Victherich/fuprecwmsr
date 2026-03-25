@@ -54,7 +54,7 @@
 //     Swal.showLoading();
 
 //     try {
-//       const response = await fetch("https://vinrichards.com/api2/post_shipment.php", {
+//       const response = await fetch("https://vinrichards.com/base2/post_shipment.php", {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -360,7 +360,7 @@ const AdminPostShipment = () => {
     Swal.showLoading();
 
     try {
-      const response = await fetch("https://vinrichards.com/api2/post_shipment.php", {
+      const response = await fetch("https://vinrichards.com/base2/post_shipment.php", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -367,7 +367,7 @@ const Table = styled.table`
 `;
 
 
-const AttendanceManagement = ({ adminId, apiBase = "https://www.cwmsrfupre.com.ng/api" }) => {
+const AttendanceManagement = ({ adminId, apiBase = "https://www.cwmsrfupre.com.ng/base" }) => {
   const [attendanceList, setAttendanceList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);

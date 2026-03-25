@@ -131,7 +131,7 @@ const GeneralAssets = () => {
   const fetchAssets = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_general_assets.php"
+        "https://www.cwmsrfupre.com.ng/base/get_general_assets.php"
       );
       if (res.data.success) setAssets(res.data.assets);
     } catch (err) {
@@ -158,7 +158,7 @@ const GeneralAssets = () => {
       Swal.fire({ text: "Uploading..." });
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/create_general_asset.php",
+        "https://www.cwmsrfupre.com.ng/base/create_general_asset.php",
         formData
       );
       Swal.close();
@@ -190,7 +190,7 @@ const GeneralAssets = () => {
 
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/delete_general_asset.php",
+        "https://www.cwmsrfupre.com.ng/base/delete_general_asset.php",
         { asset_id: id },
         { headers: { "Content-Type": "application/json" } }
       );

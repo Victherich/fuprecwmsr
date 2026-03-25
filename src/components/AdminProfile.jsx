@@ -146,7 +146,7 @@
 //   useEffect(() => {
 //     if (!adminId) return;
 
-//     axios.get(`https://www.cwmsrfupre.com.ng/api/get_admin_by_id.php?id=${adminId}`)
+//     axios.get(`https://www.cwmsrfupre.com.ng/base/get_admin_by_id.php?id=${adminId}`)
 //       .then(res => {
 //         if (res.data.success) {
 //           setAdmin(res.data.user);
@@ -165,7 +165,7 @@
 //   };
 
 //   const handleSave = () => {
-//     axios.post('https://www.cwmsrfupre.com.ng/api/update_admin_phone.php', {
+//     axios.post('https://www.cwmsrfupre.com.ng/base/update_admin_phone.php', {
 //       id: admin.id,
 //       phone: newPhone,
 //     }).then(res => {
@@ -423,7 +423,7 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
   useEffect(() => {
     if (!adminId) return;
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_admin_by_id.php?id=${adminId}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_admin_by_id.php?id=${adminId}`)
       .then((res) => {
         if (res.data.success) {
           setAdmin(res.data.user);
@@ -434,7 +434,7 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
 
   const handleSave = () => {
     axios
-      .post("https://www.cwmsrfupre.com.ng/api/update_admin_phone.php", {
+      .post("https://www.cwmsrfupre.com.ng/base/update_admin_phone.php", {
         id: admin.id,
         phone: newPhone,
       })
@@ -474,7 +474,7 @@ const closeSemesterAndOpenNext = async () => {
   });
 
   try {
-    const res = await axios.post("https://www.cwmsrfupre.com.ng/api/rollover_semester.php");
+    const res = await axios.post("https://www.cwmsrfupre.com.ng/base/rollover_semester.php");
     Swal.close();
 
     if (res.data.success) {

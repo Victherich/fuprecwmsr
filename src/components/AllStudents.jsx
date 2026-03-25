@@ -128,7 +128,7 @@ const AllStudents = () => {
 
 
     const handleGetAllstudents=()=>{
-    axios.get('https://www.cwmsrfupre.com.ng/api/get_all_students.php')  // Make sure to replace with the correct API URL
+    axios.get('https://www.cwmsrfupre.com.ng/base/get_all_students.php')  // Make sure to replace with the correct base URL
       .then(res => {
         if (res.data.success) {
           setStudents(res.data.students);

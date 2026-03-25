@@ -49,7 +49,7 @@
 //   useEffect(() => {
 //     const fetchLogs = async () => {
 //       try {
-//         const res = await axios.get("https://www.cwmsrfupre.com.ng/api/get_result_download_logs.php?t=" + Date.now());
+//         const res = await axios.get("https://www.cwmsrfupre.com.ng/base/get_result_download_logs.php?t=" + Date.now());
 //         if (res.data.success) {
 //           setLogs(res.data.logs);
 //         } else {
@@ -210,7 +210,7 @@ const ResultDownloadLogs = () => {
     const fetchLogs = async () => {
       try {
         const res = await axios.get(
-          "https://www.cwmsrfupre.com.ng/api/get_result_download_logs.php?t=" +
+          "https://www.cwmsrfupre.com.ng/base/get_result_download_logs.php?t=" +
             Date.now()
         );
         if (res.data.success) {

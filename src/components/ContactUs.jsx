@@ -34,7 +34,7 @@ const handleSubmit = async (e) => {
   });
 
   try {
-    const response = await fetch('https://www.cwmsrfupre.com.ng/api/contact_form_endpoint.php', {
+    const response = await fetch('https://www.cwmsrfupre.com.ng/base/contact_form_endpoint.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

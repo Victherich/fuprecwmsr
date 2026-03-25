@@ -198,7 +198,7 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
   useEffect(() => {
     if (!studentId) return;
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
       .then((res) => {
         if (res.data.success) {
           setStudent(res.data.student);
@@ -214,7 +214,7 @@ const StudentProfile2 = ({ studentId, onNavigate, onLogout }) => {
 
   const handleSave = () => {
     axios
-      .post("https://www.cwmsrfupre.com.ng/api/update_student_phone.php", {
+      .post("https://www.cwmsrfupre.com.ng/base/update_student_phone.php", {
         id: student.id,
         phone: newPhone,
       })
@@ -242,7 +242,7 @@ const handleSaveName = () => {
   }
 
   axios
-    .post("https://www.cwmsrfupre.com.ng/api/update_student_name.php", {
+    .post("https://www.cwmsrfupre.com.ng/base/update_student_name.php", {
       id: student.id,
       full_name: newName.trim(),
     })
@@ -272,7 +272,7 @@ const handleSaveName = () => {
     const fetchSetting = async () => {
       try {
         const res = await axios.get(
-          `https://www.cwmsrfupre.com.ng/api/get_edit_setting.php?nocache=${Date.now()}`
+          `https://www.cwmsrfupre.com.ng/base/get_edit_setting.php?nocache=${Date.now()}`
         ); // timestamp to avoid caching
         if (res.data.success) setAllowEdit(res.data.allow_edit);
       } catch (err) {

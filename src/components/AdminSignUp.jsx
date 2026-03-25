@@ -117,7 +117,7 @@ const AdminSignup = () => {
     });
 
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/api/admin_signup.php', {
+      const response = await fetch('https://www.cwmsrfupre.com.ng/base/admin_signup.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -24,7 +24,7 @@ const VerifyAccessCodeForLecturerSignUp = ({status, setStatus}) => {
     });
 
     axios
-      .post('https://www.cwmsrfupre.com.ng/api/verify_access_code.php', {
+      .post('https://www.cwmsrfupre.com.ng/base/verify_access_code.php', {
         code: accessCode.trim(),
       })
       .then((res) => {

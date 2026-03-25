@@ -287,7 +287,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-const API_BASE = "https://www.cwmsrfupre.com.ng/api";
+const API_BASE = "https://www.cwmsrfupre.com.ng/base";
 
 const ForumPage = ({ user }) => {
   const [posts, setPosts] = useState([]);

@@ -54,7 +54,7 @@ const UpdateShipment = () => {
     Swal.showLoading();
 
     try {
-      const response = await fetch("https://elexdondigitalacademy.com/api2/post_shipment.php", {
+      const response = await fetch("https://elexdondigitalacademy.com/base2/post_shipment.php", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

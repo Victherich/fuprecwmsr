@@ -86,7 +86,7 @@ const LecturerResetPassword = () => {
     });
 
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_reset_password.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/lecturer_reset_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, password }),

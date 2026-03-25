@@ -139,7 +139,7 @@ const Footer = () => {
     });
 
     try {
-      const response = await fetch("https://www.cwmsrfupre.com.ng/api/subscribe_newsletter.php", {
+      const response = await fetch("https://www.cwmsrfupre.com.ng/base/subscribe_newsletter.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

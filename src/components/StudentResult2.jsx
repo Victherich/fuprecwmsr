@@ -140,7 +140,7 @@ const StudentResult2 = () => {
   useEffect(() => {
     if (!studentId) return;
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
       .then((res) => {
         if (res.data.success) setStudent(res.data.student);
       })
@@ -154,7 +154,7 @@ const StudentResult2 = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          `https://www.cwmsrfupre.com.ng/api/get_student_results.php`,
+          `https://www.cwmsrfupre.com.ng/base/get_student_results.php`,
           { params: { student_id: studentId, t: Date.now() } }
         );
         if (res.data.success) setResults(res.data.results || []);
@@ -261,14 +261,14 @@ const payWithPaystack = (amount, onSuccess) => {
       (async () => {
         try {
           const res = await axios.post(
-            "https://www.cwmsrfupre.com.ng/api/verify_payment.php",
+            "https://www.cwmsrfupre.com.ng/base/verify_payment.php",
             { reference: response.reference }
           );
 
           if (res.data.status === "success") {
 
               await axios.post(
-          "https://www.cwmsrfupre.com.ng/api/log_result_download.php",
+          "https://www.cwmsrfupre.com.ng/base/log_result_download.php",
           {
             student_id: studentInfo.id,
             level_semester_code: "current", // Or pick from dropdown if multi-semester login

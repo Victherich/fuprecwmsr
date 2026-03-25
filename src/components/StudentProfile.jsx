@@ -124,7 +124,7 @@ console.log(student)
  
 
     const handleGetStudentById = ()=>{
-    axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${id}`)
+    axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${id}`)
       .then(res => {
         if (res.data.success) {
           setStudent(res.data.student);
@@ -173,7 +173,7 @@ const deleteStudent = async (studentId) => {
     });
 
     try {
-      const res = await axios.post('https://www.cwmsrfupre.com.ng/api/delete_student.php', { id: studentId });
+      const res = await axios.post('https://www.cwmsrfupre.com.ng/base/delete_student.php', { id: studentId });
       
       if (res.data.success) {
         Swal.fire('Deleted!', 'Student has been deleted.', 'success');
@@ -243,7 +243,7 @@ const admitStudent = async (studentId) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_student.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_student.php', {
         id: studentId
       });
 
@@ -303,7 +303,7 @@ const admitProfessionalPGDStudent = async (studentId) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_professionalPGD_student.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalPGD_student.php', {
         id: studentId
       });
 
@@ -358,7 +358,7 @@ const admitProfessionalMastersStudent = async (studentId) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_professionalMasters_student.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalMasters_student.php', {
         id: studentId
       });
 
@@ -413,7 +413,7 @@ const admitProfessionalDoctorateStudent = async (studentId) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admit_professionalDoctorate_student.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalDoctorate_student.php', {
         id: studentId
       });
 
@@ -475,7 +475,7 @@ const cancelStudentAdmission = async (studentId) => {
         },
       });
 
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/cancel_student_admission.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/cancel_student_admission.php', {
         id: studentId,
       });
 
@@ -537,7 +537,7 @@ const suspendStudent = async (studentId) => {
         }
       });
 
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/suspend_student.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/suspend_student.php', {
         id: studentId
       });
 
@@ -586,9 +586,9 @@ const unsuspendStudent = (studentId) => {
       setLoading(true);
       Swal.showLoading();
 
-      // Make the API call to unsuspend the student
+      // Make the base call to unsuspend the student
       axios
-        .post('https://www.cwmsrfupre.com.ng/api/unsuspend_student.php', { id: studentId })
+        .post('https://www.cwmsrfupre.com.ng/base/unsuspend_student.php', { id: studentId })
         .then((response) => {
           setLoading(false);
           if (response.data.success) {
@@ -665,7 +665,7 @@ const graduateStudent = async (studentId) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/graduate_student.php', {
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/graduate_student.php', {
         id: studentId
       });
 
@@ -737,10 +737,10 @@ const graduateStudent = async (studentId) => {
     
     
     <ButtonWrap>
-    <Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/api/${student.file_path}`, '_blank')}>
+    <Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/base/${student.file_path}`, '_blank')}>
   View Application Documents
 </Button>
-<Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/api/${student.proof_of_payment_path}`, '_blank')}>
+<Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/base/${student.proof_of_payment_path}`, '_blank')}>
   View Proof of Application payment
 </Button>
 

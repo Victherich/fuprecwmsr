@@ -113,7 +113,7 @@ const PostLectureNotes = () => {
       Swal.showLoading();
 
       const res = await axios.post(
-        'https://www.cwmsrfupre.com.ng/api/create_lecture_note.php',
+        'https://www.cwmsrfupre.com.ng/base/create_lecture_note.php',
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
@@ -142,7 +142,7 @@ const PostLectureNotes = () => {
       Swal.showLoading();
 
       const res = await axios.get(
-        'https://www.cwmsrfupre.com.ng/api/get_lecture_notes_by_lecturer_id.php',
+        'https://www.cwmsrfupre.com.ng/base/get_lecture_notes_by_lecturer_id.php',
         {
           params: {
             lecturer_id: lecturer.id,
@@ -181,7 +181,7 @@ const PostLectureNotes = () => {
       Swal.fire({ text: 'Deleting lecture note...', didOpen: () => Swal.showLoading() });
 
       const res = await axios.post(
-        'https://www.cwmsrfupre.com.ng/api/delete_lecture_note.php',
+        'https://www.cwmsrfupre.com.ng/base/delete_lecture_note.php',
         { lecture_note_id: lectureNoteId },
         { headers: { 'Content-Type': 'application/json' } }
       );

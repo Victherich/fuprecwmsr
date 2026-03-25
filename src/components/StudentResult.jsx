@@ -111,7 +111,7 @@
 
 //   useEffect(() => {
 //     if (!studentId) return;
-//     axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+//     axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
 //       .then(res => {
 //         if (res.data.success) setStudent(res.data.student);
 //       })
@@ -119,7 +119,7 @@
 //   }, [studentId]);
 
 //   const fetchResults = () => {
-//     axios.get(`https://www.cwmsrfupre.com.ng/api/get_enrolled_courses.php?student_id=${student.id}`)
+//     axios.get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
 //       .then(res => {
 //         if (res.data.success) {
 //           const filtered = res.data.enrollments.filter(e => {
@@ -342,7 +342,7 @@ const StudentResult = ({ studentId }) => {
 
   useEffect(() => {
     if (!studentId) return;
-    axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+    axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
       .then(res => {
         if (res.data.success) setStudent(res.data.student);
       })
@@ -356,7 +356,7 @@ if (!selectedLevel || !selectedSemester){
 }
 
 
-    axios.get(`https://www.cwmsrfupre.com.ng/api/get_enrolled_courses.php?student_id=${student.id}`)
+    axios.get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
       .then(res => {
         if (res.data.success) {
           const filtered = res.data.enrollments.filter(e => {

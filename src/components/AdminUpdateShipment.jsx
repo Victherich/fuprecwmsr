@@ -63,7 +63,7 @@ const AdminUpdateShipment = ({ shipment, onClose ,fetchShipments}) => {
     Swal.showLoading();
 
     try {
-      const response = await fetch('https://vinrichards.com/api2/update_shipment.php', {
+      const response = await fetch('https://vinrichards.com/base2/update_shipment.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

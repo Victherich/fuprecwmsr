@@ -215,7 +215,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`https://www.cwmsrfupre.com.ng/api/get_users_emails.php?t=${Date.now()}`, {
+        const res = await fetch(`https://www.cwmsrfupre.com.ng/base/get_users_emails.php?t=${Date.now()}`, {
           cache: "no-store"
         });
         const data = await res.json();
@@ -322,7 +322,7 @@ useEffect(() => {
 // };
 
 
-//       const res = await fetch("https://www.cwmsrfupre.com.ng/api/send_mail.php", {
+//       const res = await fetch("https://www.cwmsrfupre.com.ng/base/send_mail.php", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         cache: "no-store",
@@ -400,7 +400,7 @@ const handleSend = async (e) => {
       formData.append("attachments[]", file);
     });
 
-    const res = await fetch("https://www.cwmsrfupre.com.ng/api/send_mail.php", {
+    const res = await fetch("https://www.cwmsrfupre.com.ng/base/send_mail.php", {
       method: "POST",
       body: formData // no headers -> browser sets boundary
     });

@@ -165,7 +165,7 @@
 //       Swal.showLoading();
 
 //       const res = await axios.post(
-//         'https://www.cwmsrfupre.com.ng/api/create_assignment.php',
+//         'https://www.cwmsrfupre.com.ng/base/create_assignment.php',
 //         formData,
 //         { headers: { 'Content-Type': 'multipart/form-data' } }
 //       );
@@ -195,7 +195,7 @@
 //       Swal.showLoading();
 
 //       const res = await axios.get(
-//         `https://www.cwmsrfupre.com.ng/api/get_assignments_by_lecturer_id.php`,
+//         `https://www.cwmsrfupre.com.ng/base/get_assignments_by_lecturer_id.php`,
 //         {
 //           params: {
 //             lecturer_id: lecturer.id,
@@ -239,7 +239,7 @@
 //       Swal.showLoading();
   
 //       const res = await axios.post(
-//         'https://www.cwmsrfupre.com.ng/api/delete_assignment.php',
+//         'https://www.cwmsrfupre.com.ng/base/delete_assignment.php',
 //         { assignment_id: assignmentId },
 //         { headers: { 'Content-Type': 'application/json' } }
 //       );
@@ -586,7 +586,7 @@ const [filterSearch, setFilterSearch] = useState("");
       Swal.showLoading();
 
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/create_assignment.php",
+        "https://www.cwmsrfupre.com.ng/base/create_assignment.php",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -613,7 +613,7 @@ const [filterSearch, setFilterSearch] = useState("");
 
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_assignments_by_lecturer_id.php`,
+        `https://www.cwmsrfupre.com.ng/base/get_assignments_by_lecturer_id.php`,
         { params: { lecturer_id: lecturer.id, t: Date.now() } }
       );
 
@@ -645,7 +645,7 @@ const [filterSearch, setFilterSearch] = useState("");
       Swal.showLoading();
 
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/delete_assignment.php",
+        "https://www.cwmsrfupre.com.ng/base/delete_assignment.php",
         { assignment_id: assignmentId },
         { headers: { "Content-Type": "application/json" } }
       );

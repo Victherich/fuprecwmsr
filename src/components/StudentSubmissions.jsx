@@ -219,7 +219,7 @@ const [filterSearch, setFilterSearch] = useState("");
   //     Swal.showLoading();
 
   //     const res = await axios.post(
-  //       "https://www.cwmsrfupre.com.ng/api/create_student_submission.php",
+  //       "https://www.cwmsrfupre.com.ng/base/create_student_submission.php",
   //       formData,
   //       { headers: { "Content-Type": "multipart/form-data" } }
   //     );
@@ -284,7 +284,7 @@ const [filterSearch, setFilterSearch] = useState("");
     });
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/create_student_submission.php",
+      "https://www.cwmsrfupre.com.ng/base/create_student_submission.php",
       formData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
@@ -334,7 +334,7 @@ const [filterSearch, setFilterSearch] = useState("");
 
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_student_submissions.php",
+        "https://www.cwmsrfupre.com.ng/base/get_student_submissions.php",
         { params: { student_id: studentInfo.id, t: Date.now() } }
       );
 
@@ -360,7 +360,7 @@ const [filterSearch, setFilterSearch] = useState("");
 
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_lecturer_by_id.php?id=${id}`
+        `https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${id}`
       );
       if (res.data.success && res.data.user?.name) {
         setLecturer((prev) => ({ ...prev, [id]: res.data.user.name }));
@@ -550,7 +550,7 @@ const filteredSubmissions = submissions.filter((sub) => {
                 </SubmissionMeta>
                 {sub.file_path && (
                   <FileLink
-                    href={`https://www.cwmsrfupre.com.ng/api/${sub.file_path}`}
+                    href={`https://www.cwmsrfupre.com.ng/base/${sub.file_path}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

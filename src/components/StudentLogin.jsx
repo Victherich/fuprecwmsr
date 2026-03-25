@@ -86,7 +86,7 @@
 //     });
 
 //     try {
-//       const res = await axios.post('https://www.cwmsrfupre.com.ng/api/student_login.php', {
+//       const res = await axios.post('https://www.cwmsrfupre.com.ng/base/student_login.php', {
 //         email: email,
 //         password: password,
 //       });
@@ -196,7 +196,7 @@ const StudentLogin = () => {
 
     try {
       const res = await axios.post(
-        'https://www.cwmsrfupre.com.ng/api/student_login.php',
+        'https://www.cwmsrfupre.com.ng/base/student_login.php',
         {
           email,
           password,

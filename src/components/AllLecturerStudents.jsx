@@ -138,7 +138,7 @@ const handleGetLecturerStudents = () => {
     return;
   }
 
-  axios.post('https://www.cwmsrfupre.com.ng/api/get_students_in_lecturer_courses.php', {
+  axios.post('https://www.cwmsrfupre.com.ng/base/get_students_in_lecturer_courses.php', {
     lecturer_id: lecturerId
   })
   .then(res => {

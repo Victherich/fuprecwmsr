@@ -11,7 +11,7 @@ console.log(appVersion)
 // Fetch app version from the backend
 const fetchAppVersion = async () => {
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/api/get_app_version.php'); // URL to the PHP backend
+      const response = await fetch('https://www.cwmsrfupre.com.ng/base/get_app_version.php'); // URL to the PHP backend
       const data = await response.json();
   
       if (!data.success || !data.app_versions || data.app_versions.length === 0) {

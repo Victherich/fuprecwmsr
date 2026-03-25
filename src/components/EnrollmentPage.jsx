@@ -117,7 +117,7 @@
 //       useEffect(() => {
 //         if (!studentId) return;
     
-//         axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+//         axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
 //           .then(res => {
 //             if (res.data.success) {
 //               setStudent(res.data.student);
@@ -152,7 +152,7 @@
 //           didOpen: () => Swal.showLoading()
 //         });
   
-//         const res = await axios.post('https://www.cwmsrfupre.com.ng/api/enroll_course.php', {
+//         const res = await axios.post('https://www.cwmsrfupre.com.ng/base/enroll_course.php', {
 //           student_id: student.id,
 //           course_id: selectedCourse
 //         });
@@ -173,7 +173,7 @@
     
 
 //     const fetchEnrolledCourses = () => {
-//       axios.get(`https://www.cwmsrfupre.com.ng/api/get_enrolled_courses.php?student_id=${student.id}`)
+//       axios.get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
 //         .then(res => {
 //           if (res.data.success) {
 //             setEnrolledCourses(res.data.enrollments);
@@ -572,7 +572,7 @@ const EnrollPage = ({ studentId }) => {
     if (!studentId) return;
 
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
       .then((res) => {
         if (res.data.success) setStudent(res.data.student);
       })
@@ -582,7 +582,7 @@ const EnrollPage = ({ studentId }) => {
   // 📘 Fetch enrolled courses
   const fetchEnrolledCourses = () => {
     axios
-      .get(`https://www.cwmsrfupre.com.ng/api/get_enrolled_courses.php?student_id=${student.id}`)
+      .get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
       .then((res) => {
         if (res.data.success) setEnrolledCourses(res.data.enrollments);
         else setEnrolledCourses([]);
@@ -609,7 +609,7 @@ const EnrollPage = ({ studentId }) => {
 
     try {
       Swal.fire({ title: "Enrolling...", didOpen: () => Swal.showLoading() });
-      const res = await axios.post("https://www.cwmsrfupre.com.ng/api/enroll_course.php", {
+      const res = await axios.post("https://www.cwmsrfupre.com.ng/base/enroll_course.php", {
         student_id: student.id,
         course_id: selectedCourse,
       });
@@ -656,7 +656,7 @@ const deleteEnrollment = async (enrollmentId) => {
 
   try {
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/delete_enrollment.php",
+      "https://www.cwmsrfupre.com.ng/base/delete_enrollment.php",
       { enrollment_id: enrollmentId }
     );
 

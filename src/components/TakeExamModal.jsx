@@ -89,7 +89,7 @@ const TakeExamModal = ({
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_exam_questions_for_student.php",
+        "https://www.cwmsrfupre.com.ng/base/get_exam_questions_for_student.php",
         { params: { exam_id: examId, student_id: studentId, _t: Date.now() } }
       );
 
@@ -107,7 +107,7 @@ const TakeExamModal = ({
   const fetchEssayQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_essay_exam_questions_for_student.php",
+        "https://www.cwmsrfupre.com.ng/base/get_essay_exam_questions_for_student.php",
         { params: { exam_id: examId, student_id: studentId, _t: Date.now() } }
       );
 
@@ -170,7 +170,7 @@ const TakeExamModal = ({
     if (Object.keys(essayAnswers).length === 0) return;
 
     await axios.post(
-      "https://www.cwmsrfupre.com.ng/api/submit_essay_exam.php",
+      "https://www.cwmsrfupre.com.ng/base/submit_essay_exam.php",
       {
         exam_id: examId,
         student_id: studentId,
@@ -212,7 +212,7 @@ const TakeExamModal = ({
       Swal.showLoading();
 
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/submit_exam.php",
+        "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
         {
           exam_id: examId,
           student_id: studentId,
@@ -248,7 +248,7 @@ const TakeExamModal = ({
   const handleSubmit2 = async () => {
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/submit_exam.php",
+        "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
         {
           exam_id: examId,
           student_id: studentId,

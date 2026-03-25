@@ -284,7 +284,7 @@ const StudentDashboard = () => {
 useEffect(() => {
     if (!studentId) return;
 
-    axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_id.php?id=${studentId}`)
+    axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
       .then(res => {
         if (res.data.success) {
           setStudent(res.data.student);

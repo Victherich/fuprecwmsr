@@ -72,7 +72,7 @@ const MeetingLinkUploader = () => {
     Swal.showLoading();
 
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/create_meeting_link.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/create_meeting_link.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ const MeetingLinkUploader = () => {
   
   const fetchMeetingLinks = async () => {
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/get_all_meeting_links.php');
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/get_all_meeting_links.php');
       const data = await res.json();
       if (data.success) {
         setMeetingLinks(data.meeting_links);
@@ -130,7 +130,7 @@ const MeetingLinkUploader = () => {
     if (!confirm.isConfirmed) return;
   
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/delete_meeting_link.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/delete_meeting_link.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

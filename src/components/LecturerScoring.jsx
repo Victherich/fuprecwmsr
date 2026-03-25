@@ -75,7 +75,7 @@
 //     setStudent(null);
 //     setEnrollmentData(null);
 //     try {
-//       const res = await axios.get(`https://www.cwmsrfupre.com.ng/api/get_student_by_admission_number.php?admission_number=${admissionNumber}`);
+//       const res = await axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_admission_number.php?admission_number=${admissionNumber}`);
 //       if (res.data.success) {
 //         setStudent(res.data.student);
 //         getEnrollmentByStudentAndCourse(res.data.student.id,selectedCourseId )
@@ -110,7 +110,7 @@
 //       });
   
 //       const response = await axios.get(
-//         `https://www.cwmsrfupre.com.ng/api/get_enrollment_by_course_id_and_student_id.php`,
+//         `https://www.cwmsrfupre.com.ng/base/get_enrollment_by_course_id_and_student_id.php`,
 //         {
 //           params: {
 //             student_id: studentId,
@@ -147,7 +147,7 @@
 // Swal.showLoading();
 
 //     try {
-//       const res = await axios.post(`https://www.cwmsrfupre.com.ng/api/submit_scores.php`, {
+//       const res = await axios.post(`https://www.cwmsrfupre.com.ng/base/submit_scores.php`, {
 //         student_id: student.id,
 //         course_id: selectedCourseId,
 //         assignment_score: scores.assignment,
@@ -359,7 +359,7 @@ const LecturerScoring = () => {
     setEnrollmentData(null);
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_student_by_admission_number.php?admission_number=${admissionNumber}`
+        `https://www.cwmsrfupre.com.ng/base/get_student_by_admission_number.php?admission_number=${admissionNumber}`
       );
       if (res.data.success) {
         setStudent(res.data.student);
@@ -393,7 +393,7 @@ const LecturerScoring = () => {
       });
 
       const response = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_enrollment_by_course_id_and_student_id.php`,
+        `https://www.cwmsrfupre.com.ng/base/get_enrollment_by_course_id_and_student_id.php`,
         {
           params: {
             student_id: studentId,
@@ -434,7 +434,7 @@ const LecturerScoring = () => {
 
     try {
       const res = await axios.post(
-        `https://www.cwmsrfupre.com.ng/api/submit_scores.php`,
+        `https://www.cwmsrfupre.com.ng/base/submit_scores.php`,
         {
           student_id: student.id,
           course_id: selectedCourseId,

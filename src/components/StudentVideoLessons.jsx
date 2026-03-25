@@ -81,7 +81,7 @@ const [filterSearch, setFilterSearch] = useState("");
     const fetchVideos = async () => {
       try {
         const res = await axios.get(
-          `https://www.cwmsrfupre.com.ng/api/get_videos_for_student.php?student_id=${studentId}&t=${Date.now()}`
+          `https://www.cwmsrfupre.com.ng/base/get_videos_for_student.php?student_id=${studentId}&t=${Date.now()}`
         );
 
         if (res.data.success) {

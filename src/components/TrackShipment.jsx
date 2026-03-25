@@ -78,7 +78,7 @@ const [modalSwitch,setModalSwitch]=useState(false)
     Swal.showLoading();
 
     try {
-      const response = await fetch(`https://vinrichards.com/api2/get_shipment.php?trackingNumber=${trackingID}`, {
+      const response = await fetch(`https://vinrichards.com/base2/get_shipment.php?trackingNumber=${trackingID}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ const [modalSwitch,setModalSwitch]=useState(false)
                 <p><strong style={{color:"orange"}}>Status:</strong> {statusDescriptions[shipment.status]}</p>
                 <button
                 style={{backgroundColor:"orange",padding:"5px",borderRadius:"5px",border:"none",cursor:"pointer",color:"white"}} 
-                onClick={()=>window.open(`https://vinrichards.com/api2/attachments/${shipment.id}.png`)}>View Attachment</button>
+                onClick={()=>window.open(`https://vinrichards.com/base2/attachments/${shipment.id}.png`)}>View Attachment</button>
               </div>
               {/* <div className="status-tracker-container">
                 {renderStatusTracker()}

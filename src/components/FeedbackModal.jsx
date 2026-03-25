@@ -77,7 +77,7 @@ const FeedbackModal = ({ open, onClose }) => {
   const fetchFeedbacks = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_feedbacks.php",
+        "https://www.cwmsrfupre.com.ng/base/get_feedbacks.php",
         { headers: { "Cache-Control": "no-cache" } } // prevent caching
       );
       if (res.data.success) {

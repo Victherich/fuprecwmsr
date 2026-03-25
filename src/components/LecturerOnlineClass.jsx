@@ -11,7 +11,7 @@
 // //   const [started, setStarted] = useState(true);
 
 // //   const handleStartClass = async () => {
-// //     await axios.post("http://localhost/your-path/api/classes.php", {
+// //     await axios.post("http://localhost/your-path/base/classes.php", {
 // //       title,
 // //       room_name: roomName,
 // //       created_by: 1,
@@ -112,7 +112,7 @@
 
 //   const fetchMeetingLinks = async () => {
 //     try {
-//       const res = await fetch('https://www.cwmsrfupre.com.ng/api/get_all_meeting_links.php');
+//       const res = await fetch('https://www.cwmsrfupre.com.ng/base/get_all_meeting_links.php');
 //       const data = await res.json();
 //       if (data.success) {
 //         setMeetingLinks(data.meeting_links);
@@ -125,7 +125,7 @@
 
 //   const fetchOnlineClasses = async () => {
 //     try {
-//       const res = await fetch(`https://www.cwmsrfupre.com.ng/api/get_online_classes_by_lecturer.php?lecturer_id=${lecturerId}&t=${Date.now()}`);
+//       const res = await fetch(`https://www.cwmsrfupre.com.ng/base/get_online_classes_by_lecturer.php?lecturer_id=${lecturerId}&t=${Date.now()}`);
 //       const data = await res.json();
 //       if (data.success) {
 //         setOnlineClasses(data.classes);
@@ -152,7 +152,7 @@
 
 //     try {
 //       const response = await axios.post(
-//         'https://www.cwmsrfupre.com.ng/api/create_online_class.php',
+//         'https://www.cwmsrfupre.com.ng/base/create_online_class.php',
 //         {
 //           lecturer_id: lecturerId,
 //           link: meetingLinks[0].meeting_link,
@@ -186,7 +186,7 @@
   
 //     try {
 //       const res = await axios.post(
-//         'https://www.cwmsrfupre.com.ng/api/delete_online_class.php',
+//         'https://www.cwmsrfupre.com.ng/base/delete_online_class.php',
 //         { id: classId },
 //         { headers: { 'Content-Type': 'application/json' } }
 //       );
@@ -315,7 +315,7 @@ const LecturerOnlineClass = ({ lecturerId }) => {
 
   const fetchMeetingLinks = async () => {
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/get_all_meeting_links.php');
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/get_all_meeting_links.php');
       const data = await res.json();
       if (data.success) {
         setMeetingLinks(data.meeting_links);
@@ -328,7 +328,7 @@ const LecturerOnlineClass = ({ lecturerId }) => {
   const fetchOnlineClasses = async () => {
     try {
       const res = await fetch(
-        `https://www.cwmsrfupre.com.ng/api/get_online_classes_by_lecturer.php?lecturer_id=${lecturerId}&t=${Date.now()}`
+        `https://www.cwmsrfupre.com.ng/base/get_online_classes_by_lecturer.php?lecturer_id=${lecturerId}&t=${Date.now()}`
       );
       const data = await res.json();
       if (data.success) {
@@ -360,7 +360,7 @@ const LecturerOnlineClass = ({ lecturerId }) => {
 
     try {
       const response = await axios.post(
-        'https://www.cwmsrfupre.com.ng/api/create_online_class.php',
+        'https://www.cwmsrfupre.com.ng/base/create_online_class.php',
         {
           lecturer_id: lecturerId,
           link: meetingLinks[0].meeting_link,
@@ -407,7 +407,7 @@ const LecturerOnlineClass = ({ lecturerId }) => {
 
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/api/update_online_class_title.php",
+        "https://www.cwmsrfupre.com.ng/base/update_online_class_title.php",
         {
           id: editClassId,
           title: editTitle
@@ -439,7 +439,7 @@ const LecturerOnlineClass = ({ lecturerId }) => {
 
     try {
       const res = await axios.post(
-        'https://www.cwmsrfupre.com.ng/api/delete_online_class.php',
+        'https://www.cwmsrfupre.com.ng/base/delete_online_class.php',
         { id: classId },
         { headers: { 'Content-Type': 'application/json' } }
       );

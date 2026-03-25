@@ -105,7 +105,7 @@
 //   const [searchEmail, setSearchEmail] = useState('');
 
 //   useEffect(() => {
-//     axios.get('https://www.cwmsrfupre.com.ng/api/get_all_admin.php')
+//     axios.get('https://www.cwmsrfupre.com.ng/base/get_all_admin.php')
 //       .then(res => {
 //         if (res.data.success) {
 //           setAdmins(res.data.admins);
@@ -311,7 +311,7 @@ const AllAdmin = () => {
   const [searchEmail, setSearchEmail] = useState('');
 
   useEffect(() => {
-    axios.get('https://www.cwmsrfupre.com.ng/api/get_all_admin.php')
+    axios.get('https://www.cwmsrfupre.com.ng/base/get_all_admin.php')
       .then(res => {
         if (res.data.success) {
           setAdmins(res.data.admins);
@@ -359,7 +359,7 @@ const AllAdmin = () => {
 
   try {
     const res = await axios.post(
-      'https://www.cwmsrfupre.com.ng/api/delete_admin.php',
+      'https://www.cwmsrfupre.com.ng/base/delete_admin.php',
       { id: adminId },
       { headers: { 'Content-Type': 'application/json' } }
     );

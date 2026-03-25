@@ -13,7 +13,7 @@ const ManageShipments = () => {
   
     const fetchShipments = async () => {
       try {
-        const response = await fetch('https://vinrichards.com/api2/get_all_shipments.php');
+        const response = await fetch('https://vinrichards.com/base2/get_all_shipments.php');
         const data = await response.json();
         setShipments(data);
         setFilteredShipments(data); // Initialize with all shipments
@@ -66,7 +66,7 @@ const ManageShipments = () => {
 
         // Send DELETE request to the backend
         try {
-          const response = await fetch('https://vinrichards.com/api2/delete_shipment.php', {
+          const response = await fetch('https://vinrichards.com/base2/delete_shipment.php', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ const ManageShipments = () => {
               </div>
             <button onClick={() => handleDeleteShipment(shipment)}>Delete Shipment</button>
             <button onClick={() => handleOpenEditModal(shipment.id)}>Edit Shipment</button>
-            <button onClick={()=>window.open(`https://vinrichards.com/api2/attachments/${shipment.id}.png`,"_blank")}>View Attachment</button>
+            <button onClick={()=>window.open(`https://vinrichards.com/base2/attachments/${shipment.id}.png`,"_blank")}>View Attachment</button>
           </div>
         ))}
       </div>

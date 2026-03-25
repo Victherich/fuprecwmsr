@@ -75,7 +75,7 @@ const [filterSearch, setFilterSearch] = useState("");
   //   const fetchAssignments = async () => {
   //     try {
   //       const response = await axios.get(
-  //         `https://www.cwmsrfupre.com.ng/api/get_assignments_for_student.php?student_id=${studentId}`
+  //         `https://www.cwmsrfupre.com.ng/base/get_assignments_for_student.php?student_id=${studentId}`
   //       );
 
   //       if (response.data.success) {
@@ -106,7 +106,7 @@ useEffect(() => {
   const fetchAssignments = async () => {
     try {
       const response = await axios.get(
-        `https://www.cwmsrfupre.com.ng/api/get_assignments_for_student.php?student_id=${studentId}`
+        `https://www.cwmsrfupre.com.ng/base/get_assignments_for_student.php?student_id=${studentId}`
       );
 
       if (response.data.success) {

@@ -121,7 +121,7 @@ const AnnouncementsPage = () => {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const res = await fetch(`https://www.cwmsrfupre.com.ng/api/fetch_announcements.php`);
+        const res = await fetch(`https://www.cwmsrfupre.com.ng/base/fetch_announcements.php`);
         const data = await res.json();
         if (data.success) {
           setAnnouncements(data.announcements);

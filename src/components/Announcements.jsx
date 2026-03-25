@@ -111,7 +111,7 @@ const Announcements = () => {
 
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch(`https://www.cwmsrfupre.com.ng/api/fetch_announcements.php`);
+      const response = await fetch(`https://www.cwmsrfupre.com.ng/base/fetch_announcements.php`);
       const data = await response.json();
       if (data.success) {
         setAnnouncements(data.announcements);
@@ -127,7 +127,7 @@ const Announcements = () => {
     e.preventDefault();
     Swal.fire({ text: 'Please wait...', showConfirmButton: false });
     try {
-      const response = await fetch(`https://www.cwmsrfupre.com.ng/api/create_announcement.php`, {
+      const response = await fetch(`https://www.cwmsrfupre.com.ng/base/create_announcement.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -154,7 +154,7 @@ const Announcements = () => {
     e.preventDefault();
     Swal.fire({ text: 'Please wait...', showConfirmButton: false });
     try {
-      const response = await fetch(`https://www.cwmsrfupre.com.ng/api/update_announcement.php`, {
+      const response = await fetch(`https://www.cwmsrfupre.com.ng/base/update_announcement.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -183,7 +183,7 @@ const Announcements = () => {
         Swal.fire({text:"Please wait..."})
         Swal.showLoading(); 
         try {
-          const response = await fetch(`https://www.cwmsrfupre.com.ng/api/delete_announcement.php`, {
+          const response = await fetch(`https://www.cwmsrfupre.com.ng/base/delete_announcement.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id }),

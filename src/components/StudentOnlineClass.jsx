@@ -42,7 +42,7 @@
 //   const [displayName, setDisplayName] = useState("Student");
 
 //   useEffect(() => {
-//     axios.get("http://localhost/your-path/api/classes.php").then((res) => {
+//     axios.get("http://localhost/your-path/base/classes.php").then((res) => {
 //       setClasses(res.data);
 //     });
 //   }, []);
@@ -130,7 +130,7 @@ const StudentOnlineClass = () => {
   const fetchClasses = async () => {
     try {
       const res = await fetch(
-        `https://www.cwmsrfupre.com.ng/api/get_all_online_classes.php?t=${Date.now()}`
+        `https://www.cwmsrfupre.com.ng/base/get_all_online_classes.php?t=${Date.now()}`
       );
       const data = await res.json();
       if (data.success) {
@@ -145,7 +145,7 @@ const StudentOnlineClass = () => {
 
   const fetchLecturers = async () => {
     try {
-      const res = await axios.get('https://www.cwmsrfupre.com.ng/api/get_all_lecturer.php');
+      const res = await axios.get('https://www.cwmsrfupre.com.ng/base/get_all_lecturer.php');
       if (res.data.success) {
         setLecturers(res.data.lecturers);
       } else {

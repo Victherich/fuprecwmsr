@@ -20,7 +20,7 @@ const VerifyEmail = () => {
           }
         });
 
-        const response = await axios.post('https://vinrichards.com/api2/verify_email.php', { token });
+        const response = await axios.post('https://vinrichards.com/base2/verify_email.php', { token });
 
         Swal.close();
         Swal.fire({icon:"success",timer:2000})
@@ -102,7 +102,7 @@ export default VerifyEmail;
 //           }
 //         });
 
-//         const response = await axios.post('https://elexdondigitalacademy.com/api2/verify_email.php', { token });
+//         const response = await axios.post('https://elexdondigitalacademy.com/base2/verify_email.php', { token });
 
 //         // Ensure component is still mounted and no duplicate responses
 //         if (isMounted) {

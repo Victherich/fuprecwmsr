@@ -106,7 +106,7 @@
 //     try {
 //       setLoading(true);
 //       const res = await axios.get(
-//         "https://www.cwmsrfupre.com.ng/api/get_student_results_by_admno.php",
+//         "https://www.cwmsrfupre.com.ng/base/get_student_results_by_admno.php",
 //         { params: { admission_number: admNo.trim() } }
 //       );
 
@@ -413,7 +413,7 @@ const StudentResultByAdmNo = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/api/get_student_results_by_admno.php",
+        "https://www.cwmsrfupre.com.ng/base/get_student_results_by_admno.php",
         { params: { admission_number: admNo.trim() } }
       );
 

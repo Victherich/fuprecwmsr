@@ -67,7 +67,7 @@
 //       Swal.showLoading();
 
 //       const res = await axios.post(
-//         "https://www.cwmsrfupre.com.ng/api/create_exam_question.php",
+//         "https://www.cwmsrfupre.com.ng/base/create_exam_question.php",
 //         { ...form, exam_id: examId }
 //       );
 
@@ -219,8 +219,8 @@ const AddQuestionModal = ({ examId, onClose, onSaved, editingQuestion }) => {
       Swal.showLoading();
 
       const url = editingQuestion
-        ? "https://www.cwmsrfupre.com.ng/api/update_exam_question.php"
-        : "https://www.cwmsrfupre.com.ng/api/create_exam_question.php";
+        ? "https://www.cwmsrfupre.com.ng/base/update_exam_question.php"
+        : "https://www.cwmsrfupre.com.ng/base/create_exam_question.php";
 
       const payload = editingQuestion
         ? { ...form, id: editingQuestion.id }

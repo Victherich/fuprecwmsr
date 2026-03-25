@@ -191,7 +191,7 @@ export default function ZeroWastePage() {
       );
 
       const res = await fetch(
-        "https://cwmsrfupre.com.ng/api/register_student.php",
+        "https://cwmsrfupre.com.ng/base/register_student.php",
         {
           method: "POST",
           body: data,

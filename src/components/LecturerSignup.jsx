@@ -115,7 +115,7 @@ const LecturerSignup = () => {
   });
 
   try {
-    const response = await fetch('https://www.cwmsrfupre.com.ng/api/lecturer_signup.php', {
+    const response = await fetch('https://www.cwmsrfupre.com.ng/base/lecturer_signup.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

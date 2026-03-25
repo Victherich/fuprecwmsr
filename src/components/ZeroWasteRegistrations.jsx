@@ -63,7 +63,7 @@ export default function ZeroWasteRegistrations() {
 
       try {
         const res = await fetch(
-          "https://cwmsrfupre.com.ng/api/get_zero_waste_registrations.php"
+          "https://cwmsrfupre.com.ng/base/get_zero_waste_registrations.php"
         );
 
         const data = await res.json();

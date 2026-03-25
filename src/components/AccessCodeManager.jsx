@@ -16,7 +16,7 @@ const AccessCodeManager = () => {
       didOpen: () => Swal.showLoading(),
     });
 
-    axios.get('https://www.cwmsrfupre.com.ng/api/get_access_codes.php')
+    axios.get('https://www.cwmsrfupre.com.ng/base/get_access_codes.php')
       .then(res => {
         Swal.close();
         if (res.data.success) {
@@ -40,7 +40,7 @@ const AccessCodeManager = () => {
       didOpen: () => Swal.showLoading(),
     });
 
-    axios.post('https://www.cwmsrfupre.com.ng/api/add_access_code.php', {
+    axios.post('https://www.cwmsrfupre.com.ng/base/add_access_code.php', {
       code: newCode,
       description: description
     })
@@ -74,7 +74,7 @@ const handleDelete = (id) => {
         didOpen: () => Swal.showLoading(),
       });
 
-      axios.delete(`https://www.cwmsrfupre.com.ng/api/delete_access_code.php?id=${id}`)
+      axios.delete(`https://www.cwmsrfupre.com.ng/base/delete_access_code.php?id=${id}`)
         .then(() => {
           Swal.close();
           Swal.fire('Deleted!', 'Access code has been deleted.', 'success');

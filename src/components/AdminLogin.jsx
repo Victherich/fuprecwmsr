@@ -97,7 +97,7 @@ const AdminLogin = () => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/api/admin_login.php', { email, password });
+      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admin_login.php', { email, password });
 
       if (response.data.success) {
         Swal.fire({

@@ -88,7 +88,7 @@ const AdminForgotPassword = () => {
     });
   
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/api/admin_forgot_password.php', {
+      const res = await fetch('https://www.cwmsrfupre.com.ng/base/admin_forgot_password.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

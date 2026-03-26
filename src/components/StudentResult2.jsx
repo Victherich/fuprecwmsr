@@ -135,6 +135,37 @@ const StudentResult2 = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState(null);
+  // const [resultOpenstate, setResultOpenState]=useState(false);
+
+
+
+   const [allowView, setAllowView] = useState(false);
+  
+    useEffect(() => {
+      const fetchSetting = async () => {
+        try {
+          const res = await axios.get(
+            `https://www.cwmsrfupre.com.ng/base/get_result_setting.php?nocache=${Date.now()}`
+          ); // timestamp to avoid caching
+          if (res.data.success) setAllowView(res.data.allow_result);
+        } catch (err) {
+          console.error("Failed to fetch setting", err);
+        }
+      };
+  
+      // Fetch immediately
+      fetchSetting();
+  
+      // Fetch every 5 seconds
+      const interval = setInterval(fetchSetting, 5000);
+  
+      // Cleanup interval when component unmounts
+      return () => clearInterval(interval);
+    }, []);
+
+    console.log(allowView)
+
+
 
   // 🔹 Fetch student details
   useEffect(() => {
@@ -469,6 +500,15 @@ const generatePDF = async () => {
 
 
 
+const handleAlert = ()=>{
+  Swal.fire({
+    icon:"info",
+    text:"Result is not yet opened please try again later"
+  })
+}
+
+
+
 
 
 
@@ -483,15 +523,19 @@ const generatePDF = async () => {
       ) : (
         <>
           {/* <Button onClick={generatePDF}>Download Result</Button> */}
-          <Button
+        {allowView ? <Button
   onClick={() =>
     payWithPaystack(5000, generatePDF) // ₦1000 example fee
   }
 >
   Download Result (₦5,000)
-</Button>
+</Button>: <Button
+  onClick={handleAlert}
+>
+  Download Result (₦5,000)
+</Button>}
 
-<ScrollWrapper>
+{/* <ScrollWrapper>
       <Table>
             <thead>
               <tr>
@@ -522,7 +566,7 @@ const generatePDF = async () => {
               </tr>
             </tbody>
           </Table>
-</ScrollWrapper>
+</ScrollWrapper> */}
         
         </>
       )}

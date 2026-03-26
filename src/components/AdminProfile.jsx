@@ -251,6 +251,7 @@ import {
   FaFileDownload,
 } from "react-icons/fa";
 import AdminEditControl from "./AdminEditControl";
+import AdminResultControl from "./AdminResultControl";
 
 const Container = styled.div`
   background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%);
@@ -621,6 +622,9 @@ const closeSemesterAndOpenNext = async () => {
         </StatsGrid>
 
         <AdminEditControl/>
+        <br/>
+        <br/>
+        <AdminResultControl/>
 
         {/* ✅ Edit Modal */}
         {isModalOpen && (

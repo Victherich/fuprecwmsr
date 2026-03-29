@@ -538,9 +538,9 @@ const filteredSubmissions = submissions.filter((sub) => {
                   <strong>Date:</strong>{" "}
                   {new Date(sub.created_at).toLocaleString()}
                     <br/>
-                  <strong>Score:</strong> {sub.score?sub.score:"Not marked"}
+                  {/* <strong>Score:</strong> {sub.score?sub.score:"Not marked"} */}
                  
-                <br/>
+                {/* <br/> */}
             {sub.marked_by==0?<><strong>Marked by: </strong> System</>
             :
             <><strong>Marked by:</strong>{" "}

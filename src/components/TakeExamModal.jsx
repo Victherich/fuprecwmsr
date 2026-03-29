@@ -215,7 +215,7 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
   };
 
     const submitFill_inExam = async () => {
-    if (Object.keys(essayAnswers).length === 0) return;
+    if (Object.keys(fill_inAnswers).length === 0) return;
 
     await axios.post(
       "https://www.cwmsrfupre.com.ng/base/submit_fill_in_exam.php",
@@ -243,23 +243,164 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
     handleSubmit2();
   };
 
-  /* ================= MANUAL SUBMIT ================= */
-  const handleSubmit = async () => {
-    const confirm = await Swal.fire({
-      title: "Submit?",
-      text: "Once submitted, you cannot change your answers.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, submit"
-    });
+  // /* ================= MANUAL SUBMIT ================= */
+  // const handleSubmit = async () => {
+  //   const confirm = await Swal.fire({
+  //     title: "Submit?",
+  //     text: "Once submitted, you cannot change your answers.",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes, submit"
+  //   });
 
-    if (!confirm.isConfirmed) return;
+  //   if (!confirm.isConfirmed) return;
 
-    try {
-      Swal.fire({ title: "Submitting...", allowOutsideClick: false });
-      Swal.showLoading();
+  //   try {
+  //     Swal.fire({ title: "Submitting...", allowOutsideClick: false });
+  //     Swal.showLoading();
 
-      const res = await axios.post(
+  //     const res = await axios.post(
+  //       "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
+  //       {
+  //         exam_id: examId,
+  //         student_id: studentId,
+  //         answers,
+  //         course_id: courseId,
+  //         category_id: categoryId
+  //       }
+  //     );
+
+  //     Swal.close();
+
+  //     if (res.data.success) {
+  //       // await submitEssayExam();
+  //       await submitFill_inExam();
+  //       setScore(res.data.score);
+
+  //       Swal.fire({
+  //         title: "Submitted",
+  //         text: `Objective score: ${res.data.score} / ${res.data.total}. Essay will be marked later.`,
+  //         icon: "success",
+  //         allowOutsideClick: false
+  //       });
+
+  //       onClose();
+  //     } else {
+  //       Swal.fire("Error", res.data.error || "Submission failed", "error");
+  //     }
+  //   } catch {
+  //     Swal.fire("Error", "Server error occurred", "error");
+  //   }
+  // };
+
+
+
+
+//   const handleSubmit = async () => {
+//   const confirm = await Swal.fire({
+//     title: "Submit?",
+//     text: "Once submitted, you cannot change your answers.",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonText: "Yes, submit"
+//   });
+
+//   if (!confirm.isConfirmed) return;
+
+//   try {
+//     Swal.fire({ title: "Submitting...", allowOutsideClick: false });
+//     Swal.showLoading();
+
+//     // 🔹 Submit OBJECTIVE
+//     const objRes = await axios.post(
+//       "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
+//       {
+//         exam_id: examId,
+//         student_id: studentId,
+//         answers,
+//         course_id: courseId,
+//         category_id: categoryId
+//       }
+//     );
+
+//     // 🔹 Submit FILL-IN
+//     let fillScore = 0;
+//     let fillTotal = 0;
+
+//     if (Object.keys(fill_inAnswers).length > 0) {
+//       const fillRes = await axios.post(
+//         "https://www.cwmsrfupre.com.ng/base/submit_fill_in_exam.php",
+//         {
+//           exam_id: examId,
+//           student_id: studentId,
+//           answers: fill_inAnswers,
+//           course_id: courseId,
+//           category_id: categoryId
+//         }
+//       );
+
+//       if (fillRes.data.success) {
+//         fillScore = fillRes.data.score;
+//         fillTotal = fillRes.data.total;
+//       }
+//     }
+
+//     Swal.close();
+
+//     if (objRes.data.success) {
+//       const objScore = objRes.data.score;
+//       const objTotal = objRes.data.total;
+
+//       Swal.fire({
+//         title: "Submitted Successfully 🎉",
+//         html: `
+//           <div style="text-align:left">
+//             <p><strong>Objective:</strong> ${objScore} / ${objTotal}</p>
+//             <p><strong>Fill-in:</strong> ${fillScore} / ${fillTotal}</p>
+//             <hr/>
+//             <p><strong>Total Score:</strong> ${objScore + fillScore} / ${objTotal + fillTotal}</p>
+//           </div>
+//         `,
+//         icon: "success",
+//         allowOutsideClick: false
+//       });
+
+//       onClose();
+//     } else {
+//       Swal.fire("Error", objRes.data.error || "Submission failed", "error");
+//     }
+//   } catch (err) {
+//     Swal.fire("Error", "Server error occurred", "error");
+//   }
+// };
+
+
+
+
+
+const handleSubmit = async () => {
+  const confirm = await Swal.fire({
+    title: "Submit?",
+    text: "Once submitted, you cannot change your answers.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, submit"
+  });
+
+  if (!confirm.isConfirmed) return;
+
+  try {
+    Swal.fire({ title: "Submitting...", allowOutsideClick: false });
+    Swal.showLoading();
+
+    let objScore = 0;
+    let objTotal = 0;
+    let fillScore = 0;
+    let fillTotal = 0;
+
+    /* ================= OBJECTIVE ================= */
+    if (questions.length > 0) {
+      const objRes = await axios.post(
         "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
         {
           exam_id: examId,
@@ -270,28 +411,69 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
         }
       );
 
-      Swal.close();
-
-      if (res.data.success) {
-        // await submitEssayExam();
-        await submitFill_inExam();
-        setScore(res.data.score);
-
-        Swal.fire({
-          title: "Submitted",
-          text: `Objective score: ${res.data.score} / ${res.data.total}. Essay will be marked later.`,
-          icon: "success",
-          allowOutsideClick: false
-        });
-
-        onClose();
+      if (objRes.data.success) {
+        objScore = objRes.data.score;
+        objTotal = objRes.data.total;
       } else {
-        Swal.fire("Error", res.data.error || "Submission failed", "error");
+        throw new Error(objRes.data.error || "Objective submission failed");
       }
-    } catch {
-      Swal.fire("Error", "Server error occurred", "error");
     }
-  };
+
+    /* ================= FILL-IN ================= */
+    if (fill_inQuestions.length > 0) {
+      const fillRes = await axios.post(
+        "https://www.cwmsrfupre.com.ng/base/submit_fill_in_exam.php",
+        {
+          exam_id: examId,
+          student_id: studentId,
+          answers: fill_inAnswers,
+          course_id: courseId,
+          category_id: categoryId
+        }
+      );
+
+      if (fillRes.data.success) {
+        fillScore = fillRes.data.score;
+        fillTotal = fillRes.data.total;
+      } else {
+        throw new Error(fillRes.data.error || "Fill-in submission failed");
+      }
+    }
+
+    Swal.close();
+
+    /* ================= RESULT DISPLAY ================= */
+    Swal.fire({
+      title: "Submitted Successfully 🎉",
+      html: `
+        <div style="text-align:left">
+          ${
+            questions.length > 0
+              ? `<p><strong>Objective:</strong> ${objScore} / ${objTotal}</p>`
+              : ""
+          }
+          ${
+            fill_inQuestions.length > 0
+              ? `<p><strong>Fill-in:</strong> ${fillScore} / ${fillTotal}</p>`
+              : ""
+          }
+          <hr/>
+          <p><strong>Total Score:</strong> ${objScore + fillScore} / ${objTotal + fillTotal}</p>
+        </div>
+      `,
+      icon: "success",
+      allowOutsideClick: false
+    });
+
+    onClose();
+
+  } catch (err) {
+    Swal.fire("Error", err.message || "Server error occurred", "error");
+  }
+};
+
+
+
 
   /* ================= AUTO SUBMIT HANDLER ================= */
   const handleSubmit2 = async () => {
@@ -372,7 +554,7 @@ dispatch(studentLogout());
           Course: {courseName}
         </p>
 
-        <h3 style={{ textAlign: "center", color: "green" }}>Objective Questions</h3>
+        {questions.length>0&&<h3 style={{ textAlign: "center", color: "green" }}>Objective Questions</h3>}
         {questions.map((q, index) => (
           <QuestionCard key={q.id}>
             <p><strong>Q{index + 1}:</strong> {q.question}</p>
@@ -403,7 +585,7 @@ dispatch(studentLogout());
           </QuestionCard>
         ))} */}
 
-           <h3 style={{ textAlign: "center", color: "green" }}>Fill-in Questions</h3>
+           {fill_inQuestions.length>0&&<h3 style={{ textAlign: "center", color: "green" }}>Fill-in Questions</h3>}
         {fill_inQuestions.map((q, index) => (
           <QuestionCard key={q.id}>
             <p><strong>Q{index + 1}:</strong> {q.question}</p>

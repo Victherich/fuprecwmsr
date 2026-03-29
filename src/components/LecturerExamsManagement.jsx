@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { Context } from "./Context";
 import ExamQuestionsModal from "./ExamQuestionsModal";
 import EssayExamQuestionsModal from "./EssayExamQuestionsModal";
+import Fill_inExamQuestionsModal from "./Fill_inExamQuestionsModal";
 
 
 /* ================= STYLES ================= */
@@ -151,6 +152,7 @@ const LecturerExamsManagement = ({ lecturerId }) => {
 const [showQuestionsModal, setShowQuestionsModal] = useState(false);
 const [showEssayQuestionsModal, setShowEssayQuestionsModal] = useState(false);
 const [selectedExam, setSelectedExam] = useState(null);
+const [showFill_inQuestionsModal, setShowFill_inQuestionsModal] = useState(false);
 
 
 
@@ -565,6 +567,23 @@ const filteredExams = exams.filter((exam) => {
   Manage EASSY Questions
 </span>
 <br/>
+<span
+  style={{
+    textDecoration: "underline",
+    cursor: "pointer",
+    color: "#0cc0e0",
+    marginTop: "8px",
+    fontWeight: "bold",
+  }}
+  onClick={() => {
+    setSelectedExam(exam);
+    setShowFill_inQuestionsModal(true);
+  }}
+>
+  Manage Fill-in Questions
+</span>
+
+<br/>
   <span
     style={{
       textDecoration: "underline",
@@ -674,6 +693,13 @@ const filteredExams = exams.filter((exam) => {
   <EssayExamQuestionsModal
     exam={selectedExam}
     onClose={() => setShowEssayQuestionsModal(false)}
+  />
+)}
+
+ {showFill_inQuestionsModal && selectedExam && (
+  <Fill_inExamQuestionsModal
+    exam={selectedExam}
+    onClose={() => setShowFill_inQuestionsModal(false)}
   />
 )}
 

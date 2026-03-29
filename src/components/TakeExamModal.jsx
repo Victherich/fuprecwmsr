@@ -75,9 +75,12 @@ const TakeExamModal = ({
   /* ================= STATE ================= */
   const [questions, setQuestions] = useState([]);
   const [essayQuestions, setEssayQuestions] = useState([]);
+const [fill_inQuestions, setFill_inQuestions] = useState([]);
+
 
   const [answers, setAnswers] = useState({ 0: "no answer" });
   const [essayAnswers, setEssayAnswers] = useState({});
+  const [fill_inAnswers, setFill_inAnswers] = useState({});
 
   const [score, setScore] = useState(null);
 
@@ -119,10 +122,31 @@ const TakeExamModal = ({
     }
   };
 
+
+  /* ================= FETCH ESSAY QUESTIONS ================= */
+  const fetchFill_inQuestions = async () => {
+    try {
+      const res = await axios.get(
+        "https://www.cwmsrfupre.com.ng/base/get_fill_in_exam_questions_for_student.php",
+        { params: { exam_id: examId, student_id: studentId, _t: Date.now() } }
+      );
+
+      if (res.data.success) {
+        setFill_inQuestions(res.data.questions);
+      }
+    } catch {
+      Swal.fire("Error", "Server error occurred", "error");
+    }
+  };
+
+
+
   useEffect(() => {
     fetchQuestions();
     fetchEssayQuestions();
+    fetchFill_inQuestions();
   }, []);
+
 
   /* ================= TIMER ================= */
   const getRemainingSeconds = (endTimeUTC) => {
@@ -165,6 +189,15 @@ const TakeExamModal = ({
     }));
   };
 
+   const handleFill_inChange = (questionId, value) => {
+    setFill_inAnswers(prev => ({
+      ...prev,
+      [questionId]: value
+    }));
+  };
+
+
+
   /* ================= ESSAY SUBMISSION ================= */
   const submitEssayExam = async () => {
     if (Object.keys(essayAnswers).length === 0) return;
@@ -175,6 +208,21 @@ const TakeExamModal = ({
         exam_id: examId,
         student_id: studentId,
         answers: essayAnswers,
+        course_id: courseId,
+        category_id: categoryId
+      }
+    );
+  };
+
+    const submitFill_inExam = async () => {
+    if (Object.keys(essayAnswers).length === 0) return;
+
+    await axios.post(
+      "https://www.cwmsrfupre.com.ng/base/submit_fill_in_exam.php",
+      {
+        exam_id: examId,
+        student_id: studentId,
+        answers: fill_inAnswers,
         course_id: courseId,
         category_id: categoryId
       }
@@ -225,7 +273,8 @@ const TakeExamModal = ({
       Swal.close();
 
       if (res.data.success) {
-        await submitEssayExam();
+        // await submitEssayExam();
+        await submitFill_inExam();
         setScore(res.data.score);
 
         Swal.fire({
@@ -340,7 +389,7 @@ dispatch(studentLogout());
           </QuestionCard>
         ))}
 
-        <h3 style={{ textAlign: "center", color: "green" }}>Essay Questions</h3>
+        {/* <h3 style={{ textAlign: "center", color: "green" }}>Essay Questions</h3>
         {essayQuestions.map((q, index) => (
           <QuestionCard key={q.id}>
             <p><strong>Q{index + 1}:</strong> {q.question}</p>
@@ -350,6 +399,20 @@ dispatch(studentLogout());
               placeholder="Write your answer here..."
               value={essayAnswers[q.id] || ""}
               onChange={(e) => handleEssayChange(q.id, e.target.value)}
+            />
+          </QuestionCard>
+        ))} */}
+
+           <h3 style={{ textAlign: "center", color: "green" }}>Fill-in Questions</h3>
+        {fill_inQuestions.map((q, index) => (
+          <QuestionCard key={q.id}>
+            <p><strong>Q{index + 1}:</strong> {q.question}</p>
+            <textarea
+              rows="6"
+              style={{ width: "100%", padding: "10px", borderRadius: "6px" }}
+              placeholder="Write your answer here..."
+              value={fill_inAnswers[q.id] || ""}
+              onChange={(e) => handleFill_inChange(q.id, e.target.value)}
             />
           </QuestionCard>
         ))}

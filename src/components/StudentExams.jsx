@@ -108,7 +108,7 @@ const getCourseName = (courseId) => {
   return (
     <Container>
       <PageTitle>Your Online Exams / Assessments</PageTitle>
-       <p style={{fontSize:"0.8rem", marginBottom:"10px",textAlign: "center" }}>Note that the exam timings are in UTC TIME-ZONE to accomodate all students internationally, ensure you correctly match with your local timimg. If the time for your exam reaches and you have not seen your exam here , you can refresh the page. If it your exam still doesnt show, you can contact the management, but ensure that its time for your exam.</p>
+       <p style={{fontSize:"0.8rem", marginBottom:"10px",textAlign: "center" }}>Note that the exam timings are in UTC TIME-ZONE to accomodate all students internationally, ensure you correctly match with your local timimg. If the time for your exam reaches and you have not seen your exam here , you can refresh the page. If your exam still doesnt show, you can contact the management, but ensure that its time for your exam.</p>
         
       {loading ? (
         <p style={{ textAlign: "center" }}>Loading exams...</p>

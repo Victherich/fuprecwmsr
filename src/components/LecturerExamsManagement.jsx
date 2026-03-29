@@ -551,7 +551,7 @@ const filteredExams = exams.filter((exam) => {
   Manage OBJ Questions
 </span>
 <br/>
-<span
+{/* <span
   style={{
     textDecoration: "underline",
     cursor: "pointer",
@@ -565,8 +565,8 @@ const filteredExams = exams.filter((exam) => {
   }}
 >
   Manage EASSY Questions
-</span>
-<br/>
+</span> */}
+{/* <br/> */}
 <span
   style={{
     textDecoration: "underline",

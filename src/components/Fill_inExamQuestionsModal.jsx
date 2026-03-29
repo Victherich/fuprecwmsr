@@ -88,7 +88,7 @@ const Fill_inExamQuestionsModal = ({ exam, onClose }) => {
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_Fill_in_exam_questions.php",
+        "https://www.cwmsrfupre.com.ng/base/get_fill_in_exam_questions.php",
         { params: { exam_id: exam.id } }
       );
       if (res.data.success) setQuestions(res.data.questions);
@@ -115,7 +115,7 @@ const Fill_inExamQuestionsModal = ({ exam, onClose }) => {
     try {
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/delete_Fill_in_exam_question.php",
+        "https://www.cwmsrfupre.com.ng/base/delete_fill_in_exam_question.php",
         { question_id: id }
       );
       Swal.close();

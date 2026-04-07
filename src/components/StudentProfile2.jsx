@@ -20,6 +20,7 @@ import {
   FaSpeakerDeck,
   FaReply,
   FaGlobe,
+  FaHourglass,
 } from "react-icons/fa";
 import { Context } from "./Context";
 
@@ -339,6 +340,9 @@ const handleSaveName = () => {
             </p>
             <p>
               <FaUser /> <b>Suspension:</b> {student.suspension || "Active"}
+            </p>
+            <p>
+              <FaHourglass /> <b>Admision Session:</b> {student.admission_session || "Active"}
             </p>
           </Details>
         </ProfileCard>

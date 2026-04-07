@@ -9,6 +9,7 @@ import { use } from 'react';
 import { useContext } from 'react';
 import { Context } from './Context';
 import UpdateLevelSemesterModal from "./UpdateLevelSemesterModal";
+import AdmissionSessionsModal from './AdmissionSessionModal';
 
 
 
@@ -116,10 +117,10 @@ const StudentProfile = ({id, setStudentProfileId, handleGetAllstudents}) => {
   const [error, setError] = useState('');
   const {programs}=useContext(Context);
   const [showModal, setShowModal] = useState(false);
+const [open, setOpen] = useState(false);
 
 
-
-console.log(student)
+// console.log(student)
   // fetching a student by id
  
 
@@ -194,17 +195,17 @@ const deleteStudent = async (studentId) => {
 
 
 
-const handleAdmitStudent = (studentId)=>{
+const handleAdmitStudent = (studentId,selectedSession)=>{
   if(student.program>16&&student.program<21){
-    admitProfessionalPGDStudent(studentId)
+    admitProfessionalPGDStudent(studentId,selectedSession)
   }else if(student.program>20 && student.program<25){
-    admitProfessionalMastersStudent(studentId)
+    admitProfessionalMastersStudent(studentId, selectedSession)
   }else if(student.program>24&&student.program<29){
-admitProfessionalDoctorateStudent(studentId)
+admitProfessionalDoctorateStudent(studentId, selectedSession)
   }
   
   else{
-    admitStudent(studentId)
+    admitStudent(studentId, selectedSession)
   }
 } 
 
@@ -213,7 +214,7 @@ admitProfessionalDoctorateStudent(studentId)
 
 
 // admitting a student
-const admitStudent = async (studentId) => {
+const admitStudent = async (studentId, selectedSession) => {
 
 
   if(student.status==="admitted"){
@@ -244,7 +245,7 @@ const admitStudent = async (studentId) => {
 
     try {
       const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_student.php', {
-        id: studentId
+        id: studentId, admission_session: selectedSession
       });
 
       if (response.data.success) {
@@ -254,6 +255,7 @@ const admitStudent = async (studentId) => {
           icon: 'success'
         });
         handleGetStudentById();
+        setOpen(false);
       } else {
         throw new Error(response.data.error || 'Unknown error occurred.');
       }
@@ -273,11 +275,11 @@ const admitStudent = async (studentId) => {
 
 
 // admitting a student
-const admitProfessionalPGDStudent = async (studentId) => {
+const admitProfessionalPGDStudent = async (studentId, selectedSession) => {
 
 
   if(student.status==="admitted"){
-    Swal.fire({text:"student is already admitted"})
+    Swal.fire({text:"student is already admitted.."})
     return;
   }
   // Confirm with the user
@@ -294,7 +296,7 @@ const admitProfessionalPGDStudent = async (studentId) => {
   if (confirmation.isConfirmed) {
     // Show loading
     Swal.fire({
-      title: 'Updating...',
+      title: 'Updating..._',
       text: 'Please wait while we update the student status.',
       allowOutsideClick: false,
       didOpen: () => {
@@ -304,7 +306,7 @@ const admitProfessionalPGDStudent = async (studentId) => {
 
     try {
       const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalPGD_student.php', {
-        id: studentId
+        id: studentId, admission_session: selectedSession
       });
 
       if (response.data.success) {
@@ -314,6 +316,7 @@ const admitProfessionalPGDStudent = async (studentId) => {
           icon: 'success'
         });
         handleGetStudentById();
+        setOpen(false);
       } else {
         throw new Error(response.data.error || 'Unknown error occurred.');
       }
@@ -328,11 +331,11 @@ const admitProfessionalPGDStudent = async (studentId) => {
 };
 
 // admitting a student
-const admitProfessionalMastersStudent = async (studentId) => {
+const admitProfessionalMastersStudent = async (studentId, selectedSession) => {
 
 
   if(student.status==="admitted"){
-    Swal.fire({text:"student is already admitted"})
+    Swal.fire({text:"student is already admitted..."})
     return;
   }
   // Confirm with the user
@@ -359,7 +362,7 @@ const admitProfessionalMastersStudent = async (studentId) => {
 
     try {
       const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalMasters_student.php', {
-        id: studentId
+        id: studentId, admission_session: selectedSession
       });
 
       if (response.data.success) {
@@ -369,6 +372,7 @@ const admitProfessionalMastersStudent = async (studentId) => {
           icon: 'success'
         });
         handleGetStudentById();
+        setOpen(false);
       } else {
         throw new Error(response.data.error || 'Unknown error occurred.');
       }
@@ -383,11 +387,11 @@ const admitProfessionalMastersStudent = async (studentId) => {
 };
 
 // admitting a student
-const admitProfessionalDoctorateStudent = async (studentId) => {
+const admitProfessionalDoctorateStudent = async (studentId, selectedSession) => {
 
 
   if(student.status==="admitted"){
-    Swal.fire({text:"student is already admitted"})
+    Swal.fire({text:"student is already admitted...."})
     return;
   }
   // Confirm with the user
@@ -414,7 +418,7 @@ const admitProfessionalDoctorateStudent = async (studentId) => {
 
     try {
       const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalDoctorate_student.php', {
-        id: studentId
+        id: studentId, admission_session: selectedSession
       });
 
       if (response.data.success) {
@@ -424,6 +428,7 @@ const admitProfessionalDoctorateStudent = async (studentId) => {
           icon: 'success'
         });
         handleGetStudentById();
+        setOpen(false);
       } else {
         throw new Error(response.data.error || 'Unknown error occurred.');
       }
@@ -733,6 +738,7 @@ const graduateStudent = async (studentId) => {
     : "Not yet Admitted"}
 </Field>
 <Field ><FaCheckCircle /> <Label>Status:</Label><p style={{backgroundColor:"green", padding:"5px", color:"white", borderRadius:"5px"}}>{student.status.toUpperCase()}</p>  </Field>
+{student.admission_session && <Field ><FaCheckCircle /> <Label>Admission Session:</Label><p >{student?.admission_session}</p>  </Field>}
           <Field ><FaCheckCircle /> <Label>Suspension:</Label><p style={{backgroundColor:student.suspension==="suspended"?"red":"rgba(0,0,255,0.5)", padding:"5px", color:"white", borderRadius:"5px"}}>{student.suspension.toUpperCase()}</p>  </Field>
     
     
@@ -744,7 +750,7 @@ const graduateStudent = async (studentId) => {
   View Proof of Application payment
 </Button>
 
-    {student.status!=='graduated'&&<Button onClick={()=>admitStudent(student.id)}>
+    {student.status!=='graduated'&&<Button onClick={() => setOpen(true)}>
         Grant Admission
       </Button>}
       {student.status!=='graduated'&&<Button onClick={()=>cancelStudentAdmission(student.id)}>
@@ -782,6 +788,12 @@ const graduateStudent = async (studentId) => {
   refreshStudent={handleGetStudentById}
 />
 
+ <AdmissionSessionsModal
+         isOpen={open}
+         onClose={() => setOpen(false)}
+       student={student}
+       handleAdmitStudent={handleAdmitStudent}
+      />
     </Container>
   );
 };

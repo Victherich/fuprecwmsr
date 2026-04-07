@@ -109,8 +109,21 @@ border-radius:5px;
 `
 
 const Select = styled.select`
+  padding: 0.5rem;
+  border: 1px solid #d4ecd7;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 1rem;
+  background-color: #f0fff5;
+  color: #006400;
+  cursor: pointer;
 
-`
+  &:focus {
+    outline: none;
+    border-color: #006400;
+  }
+`;
 
 const AllStudents = () => {
   const [students, setStudents] = useState([]);
@@ -124,6 +137,9 @@ const AllStudents = () => {
   const {programs}=useContext(Context);
   const [filterStatus, setFilterStatus]=useState('');
   const location = useLocation();
+  const [sessionFilter, setSessionFilter] = useState('');
+
+
 
 
 
@@ -181,6 +197,33 @@ handleGetAllstudents();
     filterByStatus();
   },[filterStatus])
 
+
+
+
+  const filterBySession = (session) => {
+  if (!session) {
+    setFilteredStudents(students);
+    return;
+  }
+
+  const filtered = students.filter(student =>
+    student.admission_session === session
+  );
+
+  setFilteredStudents(filtered);
+};
+
+const handleSessionChange = (e) => {
+  const value = e.target.value;
+  setSessionFilter(value);
+  filterBySession(value);
+};
+
+const clearSessionFilter = () => {
+  setSessionFilter('');
+  setFilteredStudents(students);
+};
+
   return (
     <Container>
       <Title>All Students</Title>
@@ -197,6 +240,23 @@ handleGetAllstudents();
           value={searchEmail}
           onChange={handleEmailChange}
         />
+
+        <Select value={sessionFilter} onChange={handleSessionChange}>
+  <option value="">Filter by Admission Session</option>
+
+  {/* Dynamically generate unique sessions */}
+  {[...new Set(students.map(s => s.admission_session).filter(Boolean))].map((session, index) => (
+    <option key={index} value={session}>
+      {session}
+    </option>
+  ))}
+</Select>
+
+{sessionFilter && (
+  <Button onClick={clearSessionFilter} style={{ backgroundColor: 'red' }}>
+    Clear Filter
+  </Button>
+)}
       </SearchContainer>
       {/* <Select>
         <option>
@@ -218,6 +278,9 @@ handleGetAllstudents();
             <CardRow>
               <CardLabel>Status:</CardLabel><CardValue style={{ backgroundColor:"gray", color:"white", padding:"5px"}}>{student.status.toUpperCase()}</CardValue>
             </CardRow>
+           {student.admission_session&&  <CardRow>
+              <CardLabel>Admission Session:</CardLabel><CardValue>{student.admission_session}</CardValue>
+            </CardRow>}
             {/* <CardRow>
               <CardLabel>ID:</CardLabel><CardValue>{student.id}</CardValue>
             </CardRow> */}

@@ -31,7 +31,7 @@ const FacultyLecturers = () => {
   const facultyMembers = [
       { id: 1, name: 'Dr Beatrice Okorhi', image: st1 },
       { id: 2, name: 'Dr Chaanda', image: st2 },
-      { id: 3, name: 'Dr E.E. Elemike', image: st3 },
+      { id: 3, name: 'Prof E.E. Elemike', image: st3 },
       { id: 4, name: 'Dr N.O.Nenuwe', image: st4 },
       { id: 5, name: 'Dr Ogwuche', image: st5 },
       { id: 6, name: 'Dr Tebu Oghenerukevwe', image: st6 },

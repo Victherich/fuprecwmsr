@@ -630,6 +630,7 @@ import ChampionsDay from './ChampionsDay';
 import CurrentEvents from './CurrentEvents';
 // import ResponsiveImage from './ResponsiveImage';
 import ResponsiveImage from './ResponsiveImage'
+import CurrentEvents2 from './CurrentEvents2';
 
 const Landingpage = () => {
 
@@ -657,6 +658,7 @@ const Landingpage = () => {
       <div className='LandingPage'>
         <Hero />
         <AboutUsBrief />
+        <CurrentEvents2/>
         <ResponsiveImage/>
         <CurrentEvents/>
         <Academics/>

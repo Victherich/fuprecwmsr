@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import fl from '../Images/fl.png'
+import f2 from '../Images/fl.png'
 
 const ImageWrapper = styled.div`
   width: 100%;
@@ -8,6 +9,7 @@ const ImageWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  margin-top:20px;
 `;
 
 const StyledImage = styled.img`
@@ -27,9 +29,11 @@ const StyledImage = styled.img`
 
 const ResponsiveImage = () => {
   return (
-    <ImageWrapper>
-      <StyledImage src={fl} alt='flyer' />
+
+      <ImageWrapper>
+      <StyledImage src={f2} alt='flyer' />
     </ImageWrapper>
+  
   );
 };
 

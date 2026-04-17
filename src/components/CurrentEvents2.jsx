@@ -1,7 +1,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import imageUrl from '../Images/earthfl.jpeg'
+import imageUrl from '../Images/fl22.jpeg'
 
 // --- Styled Components ---
 
@@ -289,8 +289,26 @@ const CurrentEvents2 = () => {
       {/* Contact Information and Hashtags Footer */}
       <ContactSection>
         <ContactInfo>
+          <p>
+  Meeting Link:{" "}
+  <br/>
+  <a
+    href="https://meet.google.com/mvx-babp-hxd"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{
+      color: "#00796b",
+      fontWeight: "bold",
+      fontStyle: "italic",
+      fontSize: "1.1rem",
+    }}
+  >
+    https://meet.google.com/mvx-babp-hxd
+  </a>
+</p> 
+<br/>
           <p><strong>For more info, contact:</strong></p>
-          <p>📞 +2348119317782 / +2349030223041</p>
+          <p>📞 +234 903 022 3041 / +234 806 936 5637</p>
           <p>✉️ <a href="mailto:wmsr@fupre.edu.ng" style={{ color: '#00796b', textDecoration: 'none' }}>wmsr@fupre.edu.ng</a></p>
           <p>🌐 <a href="http://www.cwmsrfupre.com.ng" target="_blank" rel="noopener noreferrer" style={{ color: '#00796b', textDecoration: 'none' }}>www.cwmsrfupre.com.ng</a></p>
         </ContactInfo>

@@ -397,12 +397,12 @@ useEffect(() => {
             Lecture Notes
           </SidebarMenuItem> */}
 
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'onlineclass'}
             onClick={() => handleMenuClick('onlineclass')}
           >
             Student Online Class
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
           <SidebarMenuItem
             active={activeMenu === 'email'}

@@ -402,13 +402,13 @@ const handleSaveName = () => {
 
       
 
-          <Card onClick={() => onNavigate("onlineclass")}>
+          {/* <Card onClick={() => onNavigate("onlineclass")}>
             <Icon>
               <FaLaptop />
             </Icon>
             <Label>Online Meeting / Class</Label>
             <Value>-Join your live Meeting / class.</Value>
-          </Card>
+          </Card> */}
 
           <Card onClick={() => onNavigate("clockin")}>
             <Icon>

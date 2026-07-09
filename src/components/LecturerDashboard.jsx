@@ -365,13 +365,13 @@ getLecturerById();
             Announcements
           </SidebarMenuItem>
  
-          <SidebarMenuItem
+          {/* <SidebarMenuItem
             active={activeMenu === 'LiveLecture'}
             onClick={() => handleMenuClick('LiveLecture')}
           >
 
             LiveLecture
-          </SidebarMenuItem>
+          </SidebarMenuItem> */}
 
           {/* <SidebarMenuItem
             active={activeMenu === 'assignments'}

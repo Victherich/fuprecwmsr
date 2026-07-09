@@ -523,11 +523,11 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
             <StatValue>Upload materials</StatValue>
           </StatCard> */}
 
-          <StatCard onClick={() => onNavigate("LiveLecture")}>
+          {/* <StatCard onClick={() => onNavigate("LiveLecture")}>
             <StatIcon><FaVideo /></StatIcon>
             <StatLabel>Online Live Class / Meeting / Examination / Quiz</StatLabel>
             <StatValue>Start or join a session</StatValue>
-          </StatCard>
+          </StatCard> */}
 
 
            <StatCard onClick={() => onNavigate("exams")}>

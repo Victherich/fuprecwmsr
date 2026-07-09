@@ -227,9 +227,7 @@ const courses = [
 
 ///new addition starts here 6/18/2026
 
-
-  { id: 128, code: "WM 821", title: "Circular Economy Systems & Industrial Symbiosis", link: "https://meet.google.com/zvp-bhuo-qbv" },
-  { id: 129, code: "PWM 821", title: "Decommissioning, Site Closure & Liability Management", link: "https://meet.google.com/cmg-zfma-syr" },
+ { id: 129, code: "PWM 821", title: "Decommissioning, Site Closure & Liability Management", link: "https://meet.google.com/cmg-zfma-syr" },
   { id: 130, code: "ESW 821", title: "Climate Migration, Conflict & Community Resilience", link: "https://meet.google.com/dyt-mvtw-kqr" },
   { id: 131, code: "EHM 821", title: "Global Environmental Burden of Disease", link: "https://meet.google.com/xgp-jfkc-wee" },
   { id: 132, code: "WM 822", title: "Global Recycling Markets & Resource Recovery Finance", link: "https://meet.google.com/bxf-ydaj-dpd" },
@@ -250,11 +248,20 @@ const courses = [
   { id: 147, code: "EHM 825", title: "Health Systems Management & International Regulation", link: "https://meet.google.com/rws-ghup-myu" },
   { id: 148, code: "TUTORIAL", title: "Tutorials / Group Discussions / Academic Support", link: "https://meet.google.com/qyy-uwgh-yqs" },
   { id: 149, code: "CWMSR LAB", title: "CWMSR Innovation Lab / Industry Residency Supervision", link: "https://meet.google.com/ghn-yzdf-hgj" },
-  { id: 150, code: "SEMINAR", title: "Research Seminars / Visiting Industry Experts / Professional Masterclasses", link: "https://meet.google.com/ahb-bbhh-odh" }
+  { id: 150, code: "SEMINAR", title: "Research Seminars / Visiting Industry Experts / Professional Masterclasses", link: "https://meet.google.com/ahb-bbhh-odh" },
 
+  { id: 151, code: "WM 821", title: "Circular Economy Systems & Industrial Symbiosis", link: "https://meet.google.com/zvp-bhuo-qbv" },
+ 
 
 
 ];
+
+
+const sortedCourses = [...courses].sort((a, b) =>
+  a.code.localeCompare(b.code, undefined, { numeric: true })
+);
+
+
 
 //NEVER CHANGE THE SEQUENCE OR IT WILL CHANGE ALOT
 const categories = [
@@ -284,7 +291,7 @@ const [dhb, setDhb]=useState(true)
   return (
     <Context.Provider value={{adminToken,setAdminToken,admin,setAdmin,adminMenu,
     setAdminMenu,trackingID,setTrackingID,
-    programs, levels, semesters, courses, categories,
+    programs, levels, semesters, courses:sortedCourses, categories,
     menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb, setDhb, 
     possible_levels_for_studnet_login
     }}>

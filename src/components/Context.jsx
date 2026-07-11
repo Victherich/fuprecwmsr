@@ -251,7 +251,9 @@ const courses = [
   { id: 150, code: "SEMINAR", title: "Research Seminars / Visiting Industry Experts / Professional Masterclasses", link: "https://meet.google.com/ahb-bbhh-odh" },
 
   { id: 151, code: "WM 821", title: "Circular Economy Systems & Industrial Symbiosis", link: "https://meet.google.com/zvp-bhuo-qbv" },
+  { id: 152, code: "CWMSR 842", title: "Leadership and Management", link: "https://meet.google.com/uea-ipba-vtp" },
  
+
 
 
 ];

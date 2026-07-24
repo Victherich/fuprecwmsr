@@ -252,6 +252,7 @@ const courses = [
 
   { id: 151, code: "WM 821", title: "Circular Economy Systems & Industrial Symbiosis", link: "https://meet.google.com/zvp-bhuo-qbv" },
   { id: 152, code: "CWMSR 842", title: "Leadership and Management", link: "https://meet.google.com/uea-ipba-vtp" },
+  { id: 153, code: "PWM 841", title: "Petroleum Industry Operations and Environmental Systems", link: "https://meet.google.com/bwa-nvrb-pmf" },
  
 
 

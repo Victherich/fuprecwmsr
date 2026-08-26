@@ -1,8 +1,9 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 /* ================= STYLES ================= */
 
@@ -117,13 +118,14 @@ const Fill_inMarkingModal = ({
   const [questions, setQuestions] = useState([]);
   const [totalScore, setTotalScore] = useState(0);
   const [loading, setLoading] = useState(true);
+  const {api_url}=useContext(Context);
 
   /* ================= FETCH Fill_in ================= */
   useEffect(() => {
     const fetchFill_in = async () => {
       try {
         const res = await axios.get(
-          "https://www.cwmsrfupre.com.ng/base/get_Fill_in_submission_for_marking.php",
+          `${api_url}/get_Fill_in_submission_for_marking.php`,
           {
             params: { submission_id: submission.submission_id },
             headers: {
@@ -169,7 +171,7 @@ const Fill_inMarkingModal = ({
   const saveMarks = async () => {
     try {
       await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/mark_Fill_in_submission.php",
+        `${api_url}/mark_Fill_in_submission.php`,
         {
           submission_id: submission.submission_id,
           lecturer_id: lecturerId,

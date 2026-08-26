@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { Context } from "./Context";
 
 const Container = styled.div`
   padding: 40px;
@@ -127,11 +128,12 @@ const GeneralAssets = () => {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const location = useLocation();
+  const {api_url}=useContext(Context)
 
   const fetchAssets = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_general_assets.php"
+        `${api_url}/get_general_assets.php`
       );
       if (res.data.success) setAssets(res.data.assets);
     } catch (err) {
@@ -158,7 +160,7 @@ const GeneralAssets = () => {
       Swal.fire({ text: "Uploading..." });
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/create_general_asset.php",
+        `${api_url}/create_general_asset.php`,
         formData
       );
       Swal.close();
@@ -190,7 +192,7 @@ const GeneralAssets = () => {
 
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/delete_general_asset.php",
+        `${api_url}/delete_general_asset.php`,
         { asset_id: id },
         { headers: { "Content-Type": "application/json" } }
       );

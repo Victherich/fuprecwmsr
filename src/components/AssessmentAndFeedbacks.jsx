@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import FeedbackModal from "./FeedbackModal";
+import { Context } from "./Context";
 
 // === Styled Components ===
 const Container = styled.div`
@@ -172,6 +173,7 @@ const AssessmentAndFeedbacks = () => {
     const [file2, setFile2] = useState(null);
     const [userName, setUserName] = useState("");
 const [userEmail, setUserEmail] = useState("");
+const {api_url}=useContext(Context);
 
   const location = useLocation();
 
@@ -179,7 +181,7 @@ const [userEmail, setUserEmail] = useState("");
 const fetchItems = async () => {
   try {
     const res = await axios.get(
-      "https://www.cwmsrfupre.com.ng/base/get_assessment_forms.php",
+      `${api_url}/get_assessment_forms.php`,
       {
         headers: {
           "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -219,7 +221,7 @@ const handleSubmit = async () => {
     Swal.showLoading();
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/create_assessment_form.php",
+      `${api_url}/create_assessment_form.php`,
       formData,
       {
         headers: {
@@ -261,7 +263,7 @@ const deleteItem = async (id) => {
 
   try {
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/delete_assessment_form.php",
+      `${api_url}/delete_assessment_form.php`,
       { item_id: id },
       {
         headers: {
@@ -325,7 +327,7 @@ const handleSubmit2 = async () => {
     Swal.showLoading();
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/create_feedback.php",
+      `${api_url}/create_feedback.php`,
       formData,
       {
         headers: {

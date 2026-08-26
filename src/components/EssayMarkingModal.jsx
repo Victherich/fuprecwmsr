@@ -1,8 +1,9 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 /* ================= STYLES ================= */
 
@@ -117,13 +118,14 @@ const EssayMarkingModal = ({
   const [questions, setQuestions] = useState([]);
   const [totalScore, setTotalScore] = useState(0);
   const [loading, setLoading] = useState(true);
+  const {api_url}=useContext(Context);
 
   /* ================= FETCH ESSAY ================= */
   useEffect(() => {
     const fetchEssay = async () => {
       try {
         const res = await axios.get(
-          "https://www.cwmsrfupre.com.ng/base/get_essay_submission_for_marking.php",
+          `${api_url}/get_essay_submission_for_marking.php`,
           {
             params: { submission_id: submission.submission_id },
             headers: {
@@ -169,7 +171,7 @@ const EssayMarkingModal = ({
   const saveMarks = async () => {
     try {
       await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/mark_essay_submission.php",
+        `${api_url}/mark_essay_submission.php`,
         {
           submission_id: submission.submission_id,
           lecturer_id: lecturerId,

@@ -1,13 +1,15 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const AccessCodeManager = () => {
   const [codes, setCodes] = useState([]);
   const [newCode, setNewCode] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
+  const {api_url} = useContext(Context);
 
  const fetchCodes = () => {
     Swal.fire({
@@ -16,7 +18,7 @@ const AccessCodeManager = () => {
       didOpen: () => Swal.showLoading(),
     });
 
-    axios.get('https://www.cwmsrfupre.com.ng/base/get_access_codes.php')
+    axios.get(`${api_url}/get_access_codes.php`)
       .then(res => {
         Swal.close();
         if (res.data.success) {
@@ -40,7 +42,7 @@ const AccessCodeManager = () => {
       didOpen: () => Swal.showLoading(),
     });
 
-    axios.post('https://www.cwmsrfupre.com.ng/base/add_access_code.php', {
+    axios.post(`${api_url}/add_access_code.php`, {
       code: newCode,
       description: description
     })
@@ -74,7 +76,7 @@ const handleDelete = (id) => {
         didOpen: () => Swal.showLoading(),
       });
 
-      axios.delete(`https://www.cwmsrfupre.com.ng/base/delete_access_code.php?id=${id}`)
+      axios.delete(`${api_url}/delete_access_code.php?id=${id}`)
         .then(() => {
           Swal.close();
           Swal.fire('Deleted!', 'Access code has been deleted.', 'success');

@@ -125,6 +125,7 @@ const AllLecturerStudents = ({lecturerId}) => {
   const {programs}=useContext(Context);
   const [filterStatus, setFilterStatus]=useState('');
   const location = useLocation();
+  const {api_url}=useContext(Context);
 
 
 
@@ -138,7 +139,7 @@ const handleGetLecturerStudents = () => {
     return;
   }
 
-  axios.post('https://www.cwmsrfupre.com.ng/base/get_students_in_lecturer_courses.php', {
+  axios.post(`${api_url}/get_students_in_lecturer_courses.php`, {
     lecturer_id: lecturerId
   })
   .then(res => {

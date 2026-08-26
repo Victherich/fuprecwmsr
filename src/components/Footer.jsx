@@ -110,15 +110,17 @@
 
 
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "../CSS/Footer.css";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+  const {api_url}=useContext(Context);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -139,7 +141,7 @@ const Footer = () => {
     });
 
     try {
-      const response = await fetch("https://www.cwmsrfupre.com.ng/base/subscribe_newsletter.php", {
+      const response = await fetch(`${api_url}/subscribe_newsletter.php`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

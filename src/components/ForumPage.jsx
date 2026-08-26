@@ -285,9 +285,10 @@
 
 // ForumPage.jsx
 import React, { useEffect, useRef, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import { Context } from "./Context";
 
-const API_BASE = "https://www.cwmsrfupre.com.ng/base";
 
 const ForumPage = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -297,13 +298,14 @@ const ForumPage = ({ user }) => {
   const [editContent, setEditContent] = useState("");
   const chatEndRef = useRef(null);
   const chatAreaRef = useRef(null);
+  const {api_url}=useContext(Context)
 
-  console.log(user)
+  
 
   // fetch posts
   const fetchForumData = async () => {
     try {
-      const res = await fetch(`${API_BASE}/get_forum_data.php?_=${Date.now()}`, { cache: "no-store" });
+      const res = await fetch(`${api_url}/get_forum_data.php?_=${Date.now()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) setPosts(data.posts || []);
     } catch (err) {
@@ -329,7 +331,7 @@ const ForumPage = ({ user }) => {
     if (replyTo) formData.append("reply_to", replyTo.id);
 
     try {
-      const res = await fetch(`${API_BASE}/forum_add_post.php`, { method: "POST", body: formData });
+      const res = await fetch(`${api_url}/forum_add_post.php`, { method: "POST", body: formData });
       const data = await res.json();
       if (data.success) {
         setNewMsg("");
@@ -377,7 +379,7 @@ const ForumPage = ({ user }) => {
     formData.append("content", editContent);
 
     try {
-      const res = await fetch(`${API_BASE}/forum_edit_post.php`, { method: "POST", body: formData });
+      const res = await fetch(`${api_url}/forum_edit_post.php`, { method: "POST", body: formData });
       const data = await res.json();
       if (data.success) {
         setEditingPost(null);
@@ -409,7 +411,7 @@ const ForumPage = ({ user }) => {
   formData.append("user_type", user.role ? user.role.toLowerCase() : "student");
 
   try {
-    const res = await fetch(`${API_BASE}/forum_delete_post.php`, {
+    const res = await fetch(`${api_url}/forum_delete_post.php`, {
       method: "POST",
       body: formData,
     });

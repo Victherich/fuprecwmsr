@@ -77,10 +77,11 @@
 
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const Container = styled.div`
   max-width: 800px;
@@ -123,14 +124,14 @@ const Button = styled.button`
 const StudentOnlineClass = () => {
   const [classes, setClasses] = useState([]);
   const [lecturers, setLecturers] = useState([]);
-
+const {api_url}=useContext(Context);
   const [filterSearch, setFilterSearch] = useState("");
 
 
   const fetchClasses = async () => {
     try {
       const res = await fetch(
-        `https://www.cwmsrfupre.com.ng/base/get_all_online_classes.php?t=${Date.now()}`
+        `${api_url}/get_all_online_classes.php?t=${Date.now()}`
       );
       const data = await res.json();
       if (data.success) {
@@ -145,7 +146,7 @@ const StudentOnlineClass = () => {
 
   const fetchLecturers = async () => {
     try {
-      const res = await axios.get('https://www.cwmsrfupre.com.ng/base/get_all_lecturer.php');
+      const res = await axios.get(`${api_url}/get_all_lecturer.php`);
       if (res.data.success) {
         setLecturers(res.data.lecturers);
       } else {

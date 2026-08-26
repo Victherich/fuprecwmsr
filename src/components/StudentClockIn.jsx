@@ -26,28 +26,29 @@ const Button = styled.button`
   font-weight: 700;
 `;
 
-const StudentClockIn = ({student, apiBase = "https://www.cwmsrfupre.com.ng/base" }) => {
+const StudentClockIn = ({student}) => {
 
   const [activeSheet, setActiveSheet] = useState(null);
   const [loading, setLoading] = useState(false);
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     const fetchActive = async () => {
       try {
-        const res = await axios.get(`${apiBase}/get_active_attendance.php`);
+        const res = await axios.get(`${api_url}/get_active_attendance.php`);
         if (res.data.active) setActiveSheet(res.data.attendance);
       } catch (err) {
         console.error(err);
       }
     };
     fetchActive();
-  }, [apiBase]);
+  }, [api_url]);
 
   const handleClockIn = async () => {
     if (!student?.id || !activeSheet) return;
     setLoading(true);
     try {
-      const res = await axios.post(`${apiBase}/submit_attendance.php`, {
+      const res = await axios.post(`${api_url}/submit_attendance.php`, {
         student_id: student.id,
         attendance_id: activeSheet.id
       });

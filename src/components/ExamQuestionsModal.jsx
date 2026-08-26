@@ -234,7 +234,7 @@ const AddBtn = styled.button`
 const ExamQuestionsModal = ({ exam, onClose }) => {
   const [questions, setQuestions] = useState([]);
   const [showAddModal, setShowAddModal] = useState({ open: false, editingQuestion: null });
-  const { courses } = useContext(Context);
+  const { courses, api_url } = useContext(Context);
 
   const course = courses.find(c => String(c.id) === String(exam.course_id));
 
@@ -242,7 +242,7 @@ const ExamQuestionsModal = ({ exam, onClose }) => {
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_exam_questions.php",
+        `${api_url}/get_exam_questions.php`,
         { params: { exam_id: exam.id, _t: Date.now() } } // prevent caching
       );
       if (res.data.success) setQuestions(res.data.questions);
@@ -270,7 +270,7 @@ const ExamQuestionsModal = ({ exam, onClose }) => {
       Swal.fire({ title: "Deleting...", allowOutsideClick: false });
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/delete_exam_question.php",
+        `${api_url}/delete_exam_question.php`,
         { question_id: questionId }
       );
       Swal.close();

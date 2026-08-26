@@ -233,7 +233,7 @@
 
 
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -256,6 +256,7 @@ import {
   FaPaperPlane,
   FaGlobeEurope,
 } from "react-icons/fa";
+import { Context } from "./Context";
 
 // 🌿 Styled Components
 const Container = styled.div`
@@ -426,11 +427,12 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
   const [lecturer, setLecturer] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [newPhone, setNewPhone] = useState("");
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     if (!lecturerId) return;
     axios
-      .get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerId}`)
+      .get(`${api_url}/get_lecturer_by_id.php?id=${lecturerId}`)
       .then((res) => {
         if (res.data.success) setLecturer(res.data.user);
       })
@@ -439,7 +441,7 @@ const LecturerDetailsPage = ({ lecturerId, onNavigate, onLogout }) => {
 
   const handleSave = () => {
     axios
-      .post("https://www.cwmsrfupre.com.ng/base/update_lecturer_phone.php", {
+      .post(`${api_url}/update_lecturer_phone.php`, {
         id: lecturer.id,
         phone: newPhone,
       })

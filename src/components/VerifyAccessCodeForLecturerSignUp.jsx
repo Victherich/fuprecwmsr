@@ -1,12 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import {useNavigate} from 'react-router-dom'
+import { Context } from './Context';
 
 const VerifyAccessCodeForLecturerSignUp = ({status, setStatus}) => {
   const [accessCode, setAccessCode] = useState('');
   const navigate = useNavigate();
+  const {api_url}=useContext(Context);
   
 
   const handleVerify = () => {
@@ -24,7 +26,7 @@ const VerifyAccessCodeForLecturerSignUp = ({status, setStatus}) => {
     });
 
     axios
-      .post('https://www.cwmsrfupre.com.ng/base/verify_access_code.php', {
+      .post(`${api_url}/verify_access_code.php`, {
         code: accessCode.trim(),
       })
       .then((res) => {

@@ -185,7 +185,7 @@ const PostVideoLesson = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
-
+const {api_url}=useContext(Context);
 const [filterCourse, setFilterCourse] = useState("");
 const [filterSearch, setFilterSearch] = useState("");
 
@@ -195,7 +195,7 @@ const [filterSearch, setFilterSearch] = useState("");
     if (!lecturer?.id) return;
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/base/get_videos_by_lecturer_id.php`,
+        `${api_url}/get_videos_by_lecturer_id.php`,
         { params: { lecturer_id: lecturer.id, t: Date.now() } }
       );
       if (res.data.success) setVideos(res.data.videos);
@@ -307,7 +307,7 @@ const handleSubmit = async () => {
 
     let uploadPercent = 0;
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/create_video.php",
+      `${api_url}/create_video.php`,
       formData,
       {
         headers: { "Content-Type": "multipart/form-data" },
@@ -373,7 +373,7 @@ const deleteVideo = async (videoId) => {
       Swal.fire({ text: "Deleting..." });
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/delete_video.php",
+        `${api_url}/delete_video.php`,
         { video_id: videoId },
         { headers: { "Content-Type": "application/json" } }
       );

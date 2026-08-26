@@ -45,19 +45,19 @@ const ExamMeta = styled.p`
 
 /* ================= COMPONENT ================= */
 const StudentExams = ({ studentId}) => {
-    const {courses, categories} = useContext(Context)
+    const {courses, categories, api_url} = useContext(Context)
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeExam, setActiveExam] = useState(null);
 
-console.log(activeExam)
+
 
 
   const fetchExams = async () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_exams_for_student.php",
+        `${api_url}/get_exams_for_student.php`,
         { params: { student_id: studentId, _t: Date.now() } } // prevent caching
       );
       if (res.data.success) {
@@ -170,7 +170,7 @@ const getCourseName = (courseId) => {
       });
 
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/check_exam_taken.php",
+        `${api_url}/check_exam_taken.php`,
         {
           exam_id: exam.exam_id,
           student_id: studentId

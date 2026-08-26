@@ -112,10 +112,11 @@
 
 
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 const Container = styled.div`
   padding: 2rem;
@@ -205,12 +206,13 @@ const ResultDownloadLogs = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const scrollRef = useRef();
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     const fetchLogs = async () => {
       try {
         const res = await axios.get(
-          "https://www.cwmsrfupre.com.ng/base/get_result_download_logs.php?t=" +
+          `${api_url}/get_result_download_logs.php?t=` +
             Date.now()
         );
         if (res.data.success) {

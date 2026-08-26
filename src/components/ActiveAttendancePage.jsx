@@ -42,18 +42,17 @@ const Button = styled.button`
 `;
 
 const ActiveAttendancePage = ({
-  apiBase = "https://www.cwmsrfupre.com.ng/base",
   userId,
   userType // 'student' or 'lecturer'
 }) => {
   const [activeList, setActiveList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { courses } = useContext(Context);
+  const { courses, api_url } = useContext(Context);
 
   const fetchActive = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${apiBase}/get_active_attendance.php`);
+      const res = await axios.get(`${api_url}/get_active_attendance.php`);
       if (res.data.success) setActiveList(res.data.attendance);
       else Swal.fire("Error", "Failed to fetch active attendance", "error");
     } catch {
@@ -91,7 +90,7 @@ const ActiveAttendancePage = ({
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await axios.post(`${apiBase}/clock_in.php`, {
+      const res = await axios.post(`${api_url}/clock_in.php`, {
         attendance_id: attendanceId,
         user_id: userId,
         user_type: userType

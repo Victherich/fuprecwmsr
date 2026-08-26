@@ -1,14 +1,16 @@
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 function AdminEditControl() {
   const [allowEdit, setAllowEdit] = useState(false);
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     axios
-      .get("https://www.cwmsrfupre.com.ng/base/get_edit_setting.php")
+      .get(`${api_url}/get_edit_setting.php`)
       .then((res) => {
         if (res.data.success) setAllowEdit(res.data.allow_edit);
       });
@@ -18,7 +20,7 @@ function AdminEditControl() {
     const newValue = !allowEdit;
 
     axios
-      .post("https://www.cwmsrfupre.com.ng/base/update_edit_setting.php", {
+      .post(`${api_url}/update_edit_setting.php`, {
         allow_edit: newValue,
       })
       .then((res) => {

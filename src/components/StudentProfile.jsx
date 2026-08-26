@@ -115,9 +115,10 @@ const StudentProfile = ({id, setStudentProfileId, handleGetAllstudents}) => {
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const {programs}=useContext(Context);
+  const {programs, api_url}=useContext(Context);
   const [showModal, setShowModal] = useState(false);
 const [open, setOpen] = useState(false);
+
 
 
 // console.log(student)
@@ -125,7 +126,7 @@ const [open, setOpen] = useState(false);
  
 
     const handleGetStudentById = ()=>{
-    axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${id}`)
+    axios.get(`${api_url}/get_student_by_id.php?id=${id}`)
       .then(res => {
         if (res.data.success) {
           setStudent(res.data.student);
@@ -174,7 +175,7 @@ const deleteStudent = async (studentId) => {
     });
 
     try {
-      const res = await axios.post('https://www.cwmsrfupre.com.ng/base/delete_student.php', { id: studentId });
+      const res = await axios.post(`${api_url}/delete_student.php`, { id: studentId });
       
       if (res.data.success) {
         Swal.fire('Deleted!', 'Student has been deleted.', 'success');
@@ -244,7 +245,7 @@ const admitStudent = async (studentId, selectedSession) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_student.php', {
+      const response = await axios.post(`${api_url}/admit_student.php`, {
         id: studentId, admission_session: selectedSession
       });
 
@@ -305,7 +306,7 @@ const admitProfessionalPGDStudent = async (studentId, selectedSession) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalPGD_student.php', {
+      const response = await axios.post(`${api_url}/admit_professionalPGD_student.php`, {
         id: studentId, admission_session: selectedSession
       });
 
@@ -361,7 +362,7 @@ const admitProfessionalMastersStudent = async (studentId, selectedSession) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalMasters_student.php', {
+      const response = await axios.post(`${api_url}/admit_professionalMasters_student.php`, {
         id: studentId, admission_session: selectedSession
       });
 
@@ -417,7 +418,7 @@ const admitProfessionalDoctorateStudent = async (studentId, selectedSession) => 
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admit_professionalDoctorate_student.php', {
+      const response = await axios.post(`${api_url}/admit_professionalDoctorate_student.php`, {
         id: studentId, admission_session: selectedSession
       });
 
@@ -480,7 +481,7 @@ const cancelStudentAdmission = async (studentId) => {
         },
       });
 
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/cancel_student_admission.php', {
+      const response = await axios.post(`${api_url}/cancel_student_admission.php`, {
         id: studentId,
       });
 
@@ -542,7 +543,7 @@ const suspendStudent = async (studentId) => {
         }
       });
 
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/suspend_student.php', {
+      const response = await axios.post(`${api_url}/suspend_student.php`, {
         id: studentId
       });
 
@@ -593,7 +594,7 @@ const unsuspendStudent = (studentId) => {
 
       // Make the base call to unsuspend the student
       axios
-        .post('https://www.cwmsrfupre.com.ng/base/unsuspend_student.php', { id: studentId })
+        .post(`${api_url}/unsuspend_student.php`, { id: studentId })
         .then((response) => {
           setLoading(false);
           if (response.data.success) {
@@ -670,7 +671,7 @@ const graduateStudent = async (studentId) => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/graduate_student.php', {
+      const response = await axios.post(`${api_url}/graduate_student.php`, {
         id: studentId
       });
 
@@ -743,10 +744,10 @@ const graduateStudent = async (studentId) => {
     
     
     <ButtonWrap>
-    <Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/base/${student.file_path}`, '_blank')}>
+    <Button onClick={() => window.open(`${api_url}/${student.file_path}`, '_blank')}>
   View Application Documents
 </Button>
-<Button onClick={() => window.open(`https://www.cwmsrfupre.com.ng/base/${student.proof_of_payment_path}`, '_blank')}>
+<Button onClick={() => window.open(`${api_url}/${student.proof_of_payment_path}`, '_blank')}>
   View Proof of Application payment
 </Button>
 

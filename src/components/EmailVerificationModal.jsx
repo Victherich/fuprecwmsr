@@ -1,7 +1,8 @@
 // EmailVerificationModal.jsx
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 // --- Styled Components ---
 const ModalOverlay = styled.div`
@@ -65,6 +66,7 @@ export default function EmailVerificationModal({ onClose, onVerified }) {
   const [step, setStep] = useState(1); // 1 = email step, 2 = code step
   const [email2, setEmail2] = useState("");
   const [code, setCode] = useState("");
+const {api_url}=useContext(Context);
 
   // Step 1: Request verification code
   const handleSendCode = async () => {
@@ -82,7 +84,7 @@ export default function EmailVerificationModal({ onClose, onVerified }) {
 
     try {
       const res = await fetch(
-        "https://www.cwmsrfupre.com.ng/base/student_send_email_code_mail_function.php",
+        `${api_url}/student_send_email_code_mail_function.php`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -119,7 +121,7 @@ export default function EmailVerificationModal({ onClose, onVerified }) {
 
     try {
       const res = await fetch(
-        "https://www.cwmsrfupre.com.ng/base/student_verify_email_code.php",
+        `${api_url}/student_verify_email_code.php`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

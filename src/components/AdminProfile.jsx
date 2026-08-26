@@ -228,7 +228,7 @@
 
 // export default AdminDetailsPage
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -252,6 +252,7 @@ import {
 } from "react-icons/fa";
 import AdminEditControl from "./AdminEditControl";
 import AdminResultControl from "./AdminResultControl";
+import { Context } from "./Context";
 
 const Container = styled.div`
   background: linear-gradient(135deg, #e8f5e9 0%, #ffffff 100%);
@@ -420,11 +421,12 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
   const [admin, setAdmin] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [newPhone, setNewPhone] = useState("");
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     if (!adminId) return;
     axios
-      .get(`https://www.cwmsrfupre.com.ng/base/get_admin_by_id.php?id=${adminId}`)
+      .get(`${api_url}/get_admin_by_id.php?id=${adminId}`)
       .then((res) => {
         if (res.data.success) {
           setAdmin(res.data.user);
@@ -435,7 +437,7 @@ const AdminDetailsPage = ({ adminId, onNavigate, onLogout }) => {
 
   const handleSave = () => {
     axios
-      .post("https://www.cwmsrfupre.com.ng/base/update_admin_phone.php", {
+      .post(`${api_url}/update_admin_phone.php`, {
         id: admin.id,
         phone: newPhone,
       })
@@ -475,7 +477,7 @@ const closeSemesterAndOpenNext = async () => {
   });
 
   try {
-    const res = await axios.post("https://www.cwmsrfupre.com.ng/base/rollover_semester.php");
+    const res = await axios.post(`${api_url}/rollover_semester.php`);
     Swal.close();
 
     if (res.data.success) {

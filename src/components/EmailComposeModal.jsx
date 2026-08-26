@@ -3,9 +3,10 @@
 
 
 // EmailComposeModal.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 /* ===== Styles ===== */
 const Overlay = styled.div`
@@ -161,7 +162,7 @@ const EmailComposeModal = ({ userEmail, userName = "", onSent = () => {}, onClos
   const [allUsers, setAllUsers] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [attachments, setAttachments] = useState([]);
-
+const {api_url}=useContext(Context)
 
   const handleFileChange = (e) => {
   setAttachments(Array.from(e.target.files));
@@ -215,7 +216,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`https://www.cwmsrfupre.com.ng/base/get_users_emails.php?t=${Date.now()}`, {
+        const res = await fetch(`${api_url}/get_users_emails.php?t=${Date.now()}`, {
           cache: "no-store"
         });
         const data = await res.json();
@@ -400,7 +401,7 @@ const handleSend = async (e) => {
       formData.append("attachments[]", file);
     });
 
-    const res = await fetch("https://www.cwmsrfupre.com.ng/base/send_mail.php", {
+    const res = await fetch(`${api_url}/send_mail.php`, {
       method: "POST",
       body: formData // no headers -> browser sets boundary
     });

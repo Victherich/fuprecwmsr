@@ -333,7 +333,7 @@ const Img = styled.img`
 `
 
 const StudentResult = ({ studentId }) => {
-  const { levels, semesters, courses , programs} = useContext(Context);
+  const { levels, semesters, courses , programs, api_url} = useContext(Context);
   const [student, setStudent] = useState({});
   const [enrollments, setEnrollments] = useState([]);
   const [selectedLevel, setSelectedLevel] = useState('');
@@ -342,7 +342,7 @@ const StudentResult = ({ studentId }) => {
 
   useEffect(() => {
     if (!studentId) return;
-    axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
+    axios.get(`${api_url}/get_student_by_id.php?id=${studentId}`)
       .then(res => {
         if (res.data.success) setStudent(res.data.student);
       })
@@ -356,7 +356,7 @@ if (!selectedLevel || !selectedSemester){
 }
 
 
-    axios.get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
+    axios.get(`${api_url}/get_enrolled_courses.php?student_id=${student.id}`)
       .then(res => {
         if (res.data.success) {
           const filtered = res.data.enrollments.filter(e => {

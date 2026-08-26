@@ -664,6 +664,7 @@ const ApplicationPage = () => {
   const navigate = useNavigate();
   const { programs } = useContext(Context);
   const [emailVerificationModalOpen, setEmailVerificationModalOpen]=useState(false);
+  const {api_url}=useContext(Context);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -812,7 +813,7 @@ const ApplicationPage = () => {
     Swal.fire({ text: 'Submitting...' });
     Swal.showLoading();
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/base/submit_admission_form.php', {
+      const response = await fetch(`${api_url}/submit_admission_form.php`, {
         method: 'POST',
         body: formDataToSend, // Sending FormData directly
       });
@@ -931,7 +932,7 @@ const ApplicationPage = () => {
     // });
 
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/base/notify_admins_on_application.php', {
+      const response = await fetch(`${api_url}/notify_admins_on_application.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,8 +1,9 @@
 // App.js
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useState } from "react";
+import { Context } from "./Context";
 
 /* ---------- layout ---------- */
 const Container = styled.div`
@@ -164,6 +165,7 @@ export default function ZeroWastePage() {
     department: "",
     level: "",
   });
+  const {api_url}=useContext(Context);
 
   const handleChange = (e) => {
     setFormData({
@@ -191,7 +193,7 @@ export default function ZeroWastePage() {
       );
 
       const res = await fetch(
-        "https://cwmsrfupre.com.ng/base/register_student.php",
+        `${api_url}/register_student.php`,
         {
           method: "POST",
           body: data,

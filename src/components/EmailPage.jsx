@@ -1,11 +1,12 @@
 
 // InboxPage.jsx
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { formatDistanceToNowStrict, parseISO } from 'date-fns';
 import Swal from 'sweetalert2'
 import EmailComposeModal from './EmailComposeModal';
 import { FaChevronDown } from 'react-icons/fa';
+import { Context } from './Context';
 
 // Styled layout
 const Page = styled.div`
@@ -250,7 +251,7 @@ console.log(messages);
 
  const [sidebarMobileOpen, setSidebarMobileOpen] = useState(false);
  const [openRightPane, setOpenRightPane]=useState(false);
-
+const {api_url}=useContext(Context);
 
 
 
@@ -278,8 +279,8 @@ async function fetchMessages() {
   setLoading(true);
   try {
     const endpoint = folder === 'inbox' 
-      ? 'https://www.cwmsrfupre.com.ng/base/inbox_get_messages.php'
-      : 'https://www.cwmsrfupre.com.ng/base/sent_get_messages.php';
+      ? `${api_url}inbox_get_messages.php`
+      : `${api_url}/sent_get_messages.php`;
 
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -297,8 +298,8 @@ async function fetchMessages() {
 async function openMessage(id) {
   try {
     const endpoint = folder === 'inbox' 
-      ? 'https://www.cwmsrfupre.com.ng/base/inbox_get_message.php'
-      : 'https://www.cwmsrfupre.com.ng/base/sent_get_message.php';
+      ? `${api_url}/inbox_get_message.php`
+      : `${api_url}/sent_get_message.php`;
 
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -359,7 +360,7 @@ async function markMessageRead(email, id, isRead) {
   });
 
   try {
-    const res = await fetch("https://www.cwmsrfupre.com.ng/base/inbox_mark_read.php", {
+    const res = await fetch(`${api_url}/inbox_mark_read.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, id, is_read: isRead }),
@@ -404,8 +405,8 @@ async function deleteMessage(email, id) {
   if (!confirm.isConfirmed) return;
 
   const endpoint = folder === 'inbox'
-    ? "https://www.cwmsrfupre.com.ng/base/inbox_delete_mail.php"
-    : "https://www.cwmsrfupre.com.ng/base/sent_delete_mail.php";
+    ? `${api_url}/inbox_delete_mail.php`
+    : `${api_url}/sent_delete_mail.php`;
 
   try {
     const res = await fetch(endpoint, {
@@ -622,7 +623,7 @@ setMessages([]); setSelected(null)
 <button
   onClick={() =>
     window.open(
-      `https://www.cwmsrfupre.com.ng/base/download.php?file=${encodeURIComponent(att)}`
+      `${api_url}/download.php?file=${encodeURIComponent(att)}`
     )
   }
   style={{

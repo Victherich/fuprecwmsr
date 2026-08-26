@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import { lecturerLogin } from '../Features/Slice';
 import { UseDispatch, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Context } from './Context';
 
 // Styled Components
 const Container = styled.div`
@@ -67,6 +68,7 @@ const LecturerLogin = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {api_url}=useContext(Context);
 
   // Handle input change
   const handleChange = (e) => {
@@ -98,7 +100,7 @@ const LecturerLogin = () => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/lecturer_login.php', { email, password });
+      const response = await axios.post(`${api_url}/lecturer_login.php`, { email, password });
 
       if (response.data.success) {
         Swal.fire({

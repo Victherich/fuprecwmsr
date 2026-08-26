@@ -1,7 +1,8 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { Context } from "./Context";
 
 // ✨ Animations
 const fadeIn = keyframes`
@@ -117,11 +118,12 @@ const AnnouncementsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+const {api_url}=useContext(Context);
 
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
-        const res = await fetch(`https://www.cwmsrfupre.com.ng/base/fetch_announcements.php`);
+        const res = await fetch(`${api_url}/fetch_announcements.php`);
         const data = await res.json();
         if (data.success) {
           setAnnouncements(data.announcements);

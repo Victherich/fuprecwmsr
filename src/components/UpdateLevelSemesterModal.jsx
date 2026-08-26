@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useContext } from "react";
+import { Context } from "./Context";
 
 const Overlay = styled.div`
   position: fixed;
@@ -74,18 +76,19 @@ export default function UpdateLevelSemesterModal({
   const [semesters, setSemesters] = useState([]);
   const [levelId, setLevelId] = useState("");
   const [semesterId, setSemesterId] = useState("");
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     if (!show) return;
 
     // fetch levels & semesters
     axios
-      .get("https://www.cwmsrfupre.com.ng/base/get_levels.php")
+      .get(`${api_url}/get_levels.php`)
       .then((res) => setLevels(res.data.levels || []))
       .catch(() => setLevels([]));
 
     axios
-      .get("https://www.cwmsrfupre.com.ng/base/get_semesters.php")
+      .get(`${api_url}/get_semesters.php`)
       .then((res) => setSemesters(res.data.semesters || []))
       .catch(() => setSemesters([]));
 
@@ -104,7 +107,7 @@ export default function UpdateLevelSemesterModal({
 
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/update_student_level_semester.php",
+        `${api_url}/update_student_level_semester.php`,
         {
           id: student.id,
           level_id: levelId,

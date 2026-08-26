@@ -59,7 +59,7 @@ const StudentLectureNotes = ({ studentId }) => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const {courses}=useContext(Context);
+  const {courses, api_url}=useContext(Context);
 
   useEffect(() => {
     if (!studentId) {
@@ -71,7 +71,7 @@ const StudentLectureNotes = ({ studentId }) => {
     const fetchNotes = async () => {
       try {
         const res = await axios.get(
-          `https://www.cwmsrfupre.com.ng/base/get_lecture_notes_for_student.php?student_id=${studentId}`
+          `${api_url}/get_lecture_notes_for_student.php?student_id=${studentId}`
         );
 
         if (res.data.success) {

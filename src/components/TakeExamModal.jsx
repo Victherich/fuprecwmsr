@@ -2,13 +2,14 @@
 
 
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { studentLogout } from "../Features/Slice";
+import { Context } from "./Context";
 
 /* ================= STYLES ================= */
 const Overlay = styled.div`
@@ -73,6 +74,7 @@ const TakeExamModal = ({
 }) => {
 
   /* ================= STATE ================= */
+  const {api_url}=useContext(Context);
   const [questions, setQuestions] = useState([]);
   const [essayQuestions, setEssayQuestions] = useState([]);
 const [fill_inQuestions, setFill_inQuestions] = useState([]);
@@ -92,7 +94,7 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_exam_questions_for_student.php",
+        `${api_url}/get_exam_questions_for_student.php`,
         { params: { exam_id: examId, student_id: studentId, _t: Date.now() } }
       );
 
@@ -110,7 +112,7 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
   const fetchEssayQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_essay_exam_questions_for_student.php",
+        `${api_url}/get_essay_exam_questions_for_student.php`,
         { params: { exam_id: examId, student_id: studentId, _t: Date.now() } }
       );
 
@@ -127,7 +129,7 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
   const fetchFill_inQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_fill_in_exam_questions_for_student.php",
+        `${api_url}/get_fill_in_exam_questions_for_student.php`,
         { params: { exam_id: examId, student_id: studentId, _t: Date.now() } }
       );
 
@@ -203,7 +205,7 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
     if (Object.keys(essayAnswers).length === 0) return;
 
     await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/submit_essay_exam.php",
+      `${api_url}/submit_essay_exam.php`,
       {
         exam_id: examId,
         student_id: studentId,
@@ -218,7 +220,7 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
     if (Object.keys(fill_inAnswers).length === 0) return;
 
     await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/submit_fill_in_exam.php",
+      `${api_url}/submit_fill_in_exam.php`,
       {
         exam_id: examId,
         student_id: studentId,
@@ -401,7 +403,7 @@ const handleSubmit = async () => {
     /* ================= OBJECTIVE ================= */
     if (questions.length > 0) {
       const objRes = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
+        `${api_url}/submit_exam.php`,
         {
           exam_id: examId,
           student_id: studentId,
@@ -422,7 +424,7 @@ const handleSubmit = async () => {
     /* ================= FILL-IN ================= */
     if (fill_inQuestions.length > 0) {
       const fillRes = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/submit_fill_in_exam.php",
+        `${api_url}/submit_fill_in_exam.php`,
         {
           exam_id: examId,
           student_id: studentId,
@@ -479,7 +481,7 @@ const handleSubmit = async () => {
   const handleSubmit2 = async () => {
     try {
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/submit_exam.php",
+        `${api_url}/submit_exam.php`,
         {
           exam_id: examId,
           student_id: studentId,

@@ -25,13 +25,14 @@ const Button = styled.button`
   &:disabled { opacity:0.6; cursor:not-allowed; }
 `;
 
-const CreateAttendanceForm = ({onClose, fetchAttendance, adminId, apiBase = "https://www.cwmsrfupre.com.ng/base" }) => {
-  const { courses } = useContext(Context);
+const CreateAttendanceForm = ({onClose, fetchAttendance, adminId, }) => {
+  const { courses , api_url} = useContext(Context);
   const [type, setType] = useState("class");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [courseId, setCourseId] = useState("");
   const [loading, setLoading] = useState(false);
+
 
   const validate = () => {
     if (!title.trim()) {
@@ -83,7 +84,7 @@ const handleSubmit = async (e) => {
       created_by: adminId,
     };
 
-    const res = await axios.post(`${apiBase}/create_attendance.php`, payload);
+    const res = await axios.post(`${api_url}/create_attendance.php`, payload);
     if (res.data.success) {
       Swal.fire("Success", "Attendance created successfully!", "success");
       setTitle("");

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const Container = styled.div`
   max-width: 500px;
@@ -65,6 +66,7 @@ const MeetingLinkUploader = () => {
   const [link, setLink] = useState('');
   const [message, setMessage] = useState(null);
   const [meetingLinks, setMeetingLinks] = useState([]);
+  const {api_url}=useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +74,7 @@ const MeetingLinkUploader = () => {
     Swal.showLoading();
 
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/base/create_meeting_link.php', {
+      const res = await fetch(`${api_url}/create_meeting_link.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +102,7 @@ const MeetingLinkUploader = () => {
   
   const fetchMeetingLinks = async () => {
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/base/get_all_meeting_links.php');
+      const res = await fetch(`${api_url}/get_all_meeting_links.php`);
       const data = await res.json();
       if (data.success) {
         setMeetingLinks(data.meeting_links);
@@ -130,7 +132,7 @@ const MeetingLinkUploader = () => {
     if (!confirm.isConfirmed) return;
   
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/base/delete_meeting_link.php', {
+      const res = await fetch(`${api_url}/delete_meeting_link.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -157,6 +157,7 @@ const LecturerDashboard = () => {
   // const [activeMenu, setActiveMenu] = useState('profile');
   const lecturerInfo = useSelector(state=>state.lecturerInfo);
   const [admin, setAdmin] = useState({});
+  const {api_url}=useContext(Context)
 
    const {menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick}=useContext(Context)
   
@@ -198,7 +199,7 @@ const LecturerDashboard = () => {
 const getLecturerById = ()=>{
       if (!lecturerInfo) return;
   
-      axios.get(`https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${lecturerInfo.id}`)
+      axios.get(`${api_url}/get_lecturer_by_id.php?id=${lecturerInfo.id}`)
         .then(res => {
           if (res.data.success) {
             setAdmin(res.data.user);

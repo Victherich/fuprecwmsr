@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -70,7 +71,7 @@ const AdminForgotPassword = () => {
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
   const [buttonText, setButtonText]=useState("Send Reset Link")
-
+const {api_url}=useContext(Context);
  
 
   const handleSubmit = async (e) => {
@@ -88,7 +89,7 @@ const AdminForgotPassword = () => {
     });
   
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/base/admin_forgot_password.php', {
+      const res = await fetch(`${api_url}/admin_forgot_password.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

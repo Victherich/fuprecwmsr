@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Swal from 'sweetalert2';
 import {useLocation} from 'react-router-dom'
+import { Context } from './Context';
 
 const fadeIn = keyframes`
   from {
@@ -104,6 +105,7 @@ const Announcements = () => {
   const [error, setError] = useState('');
   const [announcements, setAnnouncements] = useState([]);
   const location = useLocation();
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     fetchAnnouncements();
@@ -111,7 +113,7 @@ const Announcements = () => {
 
   const fetchAnnouncements = async () => {
     try {
-      const response = await fetch(`https://www.cwmsrfupre.com.ng/base/fetch_announcements.php`);
+      const response = await fetch(`${api_url}/fetch_announcements.php`);
       const data = await response.json();
       if (data.success) {
         setAnnouncements(data.announcements);
@@ -127,7 +129,7 @@ const Announcements = () => {
     e.preventDefault();
     Swal.fire({ text: 'Please wait...', showConfirmButton: false });
     try {
-      const response = await fetch(`https://www.cwmsrfupre.com.ng/base/create_announcement.php`, {
+      const response = await fetch(`${api_url}/create_announcement.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -154,7 +156,7 @@ const Announcements = () => {
     e.preventDefault();
     Swal.fire({ text: 'Please wait...', showConfirmButton: false });
     try {
-      const response = await fetch(`https://www.cwmsrfupre.com.ng/base/update_announcement.php`, {
+      const response = await fetch(`${api_url}/update_announcement.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -183,7 +185,7 @@ const Announcements = () => {
         Swal.fire({text:"Please wait..."})
         Swal.showLoading(); 
         try {
-          const response = await fetch(`https://www.cwmsrfupre.com.ng/base/delete_announcement.php`, {
+          const response = await fetch(`${api_url}/delete_announcement.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id }),

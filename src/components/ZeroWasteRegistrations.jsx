@@ -1,7 +1,8 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 /* ---------- styles ---------- */
 const Page = styled.div`
@@ -52,6 +53,7 @@ const Empty = styled.p`
 /* ---------- component ---------- */
 export default function ZeroWasteRegistrations() {
   const [students, setStudents] = useState([]);
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,7 +65,7 @@ export default function ZeroWasteRegistrations() {
 
       try {
         const res = await fetch(
-          "https://cwmsrfupre.com.ng/base/get_zero_waste_registrations.php"
+          `${api_url}/get_zero_waste_registrations.php`
         );
 
         const data = await res.json();

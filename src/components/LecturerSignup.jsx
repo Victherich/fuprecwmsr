@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 import VerifyAccessCodeForLecturerSignUp from './VerifyAccessCodeForLecturerSignUp'
+import { Context } from './Context';
 
 const Container = styled.div`
   display: flex;
@@ -93,6 +94,7 @@ const LecturerSignup = () => {
     confirmPassword: '',
     role: '',
   });
+  const {api_url}=useContext(Context);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -115,7 +117,7 @@ const LecturerSignup = () => {
   });
 
   try {
-    const response = await fetch('https://www.cwmsrfupre.com.ng/base/lecturer_signup.php', {
+    const response = await fetch(`${api_url}/lecturer_signup.php`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -153,7 +155,7 @@ const LecturerSignup = () => {
               confirmButtonColor: '#2B32B2',
               allowOutsideClick: false,
             }).then(() => {
-              window.location.href = "https://www.cwmsrfupre.com.ng/lecturerlogin";
+              window.location.href = "https://cwmsrfupre.com.ng/lecturerlogin";
             });
           });
         }

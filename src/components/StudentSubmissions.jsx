@@ -182,7 +182,7 @@ const CloseButton = styled.button`
 
 // ============= MAIN COMPONENT =============
 const StudentSubmissions = () => {
-  const { courses, categories } = useContext(Context);
+  const { courses, categories, api_url } = useContext(Context);
   const studentInfo = useSelector((state) => state.studentInfo);
   const [submissions, setSubmissions] = useState([]);
   const [openForm, setOpenForm] = useState(false);
@@ -284,7 +284,7 @@ const [filterSearch, setFilterSearch] = useState("");
     });
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/create_student_submission.php",
+      `${api_url}/create_student_submission.php`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } }
     );
@@ -334,7 +334,7 @@ const [filterSearch, setFilterSearch] = useState("");
 
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_student_submissions.php",
+        `${api_url}/get_student_submissions.php`,
         { params: { student_id: studentInfo.id, t: Date.now() } }
       );
 
@@ -360,7 +360,7 @@ const [filterSearch, setFilterSearch] = useState("");
 
     try {
       const res = await axios.get(
-        `https://www.cwmsrfupre.com.ng/base/get_lecturer_by_id.php?id=${id}`
+        `${api_url}/get_lecturer_by_id.php?id=${id}`
       );
       if (res.data.success && res.data.user?.name) {
         setLecturer((prev) => ({ ...prev, [id]: res.data.user.name }));
@@ -550,7 +550,7 @@ const filteredSubmissions = submissions.filter((sub) => {
                 </SubmissionMeta>
                 {sub.file_path && (
                   <FileLink
-                    href={`https://www.cwmsrfupre.com.ng/base/${sub.file_path}`}
+                    href={`${api_url}/${sub.file_path}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

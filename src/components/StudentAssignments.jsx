@@ -63,6 +63,7 @@ const StudentAssignments = ({ studentId }) => {
   const {courses}=useContext(Context);
   const [filterCourse, setFilterCourse] = useState("");
 const [filterSearch, setFilterSearch] = useState("");
+const {api_url}=useContext(Context);
 
 
   // useEffect(() => {
@@ -106,7 +107,7 @@ useEffect(() => {
   const fetchAssignments = async () => {
     try {
       const response = await axios.get(
-        `https://www.cwmsrfupre.com.ng/base/get_assignments_for_student.php?student_id=${studentId}`
+        `${api_url}/get_assignments_for_student.php?student_id=${studentId}`
       );
 
       if (response.data.success) {

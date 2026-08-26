@@ -138,13 +138,13 @@ const AllStudents = () => {
   const [filterStatus, setFilterStatus]=useState('');
   const location = useLocation();
   const [sessionFilter, setSessionFilter] = useState('');
-
+const {api_url}=useContext(Context);
 
 
 
 
     const handleGetAllstudents=()=>{
-    axios.get('https://www.cwmsrfupre.com.ng/base/get_all_students.php')  // Make sure to replace with the correct base URL
+    axios.get(`${api_url}/get_all_students.php`)  // Make sure to replace with the correct base URL
       .then(res => {
         if (res.data.success) {
           setStudents(res.data.students);

@@ -1,8 +1,9 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const Container = styled.div`
   background-color: white;
@@ -132,9 +133,10 @@ const AllLecturers = () => {
   const [error, setError] = useState('');
   const [searchName, setSearchName] = useState('');
   const [searchEmail, setSearchEmail] = useState('');
+   const {api_url}=useContext(Context);
 
  const handleGetAllLecturers = ()=>{
-    axios.get('https://www.cwmsrfupre.com.ng/base/get_all_lecturer.php')
+    axios.get(`${api_url}/get_all_lecturer.php`)
       .then(res => {
         if (res.data.success) {
           setAdmins(res.data.lecturers);
@@ -202,7 +204,7 @@ const deleteLecturer = async (lecturerId) => {
     });
 
     try {
-      const res = await axios.post('https://www.cwmsrfupre.com.ng/base/delete_lecturer.php', { id: lecturerId });
+      const res = await axios.post(`${api_url}/delete_lecturer.php`, { id: lecturerId });
       
       if (res.data.success) {
         Swal.fire('Deleted!', 'Lecturer has been deleted.', 'success');
@@ -249,7 +251,7 @@ const suspendLecturer = async (lecturerId) => {
         }
       });
 
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/suspend_lecturer.php', {
+      const response = await axios.post(`${api_url}/suspend_lecturer.php`, {
         id: lecturerId
       });
 
@@ -299,7 +301,7 @@ const unsuspendLecturer = (lecturerId) => {
 
       // Make the base call to unsuspend the lecturer
       axios
-        .post('https://www.cwmsrfupre.com.ng/base/unsuspend_lecturer.php', { id: lecturerId })
+        .post(`${api_url}/unsuspend_lecturer.php`, { id: lecturerId })
         .then((response) => {
           setLoading(false);
           if (response.data.success) {

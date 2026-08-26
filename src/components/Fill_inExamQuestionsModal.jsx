@@ -81,14 +81,14 @@ const AddBtn = styled.button`
 const Fill_inExamQuestionsModal = ({ exam, onClose }) => {
   const [questions, setQuestions] = useState([]);
   const [showAddModal, setShowAddModal] = useState({ open: false, editingQuestion: null });
-  const { courses } = useContext(Context);
+  const { courses, api_url } = useContext(Context);
 
   const course = courses.find(c => String(c.id) === String(exam.course_id));
 
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_fill_in_exam_questions.php",
+        `${api_url}/get_fill_in_exam_questions.php`,
         { params: { exam_id: exam.id } }
       );
       if (res.data.success) setQuestions(res.data.questions);
@@ -115,7 +115,7 @@ const Fill_inExamQuestionsModal = ({ exam, onClose }) => {
     try {
       Swal.showLoading();
       const res = await axios.post(
-        "https://www.cwmsrfupre.com.ng/base/delete_fill_in_exam_question.php",
+        `${api_url}/delete_fill_in_exam_question.php`,
         { question_id: id }
       );
       Swal.close();

@@ -93,7 +93,8 @@ const ExamPortalLogin = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { setActiveMenu } = useContext(Context);
+  const { setActiveMenu , api_url} = useContext(Context);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -116,7 +117,7 @@ const ExamPortalLogin = () => {
       /* ================= STUDENT ================= */
       if (role === 'student') {
         const res = await axios.post(
-          'https://www.cwmsrfupre.com.ng/base/student_login.php',
+          `${api_url}/student_login.php`,
           { email, password }
         );
 
@@ -137,7 +138,7 @@ const ExamPortalLogin = () => {
       /* ================= LECTURER ================= */
       if (role === 'lecturer') {
         const res = await axios.post(
-          'https://www.cwmsrfupre.com.ng/base/lecturer_login.php',
+          `${api_url}/lecturer_login.php`,
           { email, password }
         );
 

@@ -8,7 +8,8 @@ const ContextProvider = ({children}) => {
     const [admin,setAdmin]=useState(null)
     const [adminMenu,setAdminMenu]=useState(0) 
     const [trackingID, setTrackingID] = useState('');
-    const check = ''
+    const api_url = "https://cwmsrfupre.com.ng/base"
+    // const api_url = "http://cwmsrfupre.com.ng/base"
 
 
 
@@ -296,7 +297,7 @@ const [dhb, setDhb]=useState(true)
     setAdminMenu,trackingID,setTrackingID,
     programs, levels, semesters, courses:sortedCourses, categories,
     menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb, setDhb, 
-    possible_levels_for_studnet_login
+    possible_levels_for_studnet_login, api_url
     }}>
 
         {children}

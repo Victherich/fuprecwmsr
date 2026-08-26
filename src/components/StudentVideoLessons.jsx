@@ -65,7 +65,7 @@ const StudentVideoLessons = ({ studentId }) => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { courses } = useContext(Context);
+  const { courses, api_url } = useContext(Context);
 
   const [filterCourse, setFilterCourse] = useState("");
 const [filterSearch, setFilterSearch] = useState("");
@@ -81,7 +81,7 @@ const [filterSearch, setFilterSearch] = useState("");
     const fetchVideos = async () => {
       try {
         const res = await axios.get(
-          `https://www.cwmsrfupre.com.ng/base/get_videos_for_student.php?student_id=${studentId}&t=${Date.now()}`
+          `${api_url}/get_videos_for_student.php?student_id=${studentId}&t=${Date.now()}`
         );
 
         if (res.data.success) {

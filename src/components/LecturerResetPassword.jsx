@@ -1,8 +1,9 @@
 // StudentResetPassword.jsx
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -63,6 +64,7 @@ const LecturerResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
+  const {api_url}=useContext(Context);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,7 +88,7 @@ const LecturerResetPassword = () => {
     });
 
     try {
-      const res = await fetch('https://www.cwmsrfupre.com.ng/base/lecturer_reset_password.php', {
+      const res = await fetch(`${api_url}/lecturer_reset_password.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, password }),

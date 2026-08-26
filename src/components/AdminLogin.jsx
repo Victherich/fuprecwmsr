@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import { adminLogin } from '../Features/Slice';
 import { UseDispatch, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Context } from './Context';
 
 // Styled Components
 const Container = styled.div`
@@ -66,6 +67,7 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+const {api_url}=useContext(Context);
 
   // Handle input change
   const handleChange = (e) => {
@@ -97,7 +99,7 @@ const AdminLogin = () => {
     });
 
     try {
-      const response = await axios.post('https://www.cwmsrfupre.com.ng/base/admin_login.php', { email, password });
+      const response = await axios.post(`${api_url}/admin_login.php`, { email, password });
 
       if (response.data.success) {
         Swal.fire({

@@ -397,7 +397,7 @@ const Button = styled.button`
 
 // --- Component ---
 const StudentResultByAdmNo = () => {
-  const { courses, categories, programs } = useContext(Context);
+  const { courses, categories, programs, api_url } = useContext(Context);
   const [admNo, setAdmNo] = useState("");
   const [student, setStudent] = useState(null);
   const [results, setResults] = useState([]);
@@ -413,7 +413,7 @@ const StudentResultByAdmNo = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_student_results_by_admno.php",
+        `${api_url}/get_student_results_by_admno.php`,
         { params: { admission_number: admNo.trim() } }
       );
 
@@ -574,7 +574,7 @@ const StudentResultByAdmNo = () => {
     );
 
     // ✅ Generate QR Code (with admission number in the URL)
-    const verifyLink = `https://www.cwmsrfupre.com.ng/resultverification`;
+    const verifyLink = `https://cwmsrfupre.com.ng/resultverification`;
     const qrCodeData = await QRCode.toDataURL(verifyLink);
     const qrSize = 80;
     const qrX = (pageWidth - qrSize) / 2;

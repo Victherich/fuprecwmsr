@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import '../CSS/ContactUs.css';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import Swal from 'sweetalert2'; // Import Swal if not already imported
+import { Context } from './Context';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,7 @@ const Contact = () => {
     phone: '',
     message: ''
   });
-
+const {api_url}=useContext(Context);
   const [feedback, setFeedback] = useState(null);
 
   const handleChange = (e) => {
@@ -34,7 +35,7 @@ const handleSubmit = async (e) => {
   });
 
   try {
-    const response = await fetch('https://www.cwmsrfupre.com.ng/base/contact_form_endpoint.php', {
+    const response = await fetch(`${api_url}/contact_form_endpoint.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

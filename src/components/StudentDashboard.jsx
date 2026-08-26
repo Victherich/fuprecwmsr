@@ -175,9 +175,9 @@ const StudentDashboard = () => {
   const studentId = studentInfo.id;
   const [error, setError]=useState('');
 
-  const {menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb}=useContext(Context)
+  const {menuOpen, setMenuOpen, activeMenu,setActiveMenu,handleMenuClick,dhb, api_url}=useContext(Context)
 
-  console.log(student)
+
   
   
   // console.log(managementInfo)
@@ -284,7 +284,7 @@ const StudentDashboard = () => {
 useEffect(() => {
     if (!studentId) return;
 
-    axios.get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
+    axios.get(`${api_url}/get_student_by_id.php?id=${studentId}`)
       .then(res => {
         if (res.data.success) {
           setStudent(res.data.student);

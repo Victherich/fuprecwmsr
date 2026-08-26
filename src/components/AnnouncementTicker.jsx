@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { Context } from "./Context";
 
 // 🔁 Continuous scrolling keyframes
 const scroll = keyframes`
@@ -57,11 +58,12 @@ const MoreLink = styled.span`
 const AnnouncementTicker = () => {
   const [latest, setLatest] = useState(null);
   const navigate = useNavigate();
+  const {api_url}=useContext(Context);
 
 useEffect(() => {
   const fetchLatest = async () => {
     try {
-      const res = await fetch(`https://www.cwmsrfupre.com.ng/base/fetch_announcements.php`);
+      const res = await fetch(`${api_url}/fetch_announcements.php`);
       const data = await res.json();
 
       if (data.success && data.announcements.length > 0) {

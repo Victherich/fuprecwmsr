@@ -367,19 +367,19 @@ const Table = styled.table`
 `;
 
 
-const AttendanceManagement = ({ adminId, apiBase = "https://www.cwmsrfupre.com.ng/base" }) => {
+const AttendanceManagement = ({ adminId}) => {
   const [attendanceList, setAttendanceList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [participantsModal, setParticipantsModal] = useState(false);
   const [participants, setParticipants] = useState([]);
   const [selectedAttendance, setSelectedAttendance] = useState(null);
-  const { courses } = useContext(Context);
+  const { courses, api_url } = useContext(Context);
 
   const fetchAttendance = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${apiBase}/get_attendance.php`);
+      const res = await axios.get(`${api_url}/get_attendance.php`);
       if (res.data.success) setAttendanceList(res.data.attendance);
       else Swal.fire("Error", "Failed to fetch attendance", "error");
     } catch {
@@ -392,7 +392,7 @@ const AttendanceManagement = ({ adminId, apiBase = "https://www.cwmsrfupre.com.n
   const handleViewParticipants = async (item) => {
     setSelectedAttendance(item);
     try {
-      const res = await axios.get(`${apiBase}/get_attendance_participants.php?attendance_id=${item.id}`);
+      const res = await axios.get(`${api_url}/get_attendance_participants.php?attendance_id=${item.id}`);
       if (res.data.success) {
         setParticipants(res.data.participants);
         setParticipantsModal(true);
@@ -417,7 +417,7 @@ const AttendanceManagement = ({ adminId, apiBase = "https://www.cwmsrfupre.com.n
     });
     if (!confirm.isConfirmed) return;
     try {
-      const res = await axios.post(`${apiBase}/update_attendance_status.php`, { id: item.id, status: newStatus });
+      const res = await axios.post(`${api_url}/update_attendance_status.php`, { id: item.id, status: newStatus });
       if (res.data.success) {
         Swal.fire("Updated", `Status changed to ${newStatus}`, "success");
         fetchAttendance();
@@ -440,7 +440,7 @@ const AttendanceManagement = ({ adminId, apiBase = "https://www.cwmsrfupre.com.n
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await axios.post(`${apiBase}/delete_attendance.php`, { id });
+      const res = await axios.post(`${api_url}/delete_attendance.php`, { id });
       if (res.data.success) {
         Swal.fire("Deleted!", "Attendance deleted successfully", "success");
         fetchAttendance();
@@ -512,7 +512,7 @@ useEffect(() => {
             <CloseBtn onClick={() => setShowModal(false)}>×</CloseBtn>
             <CreateAttendanceForm
               adminId={adminId}
-              apiBase={apiBase}
+              apiBase={api_url}
               fetchAttendance={fetchAttendance}
               onClose={() => setShowModal(false)}
             />

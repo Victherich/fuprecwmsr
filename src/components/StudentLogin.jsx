@@ -174,7 +174,7 @@ const StudentLogin = () => {
   const [selectedLevel, setSelectedLevel] = useState('current'); // default
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { possible_levels_for_studnet_login } = useContext(Context);
+  const { possible_levels_for_studnet_login, api_url } = useContext(Context);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -196,7 +196,7 @@ const StudentLogin = () => {
 
     try {
       const res = await axios.post(
-        'https://www.cwmsrfupre.com.ng/base/student_login.php',
+        `${api_url}/student_login.php`,
         {
           email,
           password,

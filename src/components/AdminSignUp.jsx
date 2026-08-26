@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
+import { Context } from './Context';
 
 const Container = styled.div`
   display: flex;
@@ -90,6 +91,7 @@ const AdminSignup = () => {
     confirmPassword: '',
     role: '',
   });
+  const {api_url}=useContext(Context);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -117,7 +119,7 @@ const AdminSignup = () => {
     });
 
     try {
-      const response = await fetch('https://www.cwmsrfupre.com.ng/base/admin_signup.php', {
+      const response = await fetch(`${api_url}/admin_signup.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

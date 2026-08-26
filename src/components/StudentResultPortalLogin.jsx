@@ -71,7 +71,7 @@ const Title = styled.h2`
 const StudentResultPortalLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setActiveMenu } = useContext(Context);
+  const { setActiveMenu, api_url } = useContext(Context);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ const StudentResultPortalLogin = () => {
 
     try {
       const res = await axios.post(
-        'https://www.cwmsrfupre.com.ng/base/student_login.php',
+        `${api_url}/student_login.php`,
         { email, password }
       );
 

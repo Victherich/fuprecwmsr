@@ -5,7 +5,8 @@ import { Context } from './Context';
 import "../CSS/AdminUpdateShipment.css"
 
 const AdminUpdateShipment = ({ shipment, onClose ,fetchShipments}) => {
-  const { setAdminMenu } = useContext(Context);
+  const { setAdminMenu , api_url} = useContext(Context);
+
   const [shipmentData, setShipmentData] = useState({
     id: '',
     title: '',
@@ -63,7 +64,7 @@ const AdminUpdateShipment = ({ shipment, onClose ,fetchShipments}) => {
     Swal.showLoading();
 
     try {
-      const response = await fetch('https://vinrichards.com/base2/update_shipment.php', {
+      const response = await fetch(`${api_url}/update_shipment.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -559,7 +559,7 @@ const ClearButton = styled.button`
 
 
 const EnrollPage = ({ studentId }) => {
-  const { levels, semesters, courses } = useContext(Context);
+  const { levels, semesters, courses, api_url } = useContext(Context);
   const [student, setStudent] = useState({});
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
@@ -572,7 +572,7 @@ const EnrollPage = ({ studentId }) => {
     if (!studentId) return;
 
     axios
-      .get(`https://www.cwmsrfupre.com.ng/base/get_student_by_id.php?id=${studentId}`)
+      .get(`${api_url}/get_student_by_id.php?id=${studentId}`)
       .then((res) => {
         if (res.data.success) setStudent(res.data.student);
       })
@@ -582,7 +582,7 @@ const EnrollPage = ({ studentId }) => {
   // 📘 Fetch enrolled courses
   const fetchEnrolledCourses = () => {
     axios
-      .get(`https://www.cwmsrfupre.com.ng/base/get_enrolled_courses.php?student_id=${student.id}`)
+      .get(`${api_url}/get_enrolled_courses.php?student_id=${student.id}`)
       .then((res) => {
         if (res.data.success) setEnrolledCourses(res.data.enrollments);
         else setEnrolledCourses([]);
@@ -609,7 +609,7 @@ const EnrollPage = ({ studentId }) => {
 
     try {
       Swal.fire({ title: "Enrolling...", didOpen: () => Swal.showLoading() });
-      const res = await axios.post("https://www.cwmsrfupre.com.ng/base/enroll_course.php", {
+      const res = await axios.post(`${api_url}/enroll_course.php`, {
         student_id: student.id,
         course_id: selectedCourse,
       });
@@ -656,7 +656,7 @@ const deleteEnrollment = async (enrollmentId) => {
 
   try {
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/delete_enrollment.php",
+      `${api_url}/delete_enrollment.php`,
       { enrollment_id: enrollmentId }
     );
 

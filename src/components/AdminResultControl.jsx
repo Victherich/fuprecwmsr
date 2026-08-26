@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 function AdminResultControl() {
   const [allowResult, setAllowResult] = useState(false);
+const {api_url}=useContext(Context);
 
   useEffect(() => {
     axios
-      .get("https://www.cwmsrfupre.com.ng/base/get_result_setting.php")
+      .get(`${api_url}/get_result_setting.php`)
       .then((res) => {
         if (res.data.success) setAllowResult(res.data.allow_result);
       });
@@ -17,7 +19,7 @@ function AdminResultControl() {
     const newValue = !allowResult;
 
     axios
-      .post("https://www.cwmsrfupre.com.ng/base/update_result_setting.php", {
+      .post(`${api_url}/update_result_setting.php`, {
         allow_result: newValue,
       })
       .then((res) => {

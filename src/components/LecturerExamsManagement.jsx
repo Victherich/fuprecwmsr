@@ -137,7 +137,7 @@ const Button = styled.button`
 const LecturerExamsManagement = ({ lecturerId }) => {
   const [exams, setExams] = useState([]);
   const [open, setOpen] = useState(false);
-  const { courses, categories } = useContext(Context);
+  const { courses, categories, api_url } = useContext(Context);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -207,7 +207,7 @@ const toMySQLDateTimeUTC = (dateTimeLocal) => {
   const fetchExams = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_exams_by_lecturer.php",
+        `${api_url}/get_exams_by_lecturer.php`,
         { params: { lecturer_id: lecturerId } }
       );
       if (res.data.success) setExams(res.data.exams);
@@ -225,7 +225,7 @@ const toMySQLDateTimeUTC = (dateTimeLocal) => {
   const fetchAssignedCourses = () => {
     axios
       .get(
-        `https://www.cwmsrfupre.com.ng/base/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
+        `${api_url}/get_lecturer_enrolled_courses.php?lecturer_id=${lecturerId}`
       )
       .then((res) => {
         if (res.data.success) setAssignedCourses(res.data.enrollments);
@@ -300,8 +300,8 @@ formData.append("end_time", toMySQLDateTimeUTC(endTime));
       Swal.showLoading();
 
       let url = editingExamId
-        ? "https://www.cwmsrfupre.com.ng/base/update_exam.php"
-        : "https://www.cwmsrfupre.com.ng/base/create_exam.php";
+        ? `${api_url}/update_exam.php`
+        : `${api_url}/create_exam.php`;
 
       if (editingExamId) formData.append("exam_id", editingExamId);
 
@@ -358,7 +358,7 @@ const deleteExam = async (examId) => {
     formData.append("lecturer_id", lecturerId);
 
     const res = await axios.post(
-      "https://www.cwmsrfupre.com.ng/base/delete_exam.php",
+      `${api_url}/delete_exam.php`,
       formData
     );
 

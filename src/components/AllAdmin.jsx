@@ -196,10 +196,11 @@
 
 
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Swal from 'sweetalert2'
+import { Context } from './Context';
 
 /* ================= STYLES ================= */
 
@@ -309,9 +310,10 @@ const AllAdmin = () => {
   const [error, setError] = useState('');
   const [searchName, setSearchName] = useState('');
   const [searchEmail, setSearchEmail] = useState('');
+  const {api_url}=useContext(Context);
 
   useEffect(() => {
-    axios.get('https://www.cwmsrfupre.com.ng/base/get_all_admin.php')
+    axios.get(`${api_url}/get_all_admin.php`)
       .then(res => {
         if (res.data.success) {
           setAdmins(res.data.admins);
@@ -359,7 +361,7 @@ const AllAdmin = () => {
 
   try {
     const res = await axios.post(
-      'https://www.cwmsrfupre.com.ng/base/delete_admin.php',
+      `${api_url}/delete_admin.php`,
       { id: adminId },
       { headers: { 'Content-Type': 'application/json' } }
     );

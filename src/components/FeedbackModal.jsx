@@ -1,9 +1,10 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Context } from "./Context";
 
 // === Styled Components ===
 const ModalOverlay = styled.div`
@@ -72,12 +73,13 @@ const FileLink = styled.a`
 const FeedbackModal = ({ open, onClose }) => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const {api_url}=useContext(Context)
 
   // Fetch feedbacks from backend
   const fetchFeedbacks = async () => {
     try {
       const res = await axios.get(
-        "https://www.cwmsrfupre.com.ng/base/get_feedbacks.php",
+        `${api_url}/get_feedbacks.php`,
         { headers: { "Cache-Control": "no-cache" } } // prevent caching
       );
       if (res.data.success) {

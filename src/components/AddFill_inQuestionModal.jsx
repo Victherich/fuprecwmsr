@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { FaTimes } from "react-icons/fa";
+import { Context } from "./Context";
 
 const Overlay = styled.div`
   position: fixed;
@@ -56,6 +57,8 @@ const AddFill_inQuestionModal = ({ examId, onClose, onSaved, editingQuestion }) 
     marks: ""
   });
 
+  const {api_url} = useContext(Context);
+
   useEffect(() => {
     if (editingQuestion) {
       setForm({
@@ -86,8 +89,8 @@ if(error){
       Swal.showLoading();
 
       const url = editingQuestion
-        ? "https://www.cwmsrfupre.com.ng/base/update_fill_in_exam_question.php"
-        : "https://www.cwmsrfupre.com.ng/base/create_fill_in_exam_question.php";
+        ? `${api_url}/update_fill_in_exam_question.php`
+        : `${api_url}/create_fill_in_exam_question.php`;
 
       const payload = editingQuestion
         ? { ...form, id: editingQuestion.id }

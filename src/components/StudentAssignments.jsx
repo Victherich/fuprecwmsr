@@ -5,58 +5,90 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { Context } from './Context';
 
-// Styled Components
+// ---------- MODERNIZED STYLED COMPONENTS ----------
 const Container = styled.div`
   max-width: 900px;
-  margin: 50px auto;
-  padding: 20px;
-  background: #fff;
+  margin: 10px auto;
+  padding: 10px;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 128, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 128, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const Title = styled.h2`
   text-align: center;
-  color: green;
-  margin-bottom: 30px;
+  color: #119458;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
 `;
 
 const AssignmentCard = styled.div`
-  background: #f7f7f7;
-  border-left: 6px solid orange;
-  margin-bottom: 20px;
-  padding: 20px;
+  background: #f8fafc;
+  border-left: 5px solid #f97316;
+  margin: 0;
+  padding: 10px;
   border-radius: 8px;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &:hover {
+    border-color: #119458;
+    transform: translateY(-1px);
+  }
 `;
 
 const AssignmentTitle = styled.h3`
-  margin: 0 0 10px;
-  color: #2c3e50;
+  margin: 0;
+  color: #0a4d24;
+  font-size: 1.05rem;
+  font-weight: 700;
 `;
 
 const AssignmentDescription = styled.p`
-  color: #555;
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.4;
 `;
 
 const FileLink = styled.a`
-  display: inline-block;
-  margin-top: 10px;
-  color: #3498db;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: #0077b6;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
 
   &:hover {
+    color: #0cc1e0;
     text-decoration: underline;
   }
 `;
 
 const Message = styled.p`
   text-align: center;
-  color: #777;
+  color: #64748b;
+  margin: 10px 0;
+  font-size: 0.95rem;
+  font-weight: 500;
 `;
-
 // Main Component
-const StudentAssignments = ({ studentId }) => {
+const StudentAssignments = ({ studentId, semesterId }) => {
   const [assignments, setAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,40 +98,10 @@ const [filterSearch, setFilterSearch] = useState("");
 const {api_url}=useContext(Context);
 
 
-  // useEffect(() => {
-  //   if (!studentId) {
-  //     setError("No student ID provided.");
-  //     setLoading(false);
-  //     return;
-  //   }
 
-  //   const fetchAssignments = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `https://www.cwmsrfupre.com.ng/base/get_assignments_for_student.php?student_id=${studentId}`
-  //       );
-
-  //       if (response.data.success) {
-  //         setAssignments(response.data.assignments);
-  //         console.log(response.data.assignments)
-          
-  //       } else {
-  //         setError(response.data.error || "Failed to fetch posts.");
-  //         console.log(response.data)
-  //       }
-  //     } catch (err) {
-  //       setError("An error occurred while fetching post.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchAssignments();
-  // }, [studentId]);
-
-useEffect(() => {
-  if (!studentId) {
-    setError("No student ID provided.");
+ useEffect(() => {
+  if (!studentId || !semesterId) {
+    setError("Missing student ID or semester ID.");
     setLoading(false);
     return;
   }
@@ -107,7 +109,7 @@ useEffect(() => {
   const fetchAssignments = async () => {
     try {
       const response = await axios.get(
-        `${api_url}/get_assignments_for_student.php?student_id=${studentId}`
+        `${api_url}/get_assignments_for_student.php?student_id=${studentId}&semester_id=${semesterId}`
       );
 
       if (response.data.success) {
@@ -123,7 +125,7 @@ useEffect(() => {
     }
   };
 
-  // Run immediately on mount
+  // Run immediately on mount or when IDs change
   fetchAssignments();
 
   // Run every 5 seconds
@@ -134,7 +136,7 @@ useEffect(() => {
   // Cleanup on unmount
   return () => clearInterval(interval);
 
-}, [studentId]);
+}, [studentId, semesterId]);
 
 
 

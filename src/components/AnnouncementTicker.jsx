@@ -16,10 +16,10 @@ const TickerContainer = styled.div`
   color: white;
   font-weight: bold;
   position: fixed;
-  bottom: 5px;
+  bottom: 1px;
   left: 0;
-  z-index: 9999;
-  padding: 10px 0;
+  z-index:100;
+  // padding: 5px 0;
   display: flex;
   align-items: center;
   font-family: "Arial", sans-serif;
@@ -38,7 +38,7 @@ const TickerTrack = styled.div`
 
 const TickerText = styled.span`
   white-space: nowrap;
-  font-size: 1.3rem;
+  font-size: 0.9rem;
   margin-right: 3rem;
   text-shadow: 0px 0px 6px rgba(0, 0, 0, 1);
 `;

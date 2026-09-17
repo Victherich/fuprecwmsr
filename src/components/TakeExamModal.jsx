@@ -70,7 +70,8 @@ const TakeExamModal = ({
   courseId,
   categoryId,
   courseName,
-  examEndTime
+  examEndTime,
+  semesterId
 }) => {
 
   /* ================= STATE ================= */
@@ -211,7 +212,8 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
         student_id: studentId,
         answers: essayAnswers,
         course_id: courseId,
-        category_id: categoryId
+        category_id: categoryId,
+        semester_id:semesterId
       }
     );
   };
@@ -226,7 +228,8 @@ const [fill_inQuestions, setFill_inQuestions] = useState([]);
         student_id: studentId,
         answers: fill_inAnswers,
         course_id: courseId,
-        category_id: categoryId
+        category_id: categoryId,
+        semester_id:semesterId
       }
     );
   };
@@ -409,7 +412,8 @@ const handleSubmit = async () => {
           student_id: studentId,
           answers,
           course_id: courseId,
-          category_id: categoryId
+          category_id: categoryId,
+          semester_id:semesterId
         }
       );
 
@@ -430,7 +434,8 @@ const handleSubmit = async () => {
           student_id: studentId,
           answers: fill_inAnswers,
           course_id: courseId,
-          category_id: categoryId
+          category_id: categoryId,
+          semester_id:semesterId
         }
       );
 
@@ -487,12 +492,13 @@ const handleSubmit = async () => {
           student_id: studentId,
           answers,
           course_id: courseId,
-          category_id: categoryId
+          category_id: categoryId,
+          semester_id:semesterId
         }
       );
 
       if (res.data.success) {
-        await submitEssayExam();
+        await submitFill_inExam();
         setScore(res.data.score);
         onClose();
       }

@@ -44,7 +44,7 @@ const ExamMeta = styled.p`
 `;
 
 /* ================= COMPONENT ================= */
-const StudentExams = ({ studentId}) => {
+const StudentExams = ({ studentId, semesterId}) => {
     const {courses, categories, api_url} = useContext(Context)
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -221,6 +221,7 @@ const getCourseName = (courseId) => {
     onClose={() => setActiveExam(null)}
     courseName={getCourseName(activeExam.course_id)}
     examEndTime={activeExam.end_time}
+    semesterId={semesterId}
   />
 )}  </ExamGrid>
       )}

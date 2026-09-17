@@ -32,101 +32,217 @@ import GeneralAssets from './GeneralAssets.jsx';
 import AssessmentAndFeedbacks from './AssessmentAndFeedbacks.jsx';
 import ZeroWasteRegistrations from './ZeroWasteRegistrations.jsx';
 import ResultDownloadLogs from './ResultDownloadLogs.jsx';
+import AdminPaymentApprovals from './AdminPaymentApprovals.jsx';
+
+
+// // Styled Components
+// const DashboardContainer = styled.div`
+//   display: flex;
+//   min-height: 100vh;
+//   // background: #f8f9fa;
+//   overflow: hidden;
+// `;
+
+// const Sidebar = styled.div`
+//   // background: #4caf50;
+//   // background:rgba(128,0,128,0.3);
+//   // background:rgba(255,0,43,0.2);
+//   background:#F4F4F4;
+//   color: white;
+//   width: ${(props) => (props.isOpen ? '250px' : '0')};
+//   overflow: hidden;
+//   transition: width 0.3s ease-in-out;
+//   display: flex;
+//   flex-direction: column;
+//   position: fixed;
+//   height: 100%;
+//   min-height:100vh;
+//   z-index: 100;
+//   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+//   // width:300px;
+
+//   @media (min-width: 768px) {
+//     width: 250px;
+//     position: static;
+//     transition: none;
+//   }
+// `;
+
+// const SidebarHeader = styled.div`
+//   padding: 20px;
+//   font-size: 1.5rem;
+//   text-align: center;
+//   font-weight: bold;
+//   color:green;
+//   // background: #3b8d41;
+// `;
+
+// const SidebarMenu = styled.ul`
+//   list-style: none;
+//   padding: 0;
+//   margin: 0;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+// `;
+
+// const SidebarMenuItem = styled.li`
+//   padding: 15px 20px;
+//   cursor: pointer;
+//   background: ${(props) => (props.active ? 'lightgreen;' : 'transparent')};
+//   color: ${(props)=>(props.active ? 'white':"green")};
+//   // color:white;
+
+//   font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+//   transition: all 0.3s ease-in-out;
+
+//   &:hover {
+//     // background: #3b8d41;
+//     background:lightgreen;
+//   }
+// `;
+
+// const ContentArea = styled.div`
+//   flex-grow: 1;
+//   margin-left: ${(props) => (props.isOpen ? '250px' : '0')};
+//   transition: margin-left 0.3s ease-in-out;
+//   // padding: 20px;
+//   width:100%;
+
+//   @media (min-width: 768px) {
+//     // margin-left: 250px;
+//   }
+// `;
+
+// const Hamburger = styled.div`
+//   position: fixed;
+//   top: 70px;
+//   left: 20px;
+//   // background: #4caf50;
+//   background:green;
+//   color: white;
+//   padding: 10px;
+//   border-radius: 50%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   cursor: pointer;
+//   z-index: 300;
+
+//   @media (min-width: 768px) {
+//     display: none;
+//   }
+// `;
+
+// const Overlay = styled.div`
+//   display: ${(props) => (props.isOpen ? 'block' : 'none')};
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background: rgba(0, 0, 0, 0.5);
+//   z-index: 50;
+// `;
+
 
 
 // Styled Components
 const DashboardContainer = styled.div`
   display: flex;
   min-height: 100vh;
-  // background: #f8f9fa;
+  background: #f8fafc;
   overflow: hidden;
 `;
 
 const Sidebar = styled.div`
-  // background: #4caf50;
-  // background:rgba(128,0,128,0.3);
-  // background:rgba(255,0,43,0.2);
-  background:#F4F4F4;
-  color: white;
-  width: ${(props) => (props.isOpen ? '250px' : '0')};
+  background: #ffffff;
+  color: #334155;
+  width: ${(props) => (props.isOpen ? '240px' : '0')};
   overflow: hidden;
-  transition: width 0.3s ease-in-out;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   position: fixed;
   height: 100%;
-  min-height:100vh;
+  min-height: 100vh;
   z-index: 100;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  // width:300px;
+  border-right: 1px solid #e2e8f0;
 
   @media (min-width: 768px) {
-    width: 250px;
+    width: 240px;
     position: static;
     transition: none;
   }
 `;
 
 const SidebarHeader = styled.div`
-  padding: 20px;
-  font-size: 1.5rem;
+  padding: 10px;
+  font-size: 1.25rem;
   text-align: center;
-  font-weight: bold;
-  color:green;
-  // background: #3b8d41;
+  font-weight: 700;
+  color: #16a34a;
+  letter-spacing: -0.025em;
+  border-bottom: 1px solid #f1f5f9;
 `;
 
 const SidebarMenu = styled.ul`
   list-style: none;
-  padding: 0;
+  padding: 6px;
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px; /* Max 10px */
 `;
 
 const SidebarMenuItem = styled.li`
-  padding: 15px 20px;
+  padding: 8px 10px; /* Max 10px */
   cursor: pointer;
-  background: ${(props) => (props.active ? 'lightgreen;' : 'transparent')};
-  color: ${(props)=>(props.active ? 'white':"green")};
-  // color:white;
-
-  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
-  transition: all 0.3s ease-in-out;
+  border-radius: 6px;
+  background: ${(props) => (props.active ? '#dcfce7' : 'transparent')};
+  color: ${(props) => (props.active ? '#15803d' : '#64748b')};
+  font-weight: ${(props) => (props.active ? '600' : '500')};
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
-    // background: #3b8d41;
-    background:lightgreen;
+    background: #f0fdf4;
+    color: #16a34a;
   }
 `;
 
 const ContentArea = styled.div`
   flex-grow: 1;
-  margin-left: ${(props) => (props.isOpen ? '250px' : '0')};
-  transition: margin-left 0.3s ease-in-out;
-  // padding: 20px;
-  width:100%;
+  margin-left: ${(props) => (props.isOpen ? '240px' : '0')};
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 10px; /* Max 10px */
+  width: 100%;
+  background: #f8fafc;
 
   @media (min-width: 768px) {
-    // margin-left: 250px;
+    margin-left: 0;
   }
 `;
 
 const Hamburger = styled.div`
   position: fixed;
-  top: 70px;
-  left: 20px;
-  // background: #4caf50;
-  background:green;
+  top: 15px;
+  left: 15px;
+  background: #16a34a;
   color: white;
-  padding: 10px;
-  border-radius: 50%;
+  padding: 8px; /* Max 10px */
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 300;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #15803d;
+  }
 
   @media (min-width: 768px) {
     display: none;
@@ -140,9 +256,11 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
   z-index: 50;
 `;
+
 
 // Content Components
 const HomeContent = () => <h1 style={{color:"purple"}}>Home Content</h1>;
@@ -266,6 +384,9 @@ const SchoolManagementDashboard = () => {
 
         case 'resultdownloadhistory':
         return <ResultDownloadLogs/>;
+
+             case 'paymentapproval':
+        return <AdminPaymentApprovals/>;
       
       default:
         return <h1 style={{color:"green",textAlign:"center",width:"100%"}}>Welcome to your Dashboard</h1>;

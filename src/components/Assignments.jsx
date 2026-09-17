@@ -554,13 +554,14 @@ const CloseButton = styled.button`
 `;
 
 const PostAssignment = () => {
-  const { courses } = useContext(Context);
+  const { courses, semesters } = useContext(Context);
   const lecturer = useSelector((state) => state.lecturerInfo);
   const [assignments, setAssignments] = useState([]);
   // const lecturer = adminInfo;
   const [openForm, setOpenForm] = useState(false);
 
   const [selectedCourseId, setSelectedCourseId] = useState("");
+  const [selectedSemesterId, setSelectedSemesterId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -570,13 +571,14 @@ const {api_url}=useContext(Context);
 
 
   const handleSubmit = async () => {
-    if (!selectedCourseId || !title || !description) {
+    if (!selectedCourseId || !title || !description||!selectedSemesterId) {
       Swal.fire("Please fill in all required fields.");
       return;
     }
 
     const formData = new FormData();
     formData.append("course_id", selectedCourseId);
+      formData.append("semester_id", selectedSemesterId);
     formData.append("lecturer_id", lecturer?.id);
     formData.append("title", title);
     formData.append("description", description);
@@ -598,6 +600,7 @@ const {api_url}=useContext(Context);
         setDescription("");
         setFile(null);
         setSelectedCourseId("");
+        setSelectedSemesterId("");
         setOpenForm(false);
         fetchAssignments();
       } else {
@@ -766,6 +769,10 @@ const {api_url}=useContext(Context);
                     ? `${course.code} - ${course.title}`
                     : "Course info not found"}
                   <br />
+                   <strong>Semester:</strong>{" "}
+                 {/* {assignment.semester_id} */}
+                 {semesters?.find((s) => Number(s.id) === Number(assignment.semester_id))?.name || `Semester ${assignment.semester_id}`}
+                 <br />
                   <strong>Date:</strong>{" "}
                   {new Date(assignment.created_at).toLocaleString()}
                 </AssignmentMeta>
@@ -818,6 +825,19 @@ const {api_url}=useContext(Context);
               {courses.map((course) => (
                 <option key={course.id} value={course.id}>
                   {course.code} - {course.title}
+                </option>
+              ))}
+            </Select>
+
+            <Label>Select Semester</Label>
+            <Select
+              value={selectedSemesterId}
+              onChange={(e) => setSelectedSemesterId(e.target.value)}
+            >
+              <option value="">-- Select --</option>
+              {semesters.map((semester) => (
+                <option key={semester.id} value={semester.id}>
+                  {semester.name}
                 </option>
               ))}
             </Select>

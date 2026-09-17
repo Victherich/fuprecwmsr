@@ -5,123 +5,174 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { Context } from "./Context"; // Assumes you have Context providing `courses` and `categories`
-
-// ---------- STYLED COMPONENTS ----------
+// ---------- MODERNIZED STYLED COMPONENTS ----------
 const Container = styled.div`
-  padding: 40px;
+  padding: 10px;
   max-width: 900px;
-  margin: auto;
-  background: #fff;
+  margin: 0 auto;
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 128, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 128, 0, 0.04);
 `;
 
 const Title = styled.h2`
   text-align: center;
-  margin-bottom: 25px;
-  color: green;
+  margin-bottom: 10px;
+  color: #119458;
   font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -0.5px;
 `;
 
 const Label = styled.label`
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 600;
+  margin-bottom: 4px;
   display: block;
-  color: green;
+  color: #119458;
+  font-size: 0.9rem;
 `;
 
 const Select = styled.select`
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-size: 0.95rem;
   outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: #119458;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(17, 148, 88, 0.1);
+  }
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background-color: #f8fafc;
+  color: #1e293b;
+  font-size: 0.95rem;
   outline: none;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: #119458;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(17, 148, 88, 0.1);
+  }
 `;
 
 const Button = styled.button`
-  background: green;
+  background: linear-gradient(135deg, #119458 0%, #0e7a46 100%);
   color: white;
   padding: 10px;
   width: 100%;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(17, 148, 88, 0.2);
+  transition: all 0.2s ease;
 
   &:hover {
-    background: darkorange;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
 const SubmissionList = styled.div`
-  margin-top: 40px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const SubmissionItem = styled.div`
-  padding: 20px;
-  border: 1px solid #ddd;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  background: #f9f9f9;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 0px; /* Managed by list gap */
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    border-color: #119458;
+    transform: translateY(-1px);
+  }
 `;
 
 const SubmissionTitle = styled.h3`
-  margin: 0;
+  margin: 0 0 4px 0;
   color: #0a4d24;
+  font-size: 1.05rem;
+  font-weight: 700;
 `;
 
 const SubmissionMeta = styled.p`
-  margin: 5px 0;
-  font-size: 14px;
+  margin: 4px 0;
+  font-size: 0.85rem;
   color: #555;
+  line-height: 1.4;
 `;
 
 const FileLink = styled.a`
   color: #0077b6;
-  text-decoration: underline;
-  font-weight: 500;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
 
   &:hover {
     color: #0cc1e0;
+    text-decoration: underline;
   }
 `;
 
 const NewPostButton = styled.button`
   position: fixed;
-  bottom: 60px;
+  bottom: 55px;
   right: 10px;
-  padding: 10px;
-  border-radius: 20px;
+  padding: 8px 10px;
+  border-radius: 16px;
   border: none;
-  background: linear-gradient(90deg, #0cc0e0ff, #119459ff);
+  background: linear-gradient(135deg, #0cc0e0ff 0%, #119459ff 100%);
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   cursor: pointer;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  box-shadow: 0 6px 16px rgba(17, 148, 88, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  gap: 4px;
 
   &:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(90deg, #119458, #0cc1e0);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(12, 192, 224, 0.35);
   }
 
   &:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
   }
 `;
 
@@ -129,17 +180,18 @@ const IconWrapper = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
-  color: #119458;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  font-size: 0.9rem;
+  width: 26px;
+  height: 26px;
+  font-size: 0.85rem;
+  backdrop-filter: blur(4px);
   transition: all 0.3s ease;
 
   ${NewPostButton}:hover & {
-    background: #0cc1e0;
-    color: white;
+    background: #ffffff;
+    color: #119458;
   }
 `;
 
@@ -147,36 +199,49 @@ const IconWrapper = styled.span`
 const ModalOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 300;
+  padding: 10px;
 `;
 
 const ModalContent = styled.div`
-  background: #fff;
-  padding: 30px;
+  background: #ffffff;
+  padding: 10px;
   border-radius: 12px;
   width: 90%;
   max-width: 600px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const CloseButton = styled.button`
-  background: none;
+  background: #f1f5f9;
   border: none;
-  color: #333;
-  font-size: 1.4rem;
+  color: #475569;
+  font-size: 1.1rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
-  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: red;
+    background: #fee2e2;
+    color: #ef4444;
   }
 `;
 
@@ -199,48 +264,6 @@ const [filterSearch, setFilterSearch] = useState("");
 
     
 
-    console.log(submissions)
-
-  // ---------- SUBMIT HANDLER ----------
-  // const handleSubmit = async () => {
-  //   if (!selectedCourseId || !selectedCategory || !file) {
-  //     Swal.fire("Please fill in all required fields and attach a file.");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("student_id", studentInfo.id);
-  //   formData.append("course_id", selectedCourseId);
-  //   formData.append("category", selectedCategory);
-  //   formData.append("file", file);
-
-  //   try {
-  //     Swal.fire({ text: "Uploading..." });
-  //     Swal.showLoading();
-
-  //     const res = await axios.post(
-  //       "https://www.cwmsrfupre.com.ng/base/create_student_submission.php",
-  //       formData,
-  //       { headers: { "Content-Type": "multipart/form-data" } }
-  //     );
-
-  //     Swal.close();
-
-  //     if (res.data.success) {
-  //       Swal.fire("Success", "Submission uploaded successfully!", "success");
-  //       setFile(null);
-  //       setSelectedCourseId("");
-  //       setSelectedCategory("");
-  //       setOpenForm(false);
-  //       fetchSubmissions();
-  //     } else {
-  //       Swal.fire("Failed", res.data.error || "Submission failed.", "error");
-  //     }
-  //   } catch (err) {
-  //     Swal.fire("Error", "An error occurred while uploading.", "error");
-  //     console.error(err);
-  //   }
-  // };
 
 
   const handleSubmit = async () => {
@@ -271,6 +294,7 @@ const [filterSearch, setFilterSearch] = useState("");
   const formData = new FormData();
   formData.append("student_id", studentInfo.id);
   formData.append("course_id", selectedCourseId);
+  formData.append("semester_id", studentInfo.selected_semester);
   formData.append("category", selectedCategory);
   formData.append("file", file);
 
@@ -330,12 +354,12 @@ const [filterSearch, setFilterSearch] = useState("");
 
   // ---------- FETCH SUBMISSIONS ----------
   const fetchSubmissions = async () => {
-    if (!studentInfo?.id) return;
+    if (!studentInfo?.id||!studentInfo?.selected_semester) return;
 
     try {
       const res = await axios.get(
         `${api_url}/get_student_submissions.php`,
-        { params: { student_id: studentInfo.id, t: Date.now() } }
+        { params: { student_id: studentInfo.id, semester_id:studentInfo.selected_semester, t: Date.now() } }
       );
 
       if (res.data.success) setSubmissions(res.data.submissions);

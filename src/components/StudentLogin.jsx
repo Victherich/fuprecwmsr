@@ -171,19 +171,20 @@ import { Context } from './Context';
 const StudentLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('current'); // default
+  const [selectedSemester, setSelectedSemester] = useState(''); // default
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { possible_levels_for_studnet_login, api_url } = useContext(Context);
+  const { possible_levels_for_studnet_login, api_url, semesters } = useContext(Context);
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email || !password ||!selectedSemester) {
       Swal.fire({
         icon: 'error',
         title: 'Missing fields',
-        text: 'Email and password are required.',
+        text: 'Email, password and semster are required.',
       });
       return;
     }
@@ -200,7 +201,7 @@ const StudentLogin = () => {
         {
           email,
           password,
-          archive_status: selectedLevel, // 🔹 pass selected level-semester
+          selectedSemester, // 🔹 pass selected level-semester
         }
       );
 
@@ -239,7 +240,7 @@ const StudentLogin = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
+          placeholder="Enter your institutional email"
           required
         />
 
@@ -254,8 +255,8 @@ const StudentLogin = () => {
 
         <Label>Select Semester/Level</Label>
         <select
-          value={selectedLevel}
-          onChange={(e) => setSelectedLevel(e.target.value)}
+          value={selectedSemester}
+          onChange={(e) => setSelectedSemester(e.target.value)}
           style={{
             width: '100%',
             padding: '10px',
@@ -265,9 +266,9 @@ const StudentLogin = () => {
             fontSize: '16px',
           }}
         >
-          {possible_levels_for_studnet_login.map((lvl) => (
-            <option key={lvl.code} value={lvl.code}>
-              {lvl.name}
+          {semesters.map((semester) => (
+            <option key={semester.id} value={semester.id}>
+              {semester.name}
             </option>
           ))}
         </select>

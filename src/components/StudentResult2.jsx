@@ -10,102 +10,171 @@ import { useSelector } from "react-redux";
 import { Context } from "./Context";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import QRCode from "qrcode"; // ✅ Import QRCode
+import QRCode from "qrcode";
+import { useLocation } from "react-router-dom";
 
 const Container = styled.div`
   padding: 2rem 1rem;
   background-color: #f9fff9;
   min-height: 100vh;
   font-family: "Arial", sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
 `;
 
 const Title = styled.h2`
   color: green;
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 `;
 
-
-const ScrollWrapper = styled.div`
-  overflow-x: auto;          /* Enable horizontal scroll */
-  scroll-behavior: smooth;   /* Smooth scrolling */
-  width: 100%;               /* Take full width */
-  margin-top: 1rem;
-
-  /* Optional: style the scrollbar */
-  &::-webkit-scrollbar {
-    height: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 4px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
+const Card = styled.div`
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  min-width: 900px;          /* Ensure scroll appears on smaller screens */
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+`;
 
-  th,
-  td {
-    padding: 0.8rem;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-    white-space: nowrap;      /* Prevent cell content from wrapping */
-  }
+const HeaderInfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #eef2ef;
 
-  th {
-    background-color: #008000;
-    color: white;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-  }
-
-  tr:hover {
-    background-color: #f0fdf4;
+  div {
+    font-size: 0.95rem;
+    color: #333;
+    strong {
+      color: #006400;
+    }
   }
 `;
 
+const SectionSubtitle = styled.h4`
+  color: #006400;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 0.4rem;
+`;
 
+const CourseGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+`;
 
+const CourseCard = styled.div`
+  background: #fdfdfd;
+  border: 1px solid #e0e8e0;
+  border-left: 4px solid #008000;
+  padding: 1rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
 
+const CourseDetails = styled.div`
+  flex: 1;
+  .code-title {
+    font-weight: bold;
+    color: #222;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+  .units {
+    font-size: 0.85rem;
+    color: #666;
+  }
+`;
 
+const ScoreBreakdown = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #444;
 
+  span {
+    background: #f0fdf4;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #d1fae5;
+  }
 
+  .total-score {
+    font-weight: bold;
+    color: #006400;
+    background: #e6f4ea;
+  }
+`;
 
+const MetricsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
 
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`;
 
-// const Table = styled.table`
-//   width: 100%;
-//   border-collapse: collapse;
-//   background: white;
-//   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+const MetricBox = styled.div`
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: center;
 
-//   th,
-//   td {
-//     padding: 0.8rem;
-//     text-align: left;
-//     border-bottom: 1px solid #eee;
-//   }
+  .label {
+    font-size: 0.8rem;
+    color: #047857;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+  }
 
-//   th {
-//     background-color: #008000;
-//     color: white;
-//     text-transform: uppercase;
-//     font-size: 0.9rem;
-//   }
+  .values {
+    font-size: 0.9rem;
+    color: #1f2937;
+    display: flex;
+    justify-content: space-around;
+    gap: 0.5rem;
+    
+    div {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.85rem;
+      span:first-child {
+        font-size: 0.7rem;
+        color: #666;
+      }
+    }
+  }
+`;
 
-//   tr:hover {
-//     background-color: #f0fdf4;
-//   }
-// `;
+const GrandTotalBanner = styled.div`
+  background: #e9fce9;
+  padding: 1rem;
+  border-radius: 6px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #006400;
+  margin-top: 1rem;
+`;
 
 const Message = styled.p`
   text-align: center;
@@ -120,52 +189,58 @@ const Button = styled.button`
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
-  margin: 1rem 0;
+  margin-bottom: 1.5rem;
   transition: background 0.3s;
+  display: block;
+  width: 100%;
 
   &:hover {
     background-color: #006400;
   }
 `;
 
-const StudentResult2 = () => {
+const StudentResult2 = ({id, prevTcp, prevTnu, prevGpa}) => {
   const studentInfo = useSelector((state) => state.studentInfo);
-  const studentId = studentInfo?.id;
-  const { courses, categories, programs, api_url } = useContext(Context);
+  const studentId2 = studentInfo?.id;
+  const semesterId=studentInfo?.selected_semester;
+  const { courses, programs, api_url,semesters, isUploadModalOpen, setIsUploadModalOpen } = useContext(Context);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState(null);
-  // const [resultOpenstate, setResultOpenState]=useState(false);
-
-
-
-   const [allowView, setAllowView] = useState(false);
+  const [allowView, setAllowView] = useState(false);
+const location = useLocation();
   
-    useEffect(() => {
-      const fetchSetting = async () => {
-        try {
-          const res = await axios.get(
-            `${api_url}/get_result_setting.php?nocache=${Date.now()}`
-          ); // timestamp to avoid caching
-          if (res.data.success) setAllowView(res.data.allow_result);
-        } catch (err) {
-          console.error("Failed to fetch setting", err);
-        }
-      };
   
-      // Fetch immediately
-      fetchSetting();
+    const [studentId, setStudentId]=useState(null);
   
-      // Fetch every 5 seconds
-      const interval = setInterval(fetchSetting, 5000);
+    useEffect(()=>{
+      if(window.location.pathname==='/admin'){
+        setStudentId(id)
+      }else{
+        setStudentId(studentId2)
+      }
+    },[])
   
-      // Cleanup interval when component unmounts
-      return () => clearInterval(interval);
-    }, []);
+  
+  
+  const semester = 2;
 
-    console.log(allowView)
+  useEffect(() => {
+    const fetchSetting = async () => {
+      try {
+        const res = await axios.get(
+          `${api_url}/get_result_setting.php?nocache=${Date.now()}`
+        );
+        if (res.data.success) setAllowView(res.data.allow_result);
+      } catch (err) {
+        console.error("Failed to fetch setting", err);
+      }
+    };
 
-
+    fetchSetting();
+    const interval = setInterval(fetchSetting, 5000);
+    return () => clearInterval(interval);
+  }, [api_url]);
 
   // 🔹 Fetch student details
   useEffect(() => {
@@ -176,7 +251,7 @@ const StudentResult2 = () => {
         if (res.data.success) setStudent(res.data.student);
       })
       .catch(() => Swal.fire("Error", "Failed to fetch student details", "error"));
-  }, [studentId]);
+  }, [studentId, api_url]);
 
   // 🔹 Fetch results
   useEffect(() => {
@@ -186,7 +261,7 @@ const StudentResult2 = () => {
         setLoading(true);
         const res = await axios.get(
           `${api_url}/get_student_results.php`,
-          { params: { student_id: studentId, t: Date.now() } }
+          { params: { student_id: studentId, t: Date.now(), semester_id:semester } }
         );
         if (res.data.success) setResults(res.data.results || []);
         else Swal.fire("Error", res.data.error || "Failed to fetch results.", "error");
@@ -197,161 +272,54 @@ const StudentResult2 = () => {
       }
     };
     fetchResults();
-  }, [studentId]);
+  }, [studentId, api_url]);
 
   const programName =
     programs.find((p) => p.id === Number(student?.program))?.name || "—";
 
-
-
-    const groupedResults = courses
-  .map((course) => {
-    const courseResults = results.filter(
-      (r) => Number(r.course_id) === Number(course.id)
-    );
-    if (courseResults.length === 0) return null;
-
-    const getScoreById = (categoryId) => {
-      const catResults = courseResults.filter(
-        (r) => Number(r.category_id) === Number(categoryId)
+  const groupedResults = courses
+    .map((course) => {
+      const courseResults = results.filter(
+        (r) => Number(r.course_id) === Number(course.id)
       );
-      return catResults.reduce(
-        (sum, r) => sum + (Number(r.score) || 0),
-        0
-      );
-    };
+      if (courseResults.length === 0) return null;
 
-    const assignment = getScoreById(1);
-    const quiz = getScoreById(2);
-    const exam = getScoreById(3);
-    const total = assignment + quiz + exam;
-
-    return {
-      code: course.code,
-      title: course.title,
-      credit_unit:course.unit,
-      assignment,
-      quiz,
-      exam,
-      total,
-    };
-  })
-  .filter(Boolean);
-
-
-  const grandTotal = groupedResults.reduce((acc, r) => acc + r.total, 0);
-
-
-
-
-
-  // 🔹 Generate Beautiful PDF with QR code
-  
-  
-const payWithPaystack = (amount, onSuccess) => {
-  if (!studentInfo?.email) {
-    Swal.fire("Error", "Student email not found.", "error");
-    return;
-  }
-
-  const handler = window.PaystackPop.setup({
-    // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-    key: "pk_live_3626fe7772aaca28a10724ebb1f9727dfcc5d6cb",
-    email: studentInfo.email,
-    amount: amount * 100,
-    currency: "NGN",
-    channels: ["card"],
-    // subaccount: 'ACCT_4l1qt6s8whjszwk',  
-    // bearer: "account",
-
-    metadata: {
-      custom_fields: [
-        {
-          display_name: "Student Name",
-          variable_name: "student_name",
-          value: student?.full_name || "Student",
-        },
-        {
-          display_name: "Purpose",
-          variable_name: "purpose",
-          value: "Result Download",
-        },
-      ],
-    },
-
-    callback: function (response) {
-      Swal.fire({
-        icon: "success",
-        title: "Payment Successful",
-        text: "Payment confirmed. Generating your result...",
-        timer: 2000,
-        showConfirmButton: false,
-      });
-
-      // Async verification
-      (async () => {
-        try {
-          const res = await axios.post(
-            `${api_url}/verify_payment.php`,
-            { reference: response.reference }
-          );
-
-          if (res.data.status === "success") {
-
-              await axios.post(
-          `${api_url}/log_result_download.php`,
-          {
-            student_id: studentInfo.id,
-            level_semester_code: "current", // Or pick from dropdown if multi-semester login
-            payment_reference: response.reference,
-             amount_paid: amount
-          }
+      const getScoreById = (categoryId) => {
+        const catResults = courseResults.filter(
+          (r) => Number(r.category_id) === Number(categoryId)
         );
+        return catResults.reduce(
+          (sum, r) => sum + (Number(r.score) || 0),
+          0
+        );
+      };
 
-            onSuccess();
+      const assignment = getScoreById(1);
+      const quiz = getScoreById(2);
+      const exam = getScoreById(3);
+      const total = assignment + quiz + exam;
 
-          } else {
-            Swal.fire("Error", "Payment verification failed. Please contact support.", "error");
-          }
-        } catch (err) {
-          Swal.fire("Error", "Could not verify payment. Please try again.", "error");
-        }
-      })();
-    },
+      return {
+        code: course.code,
+        title: course.title,
+        credit_unit: course.unit || 0,
+        assignment,
+        quiz,
+        exam,
+        total,
+      };
+    })
+    .filter(Boolean);
 
-    onClose: function () {
-      Swal.fire({
-        icon: "info",
-        title: "Payment Cancelled",
-        text: "You must complete payment to download your result.",
-      });
-    },
-  });
-
-  handler.openIframe();
-};
-
-
-  
-
-
-const generatePDF = async () => {
-  if (groupedResults.length === 0) {
-    Swal.fire("No results", "You have no results to download.", "info");
-    return;
-  }
-
-  // --- 1. GRADING LOGIC (Nigerian 5.0 Scale) ---
+  // --- PRE-CALCULATED VALUES ---
   const getGradePoint = (score) => {
-    if (score >= 70) return 5; // A
-    if (score >= 60) return 4; // B
-    if (score >= 50) return 3; // C
-    if (score >= 45) return 2; // D (Common PG Pass mark)
-    return 0; // F
+    if (score >= 70) return 5;
+    if (score >= 60) return 4;
+    if (score >= 50) return 3;
+    if (score >= 45) return 2;
+    return 0;
   };
 
-  // --- 2. AUTOMATIC CALCULATIONS ---
-  // Current Semester
   const currentTNU = groupedResults.reduce((sum, r) => sum + (Number(r.credit_unit) || 0), 0);
   const currentTCP = groupedResults.reduce((sum, r) => {
     const gp = getGradePoint(Number(r.total) || 0);
@@ -359,153 +327,247 @@ const generatePDF = async () => {
   }, 0);
   const currentGPA = currentTNU > 0 ? (currentTCP / currentTNU).toFixed(2) : "0.00";
 
-  // Grand Total of all scores
   const grandTotal = groupedResults.reduce((sum, r) => sum + (Number(r.total) || 0), 0);
 
-  // Previous & Cumulative (Assuming data exists in student object)
-  const prevTCP = Number(student?.previous_tcp) || 0;
-  const prevTNU = Number(student?.previous_tnu) || 0;
-  const prevGPA = prevTNU > 0 ? (prevTCP / prevTNU).toFixed(2) : "0.00";
+//   const prevTCP = Number(student?.previous_tcp) || 0;
+//   const prevTNU = Number(student?.previous_tnu) || 0;
+//   const prevGPA = prevTNU > 0 ? (prevTCP / prevTNU).toFixed(2) : "0.00";
+
+
+  const prevTCP = prevTcp;
+  const prevTNU = prevTnu;
+  const prevGPA = prevGpa;
 
   const cumTCP = currentTCP + prevTCP;
   const cumTNU = currentTNU + prevTNU;
   const cumGPA = cumTNU > 0 ? (cumTCP / cumTNU).toFixed(2) : "0.00";
 
-  // --- 3. PDF INITIALIZATION ---
-  const doc = new jsPDF("l", "pt", "a4");
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
+  const courseTotals = groupedResults.map((r) => r.total || "0");
 
-  // Logo (Centered)
-  const logo = "/logo.png";
-  const logoWidth = 50;
-  const logoHeight = 50;
-  doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
-
-  // Header Image (Full width)
-  const headerImg = "/resultheader.png";
-  const headerWidth = pageWidth - 80; 
-  const headerHeight = 250; 
-  doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
-
-  // Option/Program Title
-  doc.setFontSize(12);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(0, 0, 0);
-  doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
-
-  // --- 4. TABLE STRUCTURE ---
-  const headerRow1 = [
-    { content: 'S/N', rowSpan: 2 },
-    { content: 'NAME OF CANDIDATE', rowSpan: 2 },
-    { content: 'REGISTRATION NUMBER', rowSpan: 2 },
-    { content: 'SEX', rowSpan: 2 },
-    ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
-    { content: 'CURRENT', colSpan: 3 },
-    { content: 'PREVIOUS', colSpan: 3 },
-    { content: 'CUMULATIVE', colSpan: 3 }
-  ];
-
-  const headerRow2 = [
-    'TCP', 'TNU', 'GPA', 
-    'TCP', 'TNU', 'GPA', 
-    'TCP', 'TNU', 'GPA'
-  ];
-
-  const courseTotals = groupedResults.map(r => r.total || "0");
-
-  const rows = [
-    [
-      "1.", 
-      student?.full_name?.toUpperCase() || "—", 
-      student?.admission_number || "—", 
-      student?.sex || "M", 
-      ...courseTotals,
-      currentTCP, currentTNU, currentGPA,
-      prevTCP, prevTNU, prevGPA,
-      cumTCP, cumTNU, cumGPA
-    ]
-  ];
-
-  // Generate Table with Green Lines
-  doc.autoTable({
-    head: [headerRow1, headerRow2],
-    body: rows,
-    startY: 345,
-    theme: "grid",
-    styles: { 
-      fontSize: 7.5, 
-      cellPadding: 2, 
-      halign: "center", 
-      valign: "middle", 
-      lineColor: [0, 128, 0], // Green borders
-      lineWidth: 0.5,
-      textColor: 0
-    },
-    headStyles: { 
-      fillColor: [255, 255, 255], 
-      textColor: [0, 0, 0], 
-      fontStyle: "bold",
-    },
-    columnStyles: {
-      1: { halign: "left", cellWidth: 90 },
-      2: { cellWidth: 70 }
+  const payWithPaystack = (amount, onSuccess) => {
+    if (!studentInfo?.email) {
+      Swal.fire("Error", "Student email not found.", "error");
+      return;
     }
-  });
 
-  // --- 5. SUMMARY & SIGNATURES ---
-  const finalY = doc.lastAutoTable.finalY + 40;
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "bold");
+    const handler = window.PaystackPop.setup({
+      key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
+      email: studentInfo.email,
+      amount: amount * 100,
+      currency: "NGN",
+      channels: ["card"],
+      metadata: {
+        custom_fields: [
+          {
+            display_name: "Student Name",
+            variable_name: "student_name",
+            value: student?.full_name || "Student",
+          },
+          {
+            display_name: "Purpose",
+            variable_name: "purpose",
+            value: "Result Download",
+          },
+        ],
+      },
+      callback: function () {
+        Swal.fire({
+          icon: "success",
+          title: "Payment Successful",
+          text: "Payment confirmed. Generating your result...",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        onSuccess();
+      },
+      onClose: function () {
+        Swal.fire({
+          icon: "info",
+          title: "Payment Cancelled",
+          text: "You must complete payment to download your result.",
+        });
+      },
+    });
 
-  doc.text(`SUMMARY: TOTAL: ${grandTotal}    RANGE OF GPA: ${currentGPA}    RANGE OF CGPA: ${cumGPA}`, 40, finalY);
+    handler.openIframe();
+  };
 
-  const sigLineY = finalY + 60;
-  doc.setDrawColor(0, 0, 0); 
-  doc.setLineWidth(1);
-  
-  // Left: Director
-  doc.line(40, sigLineY, 300, sigLineY);
-  doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+  // --- GENERATE PDF USING PRE-CALCULATED VALUES ---
+  const generatePDF = async () => {
+    if (groupedResults.length === 0) {
+      Swal.fire("No results", "You have no results to download.", "info");
+      return;
+    }
 
-  // Right: Dean
-  const rightSigX = pageWidth - 340;
-  doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
-  doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+    const doc = new jsPDF("l", "pt", "a4");
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
 
-  // --- 6. QR CODE & FOOTER ---
-  const verifyLink = "https://cwmsrfupre.com.ng/resultverification";
-  const qrCodeData = await QRCode.toDataURL(verifyLink);
-  const qrSize = 60;
-  const qrX = pageWidth - 100;
-  const qrY = pageHeight - 85; 
+    // Logo (Centered)
+    const logo = "/logo.png";
+    const logoWidth = 50;
+    const logoHeight = 50;
+    doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
 
-  doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-  doc.setFontSize(8);
-  doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+    // Header Image (Full width)
+    const headerImg = "/resultheader.png";
+    const headerWidth = pageWidth - 80; 
+    const headerHeight = 250; 
+    doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
 
-  doc.setFontSize(9);
-  doc.setTextColor(100);
-  doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+    // Option/Program Title
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(0, 0, 0);
+    doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
 
-  // --- 7. SAVE ---
-  doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+    // --- TABLE STRUCTURE ---
+    const headerRow1 = [
+      { content: 'S/N', rowSpan: 2 },
+      { content: 'NAME OF CANDIDATE', rowSpan: 2 },
+      { content: 'REGISTRATION NUMBER', rowSpan: 2 },
+      { content: 'SEX', rowSpan: 2 },
+      ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
+      { content: 'CURRENT', colSpan: 3 },
+      { content: 'PREVIOUS', colSpan: 3 },
+      { content: 'CUMULATIVE', colSpan: 3 }
+    ];
 
-  Swal.fire({
-    icon: "success",
-    title: "Download Successful",
-    text: "Your result has been Downloaded, Please check your downloads folder.",
-  });
-};
+    const headerRow2 = [
+      'TCP', 'TNU', 'GPA', 
+      'TCP', 'TNU', 'GPA', 
+      'TCP', 'TNU', 'GPA'
+    ];
+
+    const rows = [
+      [
+        "1.", 
+        student?.full_name?.toUpperCase() || "—", 
+        student?.admission_number || "—", 
+        student?.sex || "M", 
+        ...courseTotals,
+        currentTCP, currentTNU, currentGPA,
+        prevTCP, prevTNU, prevGPA,
+        cumTCP, cumTNU, cumGPA
+      ]
+    ];
+
+    doc.autoTable({
+      head: [headerRow1, headerRow2],
+      body: rows,
+      startY: 345,
+      theme: "grid",
+      styles: { 
+        fontSize: 7.5, 
+        cellPadding: 2, 
+        halign: "center", 
+        valign: "middle", 
+        lineColor: [0, 128, 0],
+        lineWidth: 0.5,
+        textColor: 0
+      },
+      headStyles: { 
+        fillColor: [255, 255, 255], 
+        textColor: [0, 0, 0], 
+        fontStyle: "bold",
+      },
+      columnStyles: {
+        1: { halign: "left", cellWidth: 90 },
+        2: { cellWidth: 70 }
+      }
+    });
+
+    // --- SUMMARY & SIGNATURES ---
+    const finalY = doc.lastAutoTable.finalY + 40;
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+
+    doc.text(`SUMMARY: TOTAL: ${grandTotal}     RANGE OF GPA: ${currentGPA}     RANGE OF CGPA: ${cumGPA}`, 40, finalY);
+
+    const sigLineY = finalY + 60;
+    doc.setDrawColor(0, 0, 0); 
+    doc.setLineWidth(1);
+    
+    doc.line(40, sigLineY, 300, sigLineY);
+    doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+
+    const rightSigX = pageWidth - 340;
+    doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
+    doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+
+    // --- QR CODE & FOOTER ---
+    const verifyLink = "https://cwmsrfupre.com.ng/resultverification";
+    const qrCodeData = await QRCode.toDataURL(verifyLink);
+    const qrSize = 60;
+    const qrX = pageWidth - 100;
+    const qrY = pageHeight - 85; 
+
+    doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+    doc.setFontSize(8);
+    doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+
+    doc.setFontSize(9);
+    doc.setTextColor(100);
+    doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+
+    doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+
+    Swal.fire({
+      icon: "success",
+      title: "Download Successful",
+      text: "Your result has been Downloaded, Please check your downloads folder.",
+    });
+  };
+
+  const handleAlert = () => {
+    Swal.fire({
+      icon: "info",
+      text: "Result is not yet opened please try again later"
+    });
+  };
 
 
 
-const handleAlert = ()=>{
-  Swal.fire({
-    icon:"info",
-    text:"Result is not yet opened please try again later"
-  })
-}
+
+
+
+
+
+const handleCheckApprovalAndDownload = async () => {
+    if (!allowView) {
+      handleAlert();
+      return;
+    }
+
+    if (!studentId) {
+      Swal.fire("Error", "Student ID is missing.", "error");
+      return;
+    }
+
+      Swal.fire({text:"Please wait..."})
+        Swal.showLoading();
+
+    try {
+      const res = await axios.get(`${api_url}/check_payment_approval.php`, {
+        params: { student_id: studentId, semester_id: semester, t: Date.now() }
+      });
+
+      if (res.data.success && res.data.is_approved) {
+        // Payment is approved — run the PDF generator function
+        generatePDF();
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "Approval Pending",
+          text: "Your payment proof has not been approved by an administrator yet, please ensure that you uploaded the payment proof.",
+        });
+      }
+    } catch (err) {
+      Swal.fire("Error", "Could not connect to the server to verify approval status.", "error");
+    }
+  };
+
+
 
 
 
@@ -514,7 +576,8 @@ const handleAlert = ()=>{
 
   return (
     <Container>
-      <Title>My Results</Title>
+
+    <Title style={{marginTop:"50px"}}>Result for {semesters?.find((s) => Number(s.id) === Number(semester))?.name || `Semester ${semester}`}</Title>
 
       {loading ? (
         <Message>Loading results...</Message>
@@ -522,52 +585,119 @@ const handleAlert = ()=>{
         <Message>No results available yet.</Message>
       ) : (
         <>
-          {/* <Button onClick={generatePDF}>Download Result</Button> */}
-        {allowView ? <Button
-  onClick={() =>
-    payWithPaystack(5000, generatePDF) // ₦1000 example fee
-  }
->
-  Download Result (₦5,000)
-</Button>: <Button
-  onClick={handleAlert}
->
-  Download Result (₦5,000)
-</Button>}
+            {allowView ? (
+<>
+{window.location.pathname!=='/admin'&&<>
+<div>
+  <h4 style={{color:"green", textAlign:"center"}}>
+    Follow these steps to download your  {semesters?.find((s) => Number(s.id) === Number(semester))?.name || `Semester ${semester}`} Result
+  </h4>
+  <br/>
+</div>
+  {/* Step 1: External Remita Payment Link */}
+  <p>1. Make Payment for the result.</p>
+  <Button 
+    as="a" 
+    href="https://login.remita.net/remita/onepage/OAGFCRF/biller.spa" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    style={{ textAlign: "center", textDecoration: "none" }}
+  >
+    Click to Make payment for the result
+  </Button>
 
-{/* <ScrollWrapper>
-      <Table>
-            <thead>
-              <tr>
-                <th>Course</th>
-                <th>Assignment</th>
-                <th>Quiz</th>
-                <th>Exam</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
+  {/* Step 2: Upload Proof Modal Trigger */}
+  <p>2. Upload proof of payment after you have paid, then wait to be approved.</p>
+  <Button
+    onClick={() => setIsUploadModalOpen(true)}
+    style={{ backgroundColor: "#0284c7" }}
+  >
+    Click to Upload proof of payment
+  </Button>
+
+  {/* Step 3: Backend Approval Check & Download Trigger */}
+  <p>3. Download your result after you have been approved.</p>
+  <Button 
+    onClick={handleCheckApprovalAndDownload}
+    style={{ backgroundColor: "#16a34a" }} // Green for success/download
+  >
+    Click to download official result if you have been approved
+  </Button>
+
+</>}
+{window.location.pathname==='/admin'&&<Button onClick={generatePDF}>Download Result</Button>}
+</>
+      
+          ) : (
+            <h3>
+             {semesters?.find((s) => Number(s.id) === Number(semester))?.name || `Semester ${semester}`} Result is not yet available for downloading
+            </h3>
+          )}
+
+      {window.location.pathname==='/admin'&&<Card>
+            <HeaderInfoGrid>
+              <div><strong>Candidate Name:</strong> {student?.full_name?.toUpperCase() || "—"}</div>
+              <div><strong>Reg Number:</strong> {student?.admission_number || "—"}</div>
+              <div><strong>Sex:</strong> {student?.sex || "M"}</div>
+              <div><strong>Program:</strong> {programName?.toUpperCase()}</div>
+              <div>
+  <strong>Year-Semester:</strong>{" "}
+  {semesters?.find((s) => Number(s.id) === Number(semester))?.name || `Semester ${semester}`}
+</div>
+            </HeaderInfoGrid>
+
+            <SectionSubtitle>Course Breakdown</SectionSubtitle>
+            <CourseGrid>
               {groupedResults.map((r, i) => (
-                <tr key={i}>
-                  <td>{`${r.code} - ${r.title}`}</td>
-                  <td>{r.assignment}</td>
-                  <td>{r.quiz}</td>
-                  <td>{r.exam}</td>
-                  <td>
-                    <strong style={{ color: "green" }}>{r.total}</strong>
-                  </td>
-                </tr>
+                <CourseCard key={i}>
+                  <CourseDetails>
+                    <div className="code-title">{i + 1}. {r.code} - {r.title}</div>
+                    <div className="units">Credit Units: {r.credit_unit}</div>
+                  </CourseDetails>
+                  <ScoreBreakdown>
+                    <span>Assignment: <strong>{r.assignment}</strong></span>
+                    <span>Quiz: <strong>{r.quiz}</strong></span>
+                    <span>Exam: <strong>{r.exam}</strong></span>
+                    <span className="total-score">Total: {r.total}</span>
+                  </ScoreBreakdown>
+                </CourseCard>
               ))}
-              <tr style={{ background: "#e9fce9", fontWeight: "bold" }}>
-                <td colSpan="4" style={{ textAlign: "right" }}>
-                  Grand Total
-                </td>
-                <td>{grandTotal}</td>
-              </tr>
-            </tbody>
-          </Table>
-</ScrollWrapper> */}
-        
+            </CourseGrid>
+
+            <GrandTotalBanner>
+              Grand Total: {grandTotal}
+            </GrandTotalBanner>
+
+            <SectionSubtitle style={{ marginTop: "1.5rem" }}>Academic Performance Metrics</SectionSubtitle>
+            <MetricsGrid>
+              <MetricBox>
+                <div className="label">Current Semester</div>
+                <div className="values">
+                  <div><span>TCP</span><strong>{currentTCP}</strong></div>
+                  <div><span>TNU</span><strong>{currentTNU}</strong></div>
+                  <div><span>GPA</span><strong>{currentGPA}</strong></div>
+                </div>
+              </MetricBox>
+
+              <MetricBox>
+                <div className="label">Previous Standing</div>
+                <div className="values">
+                  <div><span>TCP</span><strong>{prevTCP}</strong></div>
+                  <div><span>TNU</span><strong>{prevTNU}</strong></div>
+                  <div><span>GPA</span><strong>{prevGPA}</strong></div>
+                </div>
+              </MetricBox>
+
+              <MetricBox>
+                <div className="label">Cumulative Standing</div>
+                <div className="values">
+                  <div><span>TCP</span><strong>{cumTCP}</strong></div>
+                  <div><span>TNU</span><strong>{cumTNU}</strong></div>
+                  <div><span>CGPA</span><strong>{cumGPA}</strong></div>
+                </div>
+              </MetricBox>
+            </MetricsGrid>
+          </Card>}
         </>
       )}
     </Container>
@@ -575,452 +705,3 @@ const handleAlert = ()=>{
 };
 
 export default StudentResult2;
-
-
-
-
-
-
-
-  
-//   const generatePDF = async () => {
-//     if (groupedResults.length === 0) {
-//       Swal.fire("No results", "You have no results to download.", "info");
-//       return;
-//     }
-
-//     const doc = new jsPDF("p", "pt", "a4");
-//     const pageWidth = doc.internal.pageSize.getWidth();
-
-//     // Logo
-//     const logo = "/logo2.png";
-//     const logoWidth = 300;
-//     const logoHeight = 60;
-//     const logoX = (pageWidth - logoWidth) / 2;
-//     doc.addImage(logo, "PNG", logoX, 40, logoWidth, logoHeight);
-
-//     // Title
-//     doc.setFontSize(18);
-//     doc.setFont("helvetica", "bold");
-//     doc.setTextColor(0, 128, 0);
-//     doc.text("STUDENT RESULT", pageWidth / 2, 130, { align: "center" });
-
-//     // Student info
-//     doc.setFontSize(11);
-//     doc.setTextColor(0, 128, 0);
-//     doc.text(`Name: ${student?.full_name || "—"}`, 40, 160);
-//     doc.text(`Admission No: ${student?.admission_number || "—"}`, 40, 180);
-//     doc.text(`Program: ${programName}`, 40, 200);
-//     // doc.text(`Level: ${student?.level || "Default"}`, 40, 220);
-//     doc.text(`Date: ${new Date().toLocaleDateString()}`, 40, 220);
-
-//     // Table
-//     const columns = ["S/N", "Course", "Assignment", "Quiz", "Exam", "Total"];
-//     const rows = groupedResults.map((r, i) => [
-//       i + 1,
-//       `${r.code} - ${r.title}`,
-//       r.assignment,
-//       r.quiz,
-//       r.exam,
-//       r.total,
-//     ]);
-
-//     doc.autoTable({
-//       head: [columns],
-//       body: rows,
-//       startY: 270,
-//       theme: "grid",
-//       headStyles: { fillColor: [0, 128, 0], textColor: 255 },
-//       bodyStyles: { textColor: 20 },
-//       styles: { fontSize: 10, halign: "center" },
-//       columnStyles: { 1: { halign: "left", cellWidth: 180 } },
-//       alternateRowStyles: { fillColor: [245, 255, 245] },
-//     });
-
-//     const finalY = doc.lastAutoTable.finalY + 30;
-//     doc.setFont("helvetica", "bold");
-//     doc.setTextColor(0, 128, 0);
-//     doc.text(`GRAND TOTAL: ${grandTotal}`, 40, finalY);
-//     doc.text(
-//       `AVERAGE: ${(grandTotal / groupedResults.length).toFixed(2)}%`,
-//       250,
-//       finalY
-//     );
-
-//     // ✅ Generate and add QR Code
-//     const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
-//     const qrCodeData = await QRCode.toDataURL(verifyLink);
-//     const qrSize = 80;
-//     const qrX = (pageWidth - qrSize) / 2;
-//     const qrY = 720;
-
-//     doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-//     doc.setFontSize(9);
-//     doc.setTextColor(80);
-//     doc.text("(scan to verify)", pageWidth / 2, qrY + qrSize + 6, {
-//       align: "center",
-//     });
-
-//     // Footer
-//     doc.setFontSize(9);
-//     doc.setTextColor(100);
-//     doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, 830, {
-//       align: "center",
-//     });
-
-//     doc.save(`Result_${student?.admission_number || "student"}.pdf`);
-
-//     Swal.fire({
-//   icon: "success",
-//   title: "Download Successful",
-//   text: "Your result has been downloaded successfully. Please check your Downloads folder.",
-// });
-
-//   };
-
-
-
-
-
-
-// const generatePDF = async () => {
-//   if (groupedResults.length === 0) {
-//     Swal.fire("No results", "You have no results to download.", "info");
-//     return;
-//   }
-
-//   // Set orientation to Landscape ('l') to match the wide table requirement
-//   const doc = new jsPDF("l", "pt", "a4");
-//   const pageWidth = doc.internal.pageSize.getWidth();
-//   const pageHeight = doc.internal.pageSize.getHeight();
-
-//   // 1. Logo (Centered)
-//   const logo = "/logo.png";
-//   const logoWidth = 50;
-//   const logoHeight = 50;
-//   doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
-
-//   // 2. Header Image (Spans from left to right)
-//   const headerImg = "/resultheader.png";
-//   const headerWidth = pageWidth - 80; // 40pt margin on each side
-//   const headerHeight = 250; 
-//   doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
-
-//   // 3. Option/Program Title
-//   doc.setFontSize(12);
-//   doc.setFont("helvetica", "bold");
-//   doc.setTextColor(0, 0, 0);
-//   doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
-
-//   // 4. Prepare Horizontal Table Data
-//   const courseHeaders = groupedResults.map(r => `${r.code}\n(${r.credit_unit || 0})`);
-  
-//   const tableHeaders = [
-//     "S/N", 
-//     "NAME OF CANDIDATE", 
-//     "REGISTRATION NUMBER", 
-//     "SEX", 
-//     ...courseHeaders,
-//     "CURRENT\nTCP, TNU, GPA",
-//     "PREVIOUS\nTCP TNU GPA",
-//     "CUMULATIVE\nTCP TNU GPA"
-//   ];
-
-//   const courseTotals = groupedResults.map(r => r.total || "0");
-  
-//   const currentStats = `${currentTCP || 0}  ${currentTNU || 0}  ${currentGPA || 0}`;
-//   const prevStats = `${prevTCP || 0}  ${prevTNU || 0}  ${prevGPA || 0}`;
-//   const cumStats = `${cumTCP || 0}  ${cumTNU || 0}  ${cumGPA || 0}`;
-
-//   const rows = [
-//     [
-//       "1.", 
-//       student?.full_name?.toUpperCase() || "—", 
-//       student?.admission_number || "—", 
-//       student?.sex || "M", 
-//       ...courseTotals,
-//       currentStats,
-//       prevStats,
-//       cumStats
-//     ]
-//   ];
-
-//   // 5. Generate Table
-//   doc.autoTable({
-//     head: [tableHeaders],
-//     body: rows,
-//     startY: 345,
-//     theme: "grid",
-//     styles: { 
-//       fontSize: 8, 
-//       cellPadding: 3, 
-//       halign: "center", 
-//       valign: "middle", 
-//       lineColor: [0, 128, 0], // Green lines
-//       lineWidth: 0.5,
-//       textColor: 0
-//     },
-//     headStyles: { 
-//       fillColor: [255, 255, 255], 
-//       textColor: [0, 0, 0], 
-//       fontStyle: "bold",
-//       fontSize: 7 
-//     },
-//     columnStyles: {
-//       1: { halign: "left", cellWidth: 100 },
-//       2: { cellWidth: 80 }
-//     }
-//   });
-
-//   // --- ADDED SUMMARY AND SIGNATURE DETAILS ---
-//   const finalY = doc.lastAutoTable.finalY + 40;
-//   doc.setFontSize(10);
-//   doc.setFont("helvetica", "bold");
-//   doc.setTextColor(0, 0, 0);
-
-//   // Summary Row
-//   doc.text(`SUMMARY: TOTAL: ${grandTotal || 0}    RANGE OF GPA: ${currentGPA || 0}    RANGE OF CGPA: ${cumGPA || 0}`, 40, finalY);
-
-//   // Signature Lines
-//   const sigLineY = finalY + 60;
-//   doc.setDrawColor(0, 0, 0); // Black lines for signatures
-//   doc.setLineWidth(1);
-  
-//   // Left Signature (Director)
-//   doc.line(40, sigLineY, 300, sigLineY);
-//   doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
-
-//   // Right Signature (Dean)
-//   const rightSigX = pageWidth - 340;
-//   doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
-//   doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
-//   // ------------------------------------------
-
-// // 6. QR Code (Shifted further down)
-//   const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
-//   const qrCodeData = await QRCode.toDataURL(verifyLink);
-//   const qrSize = 60;
-//   const qrX = pageWidth - 100;
-  
-//   // Changed qrY from 'pageHeight - 100' to 'pageHeight - 85' to shift it down
-//   const qrY = pageHeight - 85; 
-
-//   doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-//   doc.setFontSize(8);
-//   // The text is automatically positioned relative to the new qrY
-//   doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
-
-//   // 7. Footer (Positioned at the very bottom)
-//   doc.setFontSize(9);
-//   doc.setTextColor(100);
-//   doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
-
-//   doc.save(`Result_${student?.admission_number || "student"}.pdf`);
-
-//   Swal.fire({
-//     icon: "success",
-//     title: "Download Successful",
-//     text: "The landscape horizontal result has been generated.",
-//   });
-// };
-
-
-
-
-
-
-
-// const generatePDF = async () => {
-//   if (groupedResults.length === 0) {
-//     Swal.fire("No results", "You have no results to download.", "info");
-//     return;
-//   }
-
-//   // Set orientation to Landscape ('l') to match the wide table requirement
-//   const doc = new jsPDF("l", "pt", "a4");
-//   const pageWidth = doc.internal.pageSize.getWidth();
-//   const pageHeight = doc.internal.pageSize.getHeight();
-
-//   // 1. Logo (Centered)
-//   const logo = "/logo.png";
-//   const logoWidth = 50;
-//   const logoHeight = 50;
-//   doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
-
-//   // 2. Header Image (Spans from left to right)
-//   const headerImg = "/resultheader.png";
-//   const headerWidth = pageWidth - 80; 
-//   const headerHeight = 250; 
-//   doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
-
-//   // 3. Option/Program Title
-//   doc.setFontSize(12);
-//   doc.setFont("helvetica", "bold");
-//   doc.setTextColor(0, 0, 0);
-//   doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
-
-//   // 4. Prepare Horizontal Table Data with Sub-Headers
-//   const headerRow1 = [
-//     { content: 'S/N', rowSpan: 2 },
-//     { content: 'NAME OF CANDIDATE', rowSpan: 2 },
-//     { content: 'REGISTRATION NUMBER', rowSpan: 2 },
-//     { content: 'SEX', rowSpan: 2 },
-//     ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
-//     { content: 'CURRENT', colSpan: 3 },
-//     { content: 'PREVIOUS', colSpan: 3 },
-//     { content: 'CUMULATIVE', colSpan: 3 }
-//   ];
-
-//   const headerRow2 = [
-//     'TCP', 'TNU', 'GPA', 
-//     'TCP', 'TNU', 'GPA', 
-//     'TCP', 'TNU', 'GPA'
-//   ];
-
-//   const courseTotals = groupedResults.map(r => r.total || "0");
-
-//   const rows = [
-//     [
-//       "1.", 
-//       student?.full_name?.toUpperCase() || "—", 
-//       student?.admission_number || "—", 
-//       student?.sex || "M", 
-//       ...courseTotals,
-//       currentTCP || 0, currentTNU || 0, currentGPA || 0,
-//       prevTCP || 0, prevTNU || 0, prevGPA || 0,
-//       cumTCP || 0, cumTNU || 0, cumGPA || 0
-//     ]
-//   ];
-
-//   // 5. Generate Table
-//   doc.autoTable({
-//     head: [headerRow1, headerRow2],
-//     body: rows,
-//     startY: 345,
-//     theme: "grid",
-//     styles: { 
-//       fontSize: 7.5, // Adjusted to fit more sub-columns
-//       cellPadding: 2, 
-//       halign: "center", 
-//       valign: "middle", 
-//       lineColor: [0, 128, 0], // Green lines
-//       lineWidth: 0.5,
-//       textColor: 0
-//     },
-//     headStyles: { 
-//       fillColor: [255, 255, 255], 
-//       textColor: [0, 0, 0], 
-//       fontStyle: "bold",
-//     },
-//     columnStyles: {
-//       1: { halign: "left", cellWidth: 90 },
-//       2: { cellWidth: 70 }
-//     }
-//   });
-
-//   // --- ADDED SUMMARY AND SIGNATURE DETAILS ---
-//   const finalY = doc.lastAutoTable.finalY + 40;
-//   doc.setFontSize(10);
-//   doc.setFont("helvetica", "bold");
-//   doc.setTextColor(0, 0, 0);
-
-//   // Summary Row
-//   doc.text(`SUMMARY: TOTAL: ${grandTotal || 0}    RANGE OF GPA: ${currentGPA || 0}    RANGE OF CGPA: ${cumGPA || 0}`, 40, finalY);
-
-//   // Signature Lines
-//   const sigLineY = finalY + 60;
-//   doc.setDrawColor(0, 0, 0); 
-//   doc.setLineWidth(1);
-  
-//   // Left Signature (Director)
-//   doc.line(40, sigLineY, 300, sigLineY);
-//   doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
-
-//   // Right Signature (Dean)
-//   const rightSigX = pageWidth - 340;
-//   doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
-//   doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
-
-//   // 6. QR Code (Shifted further down)
-//   const verifyLink = "https://www.cwmsrfupre.com.ng/resultverification";
-//   const qrCodeData = await QRCode.toDataURL(verifyLink);
-//   const qrSize = 60;
-//   const qrX = pageWidth - 100;
-//   const qrY = pageHeight - 85; 
-
-//   doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-//   doc.setFontSize(8);
-//   doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
-
-//   // 7. Footer
-//   doc.setFontSize(9);
-//   doc.setTextColor(100);
-//   doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
-
-//   doc.save(`Result_${student?.admission_number || "student"}.pdf`);
-
-//   Swal.fire({
-//     icon: "success",
-//     title: "Download Successful",
-//     text: "The landscape horizontal result has been generated.",
-//   });
-// };
-
-
-
-
-
-
-// const payWithPaystack = (amount, onSuccess) => {
-//   const handler = window.PaystackPop.setup({
-//     // key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-//      key: "pk_test_60e1f53bba7c80b60029bf611a26a66a9a22d4e4",
-//     email: studentInfo?.email,
-//     amount: amount * 100, // kobo
-//     currency: "NGN",
-//     channels: ["card"],
-
-//     metadata: {
-//       custom_fields: [
-//         {
-//           display_name: "Student Name",
-//           variable_name: "student_name",
-//           value: student?.full_name || "Student",
-//         },
-//         {
-//           display_name: "Purpose",
-//           variable_name: "purpose",
-//           value: "Result Download",
-//         },
-//       ],
-//     },
-
-//     callback: function (response) {
-//       Swal.fire({
-//         icon: "success",
-//         title: "Payment Successful",
-//         text: "Payment confirmed. Generating your result...",
-//         timer: 2000,
-//         showConfirmButton: false,
-//       });
-
-//       onSuccess(); // ✅ proceed to PDF generation
-//     },
-
-//     onClose: function () {
-//       Swal.fire({
-//         icon: "info",
-//         title: "Payment Cancelled",
-//         text: "You must complete payment to download your result.",
-//       });
-//     },
-//   });
-
-//   handler.openIframe();
-// };
-
-
-
-
-
-

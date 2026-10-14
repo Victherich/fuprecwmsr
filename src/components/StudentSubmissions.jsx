@@ -247,7 +247,7 @@ const CloseButton = styled.button`
 
 // ============= MAIN COMPONENT =============
 const StudentSubmissions = () => {
-  const { courses, categories, api_url } = useContext(Context);
+  const { courses, categories, api_url, semesters} = useContext(Context);
   const studentInfo = useSelector((state) => state.studentInfo);
   const [submissions, setSubmissions] = useState([]);
   const [openForm, setOpenForm] = useState(false);
@@ -260,9 +260,10 @@ const StudentSubmissions = () => {
 const [filterCategory, setFilterCategory] = useState("");
 const [filterStatus, setFilterStatus] = useState("");
 const [filterSearch, setFilterSearch] = useState("");
+const [selectedSemester, setSelectedSemester]=useState(null)
 
 
-    
+    console.log(submissions)
 
 
 
@@ -410,6 +411,41 @@ const [filterSearch, setFilterSearch] = useState("");
 
 
 
+
+// ---------- UPDATE SUBMISSION SEMESTER ----------
+  const updateSubmissionSemester = async (submissionId, newSemesterId) => {
+    if (!studentInfo?.id) return;
+
+    try {
+      const res = await axios.post(
+        `${api_url}/update_submission_semester.php`,
+        {
+          submission_id: submissionId,
+          student_id: studentInfo.id,
+          new_semester_id: newSemesterId
+        },
+        {
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+
+      if (res.data.success) {
+        Swal.fire("Success", res.data.message || "Semester updated successfully.", "success");
+        // Refresh the submissions list automatically
+        fetchSubmissions();
+      } else {
+        Swal.fire("Error", res.data.error || "Could not update submission semester.");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Something went wrong while updating.", "error");
+      console.error(err);
+    }
+  };
+
+
+
+
+
 const filteredSubmissions = submissions.filter((sub) => {
   const matchesCourse =
     !filterCourse || String(sub.course_id) === String(filterCourse);
@@ -446,7 +482,7 @@ const filteredSubmissions = submissions.filter((sub) => {
   // ---------- RENDER ----------
   return (
     <Container>
-      <Title>Your Submissions</Title>
+      <Title>Your Submissions2</Title>
 
 <div
   style={{
@@ -581,6 +617,15 @@ const filteredSubmissions = submissions.filter((sub) => {
                     View Uploaded File
                   </FileLink>
                 )}
+                {/* <select
+                style={{width:"100%"}}
+                onChange={(e)=>setSelectedSemester(e.target.value)}>
+              
+                  {semesters.map((semester)=>(
+                    <option value={semester.id}>{semester.name}</option>
+                  ))}
+                </select>
+                <button >Update Semester</button> */}
               </SubmissionItem>
             );
           })

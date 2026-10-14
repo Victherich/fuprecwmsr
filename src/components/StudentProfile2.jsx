@@ -541,6 +541,8 @@ import {
   FaReply,
   FaGlobe,
   FaHourglass,
+  FaCompressAlt,
+  FaPaperPlane,
 } from "react-icons/fa";
 import { Context } from "./Context";
 
@@ -548,7 +550,7 @@ const Container = styled.div`
   background: #f8fafc;
   min-height: 100vh;
   padding: 10px;
-  font-family: "Poppins", sans-serif;
+  // font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -759,10 +761,13 @@ const StudentProfile2 = ({ studentId, semesterId, onNavigate, onLogout }) => {
   const [student, setStudent] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [isModalOpen2, setModalOpen2] = useState(false);
+    const [isModalOpen3, setModalOpen3] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [newName, setNewName] = useState("");
   const { programs, semesters, api_url } = useContext(Context);
-
+const [submissions, setSubmissions]=useState(null);
+const [hasExamtype, setHasExamType]=useState(false);
+const [courseNumber, setCourseNumber]=useState(null);
 
 
   useEffect(() => {
@@ -840,11 +845,97 @@ const StudentProfile2 = ({ studentId, semesterId, onNavigate, onLogout }) => {
     return () => clearInterval(interval);
   }, [api_url]);
 
+
+
+
+// ---------- FETCH SUBMISSIONS ----------
+  const fetchSubmissions = async () => {
+    if (!studentId || !semesterId) return;
+
+    try {
+      const res = await axios.get(
+        `${api_url}/get_student_submissions.php`,
+        { params: { student_id: studentId, semester_id: semesterId, t: Date.now() } }
+      );
+
+      if (res.data.success) {
+        const submissionList = res.data.submissions;
+        setSubmissions(submissionList);
+
+        // Check if any object has a non-empty exam_type value
+        const hasExamType = submissionList.some(
+          item => item.exam_type !== null && item.exam_type !== undefined && item.exam_type !== ''
+        );
+        
+        // Replace 'setHasExamType' with your actual state setter function name
+        setHasExamType(hasExamType); 
+
+      } else {
+        Swal.fire("Error", res.data.error || "Could not load submissions.");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Something went wrong while loading.", "error");
+      console.error(err);
+    }
+  };
+
+  useEffect(()=>{
+    fetchSubmissions();
+  },[])
+
+
+
+
+// ---------- UPDATE COMPLETED SEMESTERS ----------
+  const updateCompletedSemesters = async () => {
+    // Ensure we have the student ID and the semester ID to update
+if(!courseNumber){
+  Swal.fire({text:"Please enter a value"});
+  return;
+}
+
+    if (!studentId || !semesterId) {
+      Swal.fire("Error", "Missing student ID or semester ID.", "error");
+      return;
+    }
+
+Swal.fire({text:"Please wait..."})
+Swal.showLoading();
+
+    try {
+      const res = await axios.post(
+        `${api_url}/update_completed_semesters.php`,
+        {
+          student_id: studentId,
+          semester_id: semesterId
+        },
+        {
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+
+      if (res.data.success) {
+        Swal.fire("Success", res.data.message || "Completed semesters updated successfully.", "success");
+        setModalOpen3(false);
+        // Optional: If you keep completed semesters in local state, update it here:
+        // setCompletedSemesters(res.data.completed_semsters);
+        
+      } else {
+        Swal.fire("Error", res.data.error || "Could not update completed semesters.");
+      }
+    } catch (err) {
+      Swal.fire("Error", "Something went wrong while updating completed semesters.", "error");
+      console.error(err);
+    }
+  };
+
+
+
+
   if (!student)
     return <p style={{ textAlign: "center", color: "green" }}>Loading...</p>;
 
 
-console.log(semesterId)
 
   // Parse semester ID from student.level_semester and find its name from context
   // const parsedLevelSemester = student.level_semester ? JSON.parse(student.level_semester) : null;
@@ -1008,6 +1099,14 @@ console.log(semesterId)
             <Value>Academic discussions.</Value>
           </Card>
 
+           {hasExamtype&&<Card onClick={() => setModalOpen3(true)}>
+            <Icon>
+              <FaPaperPlane/>
+            </Icon>
+            <Label >Semester Completion form</Label>
+            <Value>Fill this form only at the end of this semester to unlock your next semester.</Value>
+          </Card>}
+
           <Card onClick={onLogout}>
             <Icon style={{ color: "red" }}>
               <FaSignOutAlt />
@@ -1050,6 +1149,27 @@ console.log(semesterId)
               <ButtonGroup>
                 <SaveButton onClick={handleSaveName}>Save</SaveButton>
                 <CancelButton onClick={() => setModalOpen2(false)}>
+                  Cancel
+                </CancelButton>
+              </ButtonGroup>
+            </Modal>
+          </ModalOverlay>
+        )}
+
+        {isModalOpen3 && (
+          <ModalOverlay>
+            <Modal>
+           
+              <p style={{fontWeight:"bold", fontSize:"1.2rem"}}>Important notice: Ensure that you are filling and submitting this only at the end of this semester , as it can affect your performance.</p>
+                 <p>How many courses did you do this semester?</p>
+              <Input
+                type="number"
+                value={courseNumber}
+                onChange={(e) => setCourseNumber(e.target.value)}
+              />
+              <ButtonGroup>
+                <SaveButton onClick={updateCompletedSemesters}>Submit</SaveButton>
+                <CancelButton onClick={() => setModalOpen3(false)}>
                   Cancel
                 </CancelButton>
               </ButtonGroup>

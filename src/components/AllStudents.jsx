@@ -570,8 +570,11 @@ const AllStudents = () => {
     axios.get(`${api_url}/get_all_students.php`)
       .then(res => {
         if (res.data.success) {
-          setStudents(res.data.students);
-          setFilteredStudents(res.data.students);
+
+       const sortedStudents = res.data.students.sort((a, b) => b.id - a.id);
+          
+          setStudents(sortedStudents);
+          setFilteredStudents(sortedStudents);
         } else {
           setError(res.data.error || 'Failed to load students.');
         }

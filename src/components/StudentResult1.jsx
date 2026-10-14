@@ -1242,14 +1242,17 @@ const handleCheckApprovalAndDownload = async () => {
 
 </Container>)}
 
- {(window.location.pathname === '/admin' || semesterId == 2) && (
+
   <StudentResult2
     prevTcp={cumTCP}
     prevTnu={cumTNU}
     prevGpa={cumGPA} 
     id={id}
   />
-)}
+
+
+ 
+
 
       <UploadProofModal 
         isOpen={isUploadModalOpen}

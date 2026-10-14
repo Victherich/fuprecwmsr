@@ -113,6 +113,7 @@ import ExamPortalLogin from './components/ExamPortalLogin';
 import StudentResultPortalLogin from './components/StudentResultPortalLogin';
 import LecturerForgotPassword from './components/LecturerForgotPassword';
 import LecturerResetPassword from './components/LecturerResetPassword';
+import CourseTable from './components/CourseTable';
 
 
 function App() {
@@ -203,6 +204,7 @@ function App() {
         <Route path='/zerowasteclub' element={<ZeroWastePage/>}/>
         <Route path='/examsportalaccess' element={<ExamPortalLogin/>}/>
         <Route path='/studentresultportallogin' element={<StudentResultPortalLogin/>}/>
+        <Route path='/courselist' element={<CourseTable/>}/>
         
 
         <Route path='/studentlogin' element={<StudentLogin/>}/>
@@ -233,6 +235,7 @@ function App() {
          <Route path="/lecturerresetpassword/:token" element={<LecturerResetPassword/>} />
         <Route path="/lecturer" element={<PrivateLecturerDashboard />}>
           <Route path="" element={<LecturerDashboard />} />
+          
         </Route>
       
       </Routes>

@@ -121,7 +121,7 @@ export default function StudentPaymentProofs({id}) {
   const [proofs, setProofs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+  const [applicationFee, setApplicationFee] = useState(null);
   const { api_url, semesters } = useContext(Context);
   const studentInfo = useSelector((state) => state.studentInfo);
   const studentId = id
@@ -150,13 +150,103 @@ export default function StudentPaymentProofs({id}) {
     fetchProofs();
   }, [studentId, api_url]);
 
-  if (loading) return <StatusMessage>Loading payment proofs...</StatusMessage>;
-  if (error) return <StatusMessage error>Error: {error}</StatusMessage>;
-  if (proofs.length === 0) return <StatusMessage>No payment proofs uploaded yet.</StatusMessage>;
+
+
+
+useEffect(() => {
+    if (!studentId) return;
+
+    const fetchProofs = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${api_url}/get_student_payment_proofs.php?student_id=${studentId}`);
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to fetch payment proofs');
+        }
+
+        setProofs(data.proofs);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // NEW: Fetch Application Fee details
+    const fetchApplicationFee = async () => {
+      try {
+        const response = await fetch(`${api_url}/get_student_application_fee.php?student_id=${studentId}`);
+        const data = await response.json();
+        if (data.success) {
+          setApplicationFee(data.applicationFee);
+        }
+      } catch (err) {
+        console.error("Failed to fetch application fee:", err);
+      }
+    };
+
+    fetchProofs();
+    fetchApplicationFee();
+  }, [studentId, api_url]);
+
+
+
+  // if (loading) return <StatusMessage>Loading payment proofs...</StatusMessage>;
+  // if (error) return <StatusMessage error>Error: {error}</StatusMessage>;
+  // if (proofs.length === 0) return <StatusMessage>No payment proofs uploaded yet.</StatusMessage>;
 
   return (
     <Container>
         <h2 style={{textAlign:"center"}}>Payments and Financials</h2>
+
+        {/* NEW: Application Fee Table Card */}
+      <Card>
+        <Header>Admission Application Fee Payment</Header>
+        <TableScrollContainer>
+          <StyledTable>
+            <thead>
+              <TableHeaderRow>
+                <Th>Amount Paid</Th>
+                {/* <Th align="center">Transaction Ref</Th> */}
+                <Th align="center">Date Submitted</Th>
+                <Th align="right">Action</Th>
+              </TableHeaderRow>
+            </thead>
+            <tbody>
+              {applicationFee ? (
+                <TableRow>
+                  <Td style={{ fontWeight: '600' }}>{applicationFee.amount_paid || 'N/A'}</Td>
+                  {/* <Td align="center">{applicationFee.transaction_reference || 'N/A'}</Td> */}
+                  <Td align="center">
+                    {applicationFee.created_at ? new Date(applicationFee.created_at).toLocaleDateString() : 'N/A'}
+                  </Td>
+                  <Td align="right">
+                    {applicationFee.proof_of_payment_path ? (
+                      <DownloadLink 
+                        href={`${api_url}/${applicationFee.proof_of_payment_path}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                      >
+                        Download Proof
+                      </DownloadLink>
+                    ) : 'No Proof Uploaded'}
+                  </Td>
+                </TableRow>
+              ) : (
+                <TableRow>
+                  <Td colSpan="4" align="center" style={{ padding: '10px' }}>
+                    No application fee record found.
+                  </Td>
+                </TableRow>
+              )}
+            </tbody>
+          </StyledTable>
+        </TableScrollContainer>
+      </Card>
+
+
       <Card>
         <Header>Result Payment Proofs</Header>
         
@@ -165,7 +255,7 @@ export default function StudentPaymentProofs({id}) {
             <thead>
               <TableHeaderRow>
                 <Th>ID</Th>
-                <Th align="center">Semester ID</Th>
+                <Th align="center">Semester</Th>
                 <Th align="center">Status</Th>
                 <Th align="center">Date</Th>
                 <Th align="right">Action</Th>

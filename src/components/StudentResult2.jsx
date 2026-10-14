@@ -575,7 +575,8 @@ const handleCheckApprovalAndDownload = async () => {
 
 
   return (
-    <Container>
+    <>
+    {(window.location.pathname === '/admin' || semesterId == 2) && (<Container>
 
     <Title style={{marginTop:"50px"}}>Result for {semesters?.find((s) => Number(s.id) === Number(semester))?.name || `Semester ${semester}`}</Title>
 
@@ -700,7 +701,15 @@ const handleCheckApprovalAndDownload = async () => {
           </Card>}
         </>
       )}
-    </Container>
+    </Container>)}
+  
+      <StudentResult3
+        prevTcp={cumTCP}
+        prevTnu={cumTNU}
+        prevGpa={cumGPA} 
+        id={id}
+      />
+    </>
   );
 };
 

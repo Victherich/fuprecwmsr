@@ -1,160 +1,3 @@
-// import React, { useContext, useState } from 'react';
-// import axios from 'axios';
-// import Swal from 'sweetalert2';
-// import styled from 'styled-components';
-// import { useDispatch } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
-// import { studentLogin } from '../Features/Slice'; // Update path if needed
-// import { Context } from './Context';
-
-// // Styled Components
-// const Container = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100vh;
-//   background-color: white;
-//   color: green;
-// `;
-
-// const Form = styled.form`
-//   background-color: white;
-//   padding: 20px;
-//   border-radius: 10px;
-//   width: 100%;
-//   max-width: 400px;
-// `;
-
-// const Input = styled.input`
-//   width: 100%;
-//   padding: 12px;
-//   margin: 10px 0;
-//   border-radius: 5px;
-//   border: 1px solid #ddd;
-//   font-size: 16px;
-// `;
-
-// const Button = styled.button`
-//   width: 100%;
-//   padding: 12px;
-//   background-color: green;
-//   color: white;
-//   border-radius: 5px;
-//   font-size: 16px;
-//   cursor: pointer;
-//   border: none;
-//   &:hover {
-//     background-color: darkorange;
-//   }
-// `;
-
-// const Label = styled.label`
-//   font-size: 18px;
-//   font-weight: bold;
-//   margin-bottom: 5px;
-// `;
-
-// const Title = styled.h2`
-//   text-align: center;
-// `;
-
-// const StudentLogin = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   const { possible_levels_for_studnet_login} = useContext(Context)
-
-//   const handleLogin = async (e) => {
-//     e.preventDefault();
-
-//     if (!email || !password) {
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Missing fields',
-//         text: 'Email and password are required.',
-//       });
-//       return;
-//     }
-
-//     Swal.fire({
-//       title: 'Logging in...',
-//       text: 'Please wait...',
-//       didOpen: () => {
-//         Swal.showLoading();
-//       },
-//     });
-
-//     try {
-//       const res = await axios.post('https://www.cwmsrfupre.com.ng/base/student_login.php', {
-//         email: email,
-//         password: password,
-//       });
-
-//       if (res.data.success) {
-//         Swal.fire({
-//           icon: 'success',
-//           title: 'Login Successful',
-//           text: res.data.message,
-//         });
-
-//         const studentInfo = res.data.student;
-//         const studentToken = res.data.token;
-
-//         dispatch(studentLogin({ studentInfo, studentToken }));
-//         navigate('/studentdashboard');
-//       } else {
-//         Swal.fire({
-//           icon: 'error',
-//           title: 'Login Failed',
-//           text: res.data.error,
-//         });
-//       }
-//     } catch (error) {
-//       console.error(error);
-//       Swal.fire({
-//         icon: 'error',
-//         title: 'Error',
-//         text: 'Could not connect to server.',
-//       });
-//     }
-//   };
-
-//   return (
-//     <Container>
-//       <Form onSubmit={handleLogin}>
-//         <Title>Student Login</Title>
-//         <div>
-//           <Label>Email</Label>
-//           <Input
-//             type="email"
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             placeholder="Enter your email"
-//             required
-//           />
-//         </div>
-//         <div>
-//           <Label>Password</Label>
-//           <Input
-//             type="password"
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             placeholder="Enter your password"
-//             required
-//           />
-//         </div>
-//         <Button type="submit">Login</Button>
-//         <p style={{ color: 'green', cursor: 'pointer' }} onClick={() => navigate('/studentforgotpassword')}>
-//           Forgot Password?
-//         </p>
-//       </Form>
-//     </Container>
-//   );
-// };
-
-// export default StudentLogin;
-
 
 
 import React, { useContext, useState } from 'react';
@@ -177,15 +20,92 @@ const StudentLogin = () => {
   const { possible_levels_for_studnet_login, api_url, semesters } = useContext(Context);
   
 
-  const handleLogin = async (e) => {
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!email || !password ||!selectedSemester) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Missing fields',
+  //       text: 'Email, password and semster are required.',
+  //     });
+  //     return;
+  //   }
+
+
+
+  //   Swal.fire({
+  //     title: 'Logging in...',
+  //     text: 'Please wait...',
+  //     didOpen: () => Swal.showLoading(),
+  //   });
+
+  //   try {
+  //     const res = await axios.post(
+  //       `${api_url}/student_login.php`,
+  //       {
+  //         email,
+  //         password,
+  //         selectedSemester, // 🔹 pass selected level-semester
+  //       }
+  //     );
+
+  //     if (res.data.success) {
+  //       Swal.close();
+
+  //       const studentInfo = res.data.student;
+  //       const studentToken = res.data.token;
+
+  //       dispatch(studentLogin({ studentInfo, studentToken }));
+  //       navigate('/studentdashboard');
+  //     } else {
+  //       Swal.fire({
+  //         icon: 'error',
+  //         title: 'Login Failed',
+  //         text: res.data.error,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Error',
+  //       text: 'Could not connect to server.',
+  //     });
+  //     console.error(error);
+  //   }
+  // };
+
+
+const handleLogin = async (e) => {
     e.preventDefault();
 
-    if (!email || !password ||!selectedSemester) {
+    if (!email || !password || !selectedSemester) {
       Swal.fire({
         icon: 'error',
         title: 'Missing fields',
-        text: 'Email, password and semster are required.',
+        text: 'Email, password and semester are required.',
       });
+      return;
+    }
+
+    // Find the name of the selected semester for the warning message
+    const currentSemesterObj = semesters.find((s) => String(s.id) === String(selectedSemester));
+    const semesterName = currentSemesterObj ? currentSemesterObj.name : `Semester ID: ${selectedSemester}`;
+
+    // 🔹 SweetAlert Confirmation Dialog
+    const confirmation = await Swal.fire({
+      title: 'Confirm Semester Selection',
+      text: `You are about to log in to Your "${semesterName}". Make sure its the correct year and semester before you login`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, proceed',
+      cancelButtonText: 'Cancel'
+    });
+
+    // If user clicks Cancel, stop the login process
+    if (!confirmation.isConfirmed) {
       return;
     }
 
@@ -229,6 +149,7 @@ const StudentLogin = () => {
       console.error(error);
     }
   };
+
 
   return (
     <Container>

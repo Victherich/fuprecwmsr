@@ -686,12 +686,15 @@ const EnrollSubmitButton = styled.button`
 `;
 
 const EnrollPage = ({ studentId, semesterId }) => {
-  const { levels, courses,courses2, api_url } = useContext(Context);
+  const { levels, courses, api_url } = useContext(Context);
   const [student, setStudent] = useState({});
   const [selectedLevel, setSelectedLevel] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+
+  console.log(student)
+
 
   // 📡 Fetch student details
   useEffect(() => {
@@ -721,10 +724,26 @@ const EnrollPage = ({ studentId, semesterId }) => {
     if (student.id) fetchEnrolledCourses();
   }, [student, semesterId]);
 
+
+
   // Filter courses by level in the modal selector
-  const filteredCourses = courses.filter(
-    (course) => !selectedLevel || course.level_id == selectedLevel
-  );
+ // Assuming student object is available in this scope, e.g., student.admission_session
+const studentSession = student?.admission_session || "";
+const isTargetBatch = studentSession >= "2026/2027"; // Lexicographical comparison works perfectly for "YYYY/YYYY" format
+
+const filteredCourses = courses.filter((course) => {
+
+  // 2. Apply admission session rule
+  if (isTargetBatch) {
+    // Students with 2026/2027 and above see only courses for 2026/2027
+    return course.admission_session === "2026/2027";
+  } else {
+    // Other students see the rest of the courses
+    return course.admission_session !== "2026/2027";
+  }
+});
+
+
 
   // ✅ Secure & Structured Enroll Handler
   const handleEnroll = async () => {
@@ -872,7 +891,7 @@ const EnrollPage = ({ studentId, semesterId }) => {
               onChange={(e) => setSelectedCourse(e.target.value)}
             >
               <option value="">Choose a course...</option>
-              {courses2.map((course) => (
+              {filteredCourses.map((course) => (
                 <option key={course.id} value={course.id}>
                   {course.code} — {course.title}
                 </option>

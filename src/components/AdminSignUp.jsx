@@ -176,7 +176,9 @@ const AdminSignup = () => {
 <Select name="role" value={form.role} onChange={handleChange} required>
   <option value="" disabled>--Select Role--</option> {/* Default empty option */}
   <option value="Admin">Admin</option>
-  {/* <option value="Lecturer">Lecturer</option> */}
+  {/* <option value="admin2">Admin Level 2</option> */}
+  {/* <option value="admin3">Admin Level 3</option> */}
+  
 </Select>
 
 

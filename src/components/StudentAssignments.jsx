@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Context } from './Context';
+import Swal from 'sweetalert2';
 
 // ---------- MODERNIZED STYLED COMPONENTS ----------
 const Container = styled.div`
@@ -96,6 +97,7 @@ const StudentAssignments = ({ studentId, semesterId }) => {
   const [filterCourse, setFilterCourse] = useState("");
 const [filterSearch, setFilterSearch] = useState("");
 const {api_url}=useContext(Context);
+  const [student, setStudent] = useState({});
 
 
 
@@ -140,6 +142,21 @@ const {api_url}=useContext(Context);
 
 
 
+
+  useEffect(() => {
+    if (!studentId) return;
+
+    axios
+      .get(`${api_url}/get_student_by_id.php?id=${studentId}`)
+      .then((res) => {
+        if (res.data.success) setStudent(res.data.student);
+      })
+      .catch(() => Swal.fire("Error", "Failed to fetch student details.", "error"));
+  }, [studentId, api_url]);
+
+
+
+
   const getCourseInfo = (courseId) => {
     const course = courses.find(c => c.id === parseInt(courseId));
     return course ? `${course.code} - ${course.title}` : `Course ID: ${courseId}`;
@@ -156,6 +173,28 @@ const {api_url}=useContext(Context);
 
   return matchesCourse && matchesSearch;
 });
+
+
+
+
+// Assuming student object is available in this scope, e.g., student.admission_session
+const studentSession = student?.admission_session || "";
+const isTargetBatch = studentSession >= "2026/2027"; // Lexicographical comparison works perfectly for "YYYY/YYYY" format
+
+const filteredCourses = courses.filter((course) => {
+
+  // 2. Apply admission session rule
+  if (isTargetBatch) {
+    // Students with 2026/2027 and above see only courses for 2026/2027
+    return course.admission_session === "2026/2027";
+  } else {
+    // Other students see the rest of the courses
+    return course.admission_session !== "2026/2027";
+  }
+});
+
+
+
 
 
   return (
@@ -183,7 +222,7 @@ const {api_url}=useContext(Context);
     }}
   >
     <option value="">All Courses</option>
-    {courses.map((c) => (
+    {filteredCourses.map((c) => (
       <option key={c.id} value={c.id}>
         {c.code} - {c.title}
       </option>

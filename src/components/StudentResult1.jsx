@@ -752,7 +752,7 @@ const StudentResult1 = ({id}) => {
   const studentInfo = useSelector((state) => state.studentInfo);
   const studentId2 = studentInfo?.id;
   const semesterId=studentInfo?.selected_semester;
-  const { courses, programs, api_url,semesters, isUploadModalOpen, setIsUploadModalOpen } = useContext(Context);
+  const { courses, programs, api_url,semesters, isUploadModalOpen, setIsUploadModalOpen, generatePDF } = useContext(Context);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState(null);
@@ -936,131 +936,205 @@ const location = useLocation();
   };
 
   // --- GENERATE PDF USING PRE-CALCULATED VALUES ---
-  const generatePDF = async () => {
-    if (groupedResults.length === 0) {
-      Swal.fire("No results", "You have no results to download.", "info");
-      return;
-    }
+//   const generatePDF = async () => {
+//     if (groupedResults.length === 0) {
+//       Swal.fire("No results", "You have no results to download.", "info");
+//       return;
+//     }
 
-    const doc = new jsPDF("l", "pt", "a4");
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
+//     const doc = new jsPDF("l", "pt", "a4");
+//     const pageWidth = doc.internal.pageSize.getWidth();
+//     const pageHeight = doc.internal.pageSize.getHeight();
 
-    // Logo (Centered)
-    const logo = "/logo.png";
-    const logoWidth = 50;
-    const logoHeight = 50;
-    doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
+//     // Logo (Centered)
+//     const logo = "/logo.png";
+//     const logoWidth = 50;
+//     const logoHeight = 50;
+//     doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
 
-    // Header Image (Full width)
-    const headerImg = "/resultheader.png";
-    const headerWidth = pageWidth - 80; 
-    const headerHeight = 250; 
-    doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
+//     // // Header Image (Full width)
+//     // const headerImg = "/resultheader.png";
+//     // const headerWidth = pageWidth - 80; 
+//     // const headerHeight = 250; 
+//     // doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
 
-    // Option/Program Title
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 0, 0);
-    doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
 
-    // --- TABLE STRUCTURE ---
-    const headerRow1 = [
-      { content: 'S/N', rowSpan: 2 },
-      { content: 'NAME OF CANDIDATE', rowSpan: 2 },
-      { content: 'REGISTRATION NUMBER', rowSpan: 2 },
-      { content: 'SEX', rowSpan: 2 },
-      ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
-      { content: 'CURRENT', colSpan: 3 },
-      { content: 'PREVIOUS', colSpan: 3 },
-      { content: 'CUMULATIVE', colSpan: 3 }
-    ];
+// // --- DESIGNED HEADER BOX (Expanded to cover ~half the page height) ---
+//     const headerX = 40;
+//     const headerY = 65;
+//     const headerWidth = pageWidth - 80;
+//     const headerHeight = 250; 
 
-    const headerRow2 = [
-      'TCP', 'TNU', 'GPA', 
-      'TCP', 'TNU', 'GPA', 
-      'TCP', 'TNU', 'GPA'
-    ];
+//     // Outer Box
+//     doc.setDrawColor(0, 128, 0); // Green border to match table theme
+//     doc.setLineWidth(1);
+//     doc.rect(headerX, headerY, headerWidth, headerHeight);
 
-    const rows = [
-      [
-        "1.", 
-        student?.full_name?.toUpperCase() || "—", 
-        student?.admission_number || "—", 
-        student?.sex || "M", 
-        ...courseTotals,
-        currentTCP, currentTNU, currentGPA,
-        prevTCP, prevTNU, prevGPA,
-        cumTCP, cumTNU, cumGPA
-      ]
-    ];
+//     // Horizontal Divider line (Moved further down to give much more space to the upper part)
+//     const splitY = headerY + 145;
+//     doc.line(headerX, splitY, headerX + headerWidth, splitY);
 
-    doc.autoTable({
-      head: [headerRow1, headerRow2],
-      body: rows,
-      startY: 345,
-      theme: "grid",
-      styles: { 
-        fontSize: 7.5, 
-        cellPadding: 2, 
-        halign: "center", 
-        valign: "middle", 
-        lineColor: [0, 128, 0],
-        lineWidth: 0.5,
-        textColor: 0
-      },
-      headStyles: { 
-        fillColor: [255, 255, 255], 
-        textColor: [0, 0, 0], 
-        fontStyle: "bold",
-      },
-      columnStyles: {
-        1: { halign: "left", cellWidth: 90 },
-        2: { cellWidth: 70 }
-      }
-    });
+//     // Vertical Divider line separating left officials & right grade analysis (bottom section only)
+//     const verticalSplitX = headerX + 410;
+//     doc.line(verticalSplitX, splitY, verticalSplitX, headerY + headerHeight);
 
-    // --- SUMMARY & SIGNATURES ---
-    const finalY = doc.lastAutoTable.finalY + 40;
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
+//     // Top Section: University Titles (Centered, larger fonts & expanded spacing)
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(0, 128, 0); // Green text
 
-    doc.text(`SUMMARY: TOTAL: ${grandTotal}     RANGE OF GPA: ${currentGPA}     RANGE OF CGPA: ${cumGPA}`, 40, finalY);
+//     doc.setFontSize(20);
+//     doc.text("FEDERAL UNIVERSITY OF PETROLEUM RESOURCES, EFFURUN", pageWidth / 2, headerY + 32, { align: "center" });
 
-    const sigLineY = finalY + 60;
-    doc.setDrawColor(0, 0, 0); 
-    doc.setLineWidth(1);
+//     doc.setFontSize(14.5);
+//     doc.text("CENTRE FOR WASTE MANAGEMENT AND SUSTAINABLE RESOURCES", pageWidth / 2, headerY + 68, { align: "center" });
     
-    doc.line(40, sigLineY, 300, sigLineY);
-    doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+//      doc.setFontSize(14);
+//     doc.text(`${programName?.toUpperCase()} PROGRAM`, pageWidth / 2, headerY + 104, { align: "center" });
 
-    const rightSigX = pageWidth - 340;
-    doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
-    doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+//     doc.setFontSize(13);
+//     doc.text(`RESULT FOR ${semesters?.find((s) => Number(s.id) === Number(semester))?.name.toUpperCase()}`, pageWidth / 2, headerY + 132, { align: "center" });
 
-    // --- QR CODE & FOOTER ---
-    const verifyLink = "https://cwmsrfupre.com.ng/resultverification";
-    const qrCodeData = await QRCode.toDataURL(verifyLink);
-    const qrSize = 60;
-    const qrX = pageWidth - 100;
-    const qrY = pageHeight - 85; 
+   
+//     // Bottom Left Section: University Officials (Adjusted to fit remaining lower space)
+//     doc.setFontSize(9.5);
+//     doc.setTextColor(0, 0, 0);
+//     const leftTextX = headerX + 15;
+//     doc.text("VICE CHANCELLOR: PROF. E.O. AGBALAGBA", leftTextX, splitY + 28);
+//     doc.text("DEAN PG SCHOOL: PROF. (MRS) J.E. EMUDINUGHE", leftTextX, splitY + 60);
+//     doc.text("DIRECTOR CWMSR: DR AKINYEMI O. OGUNKEYEDE", leftTextX, splitY + 92);
 
-    doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-    doc.setFontSize(8);
-    doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+//     // Bottom Right Section: Grade Analysis Table
+//     const gradeX = verticalSplitX + 20;
+//     doc.setFont("helvetica", "bold");
+//     doc.setFontSize(10.5);
+//     doc.text("GRADE ANALYSIS", gradeX + 125, splitY + 18, { align: "center" });
+    
+//     doc.setFontSize(9);
+//     doc.text("RANGE OF SCORES", gradeX, splitY + 38);
+//     doc.text("GRADE", gradeX + 160, splitY + 38);
+//     doc.text("POINT", gradeX + 235, splitY + 38);
 
-    doc.setFontSize(9);
-    doc.setTextColor(100);
-    doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+//     doc.setFont("helvetica", "normal");
+//     const grades = [
+//       { range: "70-100", grade: "A", point: "5" },
+//       { range: "60-69",  grade: "B", point: "4" },
+//       { range: "50-59",  grade: "C", point: "3" },
+//       { range: "0-49",   grade: "F", point: "0" }
+//     ];
 
-    doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+//     let rowY = splitY + 56;
+//     grades.forEach(g => {
+//       doc.text(g.range, gradeX + 10, rowY);
+//       doc.text(g.grade, gradeX + 172, rowY);
+//       doc.text(g.point, gradeX + 245, rowY);
+//       rowY += 13;
+//     });
 
-    Swal.fire({
-      icon: "success",
-      title: "Download Successful",
-      text: "Your result has been Downloaded, Please check your downloads folder.",
-    });
-  };
+
+    
+//     // Option/Program Title
+//     doc.setFontSize(12);
+//     doc.setFont("helvetica", "bold");
+//     doc.setTextColor(0, 0, 0);
+//     doc.text(`${programName?.toUpperCase()} PROGRAM RESULT`, 40, 340);
+
+//     // --- TABLE STRUCTURE ---
+//     const headerRow1 = [
+//       { content: 'S/N', rowSpan: 2 },
+//       { content: 'NAME OF CANDIDATE', rowSpan: 2 },
+//       { content: 'REGISTRATION NUMBER', rowSpan: 2 },
+//       { content: 'SEX', rowSpan: 2 },
+//       ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
+//       { content: 'CURRENT', colSpan: 3 },
+//       { content: 'PREVIOUS', colSpan: 3 },
+//       { content: 'CUMULATIVE', colSpan: 3 }
+//     ];
+
+//     const headerRow2 = [
+//       'TCP', 'TNU', 'GPA', 
+//       'TCP', 'TNU', 'GPA', 
+//       'TCP', 'TNU', 'GPA'
+//     ];
+
+//     const rows = [
+//       [
+//         "1.", 
+//         student?.full_name?.toUpperCase() || "—", 
+//         student?.admission_number || "—", 
+//         student?.sex || "M", 
+//         ...courseTotals,
+//         currentTCP, currentTNU, currentGPA,
+//         prevTCP, prevTNU, prevGPA,
+//         cumTCP, cumTNU, cumGPA
+//       ]
+//     ];
+
+//     doc.autoTable({
+//       head: [headerRow1, headerRow2],
+//       body: rows,
+//       startY: 345,
+//       theme: "grid",
+//       styles: { 
+//         fontSize: 7.5, 
+//         cellPadding: 2, 
+//         halign: "center", 
+//         valign: "middle", 
+//         lineColor: [0, 128, 0],
+//         lineWidth: 0.5,
+//         textColor: 0
+//       },
+//       headStyles: { 
+//         fillColor: [255, 255, 255], 
+//         textColor: [0, 0, 0], 
+//         fontStyle: "bold",
+//       },
+//       columnStyles: {
+//         1: { halign: "left", cellWidth: 90 },
+//         2: { cellWidth: 70 }
+//       }
+//     });
+
+//     // --- SUMMARY & SIGNATURES ---
+//     const finalY = doc.lastAutoTable.finalY + 40;
+//     doc.setFontSize(10);
+//     doc.setFont("helvetica", "bold");
+
+//     doc.text(`SUMMARY: TOTAL: ${grandTotal}     RANGE OF GPA: ${currentGPA}     RANGE OF CGPA: ${cumGPA}`, 40, finalY);
+
+//     const sigLineY = finalY + 60;
+//     doc.setDrawColor(0, 0, 0); 
+//     doc.setLineWidth(1);
+    
+//     doc.line(40, sigLineY, 300, sigLineY);
+//     doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+
+//     const rightSigX = pageWidth - 340;
+//     doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
+//     doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+
+//     // --- QR CODE & FOOTER ---
+//     const verifyLink = "https://cwmsrfupre.com.ng/resultverification";
+//     const qrCodeData = await QRCode.toDataURL(verifyLink);
+//     const qrSize = 60;
+//     const qrX = pageWidth - 100;
+//     const qrY = pageHeight - 85; 
+
+//     doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+//     doc.setFontSize(8);
+//     doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+
+//     doc.setFontSize(9);
+//     doc.setTextColor(100);
+//     doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+
+//     doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+
+//     Swal.fire({
+//       icon: "success",
+//       title: "Download Successful",
+//       text: "Your result has been Downloaded, Please check your downloads folder.",
+//     });
+//   };
 
   const handleAlert = () => {
     Swal.fire({
@@ -1093,7 +1167,24 @@ const handleCheckApprovalAndDownload = async () => {
 
       if (res.data.success && res.data.is_approved) {
         // Payment is approved — run the PDF generator function
-        generatePDF();
+        generatePDF(
+          student,
+  programName,
+  semester,
+  semesters,
+  groupedResults,
+  courseTotals,
+  currentTCP,
+  currentTNU,
+  currentGPA,
+  prevTCP,
+  prevTNU,
+  prevGPA,
+  cumTCP,
+  cumTNU,
+  cumGPA,
+  grandTotal
+        );
       } else {
         Swal.fire({
           icon: "warning",
@@ -1160,7 +1251,24 @@ const handleCheckApprovalAndDownload = async () => {
   </Button>
 
 </>}
-{window.location.pathname==='/admin'&&<Button onClick={generatePDF}>Download Result</Button>}
+{window.location.pathname==='/admin'&&<Button onClick={()=>generatePDF(
+  student,
+  programName,
+  semester,
+  semesters,
+  groupedResults,
+  courseTotals,
+  currentTCP,
+  currentTNU,
+  currentGPA,
+  prevTCP,
+  prevTNU,
+  prevGPA,
+  cumTCP,
+  cumTNU,
+  cumGPA,
+  grandTotal
+)}>Download Result</Button>}
 </>
       
           ) : (

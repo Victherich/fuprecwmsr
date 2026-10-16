@@ -12,6 +12,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import QRCode from "qrcode";
 import { useLocation } from "react-router-dom";
+import StudentResult3 from "./StudentResult3";
 
 const Container = styled.div`
   padding: 2rem 1rem;
@@ -203,7 +204,7 @@ const StudentResult2 = ({id, prevTcp, prevTnu, prevGpa}) => {
   const studentInfo = useSelector((state) => state.studentInfo);
   const studentId2 = studentInfo?.id;
   const semesterId=studentInfo?.selected_semester;
-  const { courses, programs, api_url,semesters, isUploadModalOpen, setIsUploadModalOpen } = useContext(Context);
+  const { courses, programs, api_url,semesters, isUploadModalOpen, setIsUploadModalOpen, generatePDF } = useContext(Context);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState(null);
@@ -393,131 +394,131 @@ const location = useLocation();
   };
 
   // --- GENERATE PDF USING PRE-CALCULATED VALUES ---
-  const generatePDF = async () => {
-    if (groupedResults.length === 0) {
-      Swal.fire("No results", "You have no results to download.", "info");
-      return;
-    }
+  // const generatePDF = async () => {
+  //   if (groupedResults.length === 0) {
+  //     Swal.fire("No results", "You have no results to download.", "info");
+  //     return;
+  //   }
 
-    const doc = new jsPDF("l", "pt", "a4");
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
+  //   const doc = new jsPDF("l", "pt", "a4");
+  //   const pageWidth = doc.internal.pageSize.getWidth();
+  //   const pageHeight = doc.internal.pageSize.getHeight();
 
-    // Logo (Centered)
-    const logo = "/logo.png";
-    const logoWidth = 50;
-    const logoHeight = 50;
-    doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
+  //   // Logo (Centered)
+  //   const logo = "/logo.png";
+  //   const logoWidth = 50;
+  //   const logoHeight = 50;
+  //   doc.addImage(logo, "PNG", (pageWidth - logoWidth) / 2, 10, logoWidth, logoHeight);
 
-    // Header Image (Full width)
-    const headerImg = "/resultheader.png";
-    const headerWidth = pageWidth - 80; 
-    const headerHeight = 250; 
-    doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
+  //   // Header Image (Full width)
+  //   const headerImg = "/resultheader.png";
+  //   const headerWidth = pageWidth - 80; 
+  //   const headerHeight = 250; 
+  //   doc.addImage(headerImg, "PNG", 40, 65, headerWidth, headerHeight);
 
-    // Option/Program Title
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(0, 0, 0);
-    doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
+  //   // Option/Program Title
+  //   doc.setFontSize(12);
+  //   doc.setFont("helvetica", "bold");
+  //   doc.setTextColor(0, 0, 0);
+  //   doc.text(`OPTION: ${programName?.toUpperCase() || "WASTE MANAGEMENT"}`, 40, 340);
 
-    // --- TABLE STRUCTURE ---
-    const headerRow1 = [
-      { content: 'S/N', rowSpan: 2 },
-      { content: 'NAME OF CANDIDATE', rowSpan: 2 },
-      { content: 'REGISTRATION NUMBER', rowSpan: 2 },
-      { content: 'SEX', rowSpan: 2 },
-      ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
-      { content: 'CURRENT', colSpan: 3 },
-      { content: 'PREVIOUS', colSpan: 3 },
-      { content: 'CUMULATIVE', colSpan: 3 }
-    ];
+  //   // --- TABLE STRUCTURE ---
+  //   const headerRow1 = [
+  //     { content: 'S/N', rowSpan: 2 },
+  //     { content: 'NAME OF CANDIDATE', rowSpan: 2 },
+  //     { content: 'REGISTRATION NUMBER', rowSpan: 2 },
+  //     { content: 'SEX', rowSpan: 2 },
+  //     ...groupedResults.map(r => ({ content: `${r.code}\n(${r.credit_unit || 0})`, rowSpan: 2 })),
+  //     { content: 'CURRENT', colSpan: 3 },
+  //     { content: 'PREVIOUS', colSpan: 3 },
+  //     { content: 'CUMULATIVE', colSpan: 3 }
+  //   ];
 
-    const headerRow2 = [
-      'TCP', 'TNU', 'GPA', 
-      'TCP', 'TNU', 'GPA', 
-      'TCP', 'TNU', 'GPA'
-    ];
+  //   const headerRow2 = [
+  //     'TCP', 'TNU', 'GPA', 
+  //     'TCP', 'TNU', 'GPA', 
+  //     'TCP', 'TNU', 'GPA'
+  //   ];
 
-    const rows = [
-      [
-        "1.", 
-        student?.full_name?.toUpperCase() || "—", 
-        student?.admission_number || "—", 
-        student?.sex || "M", 
-        ...courseTotals,
-        currentTCP, currentTNU, currentGPA,
-        prevTCP, prevTNU, prevGPA,
-        cumTCP, cumTNU, cumGPA
-      ]
-    ];
+  //   const rows = [
+  //     [
+  //       "1.", 
+  //       student?.full_name?.toUpperCase() || "—", 
+  //       student?.admission_number || "—", 
+  //       student?.sex || "M", 
+  //       ...courseTotals,
+  //       currentTCP, currentTNU, currentGPA,
+  //       prevTCP, prevTNU, prevGPA,
+  //       cumTCP, cumTNU, cumGPA
+  //     ]
+  //   ];
 
-    doc.autoTable({
-      head: [headerRow1, headerRow2],
-      body: rows,
-      startY: 345,
-      theme: "grid",
-      styles: { 
-        fontSize: 7.5, 
-        cellPadding: 2, 
-        halign: "center", 
-        valign: "middle", 
-        lineColor: [0, 128, 0],
-        lineWidth: 0.5,
-        textColor: 0
-      },
-      headStyles: { 
-        fillColor: [255, 255, 255], 
-        textColor: [0, 0, 0], 
-        fontStyle: "bold",
-      },
-      columnStyles: {
-        1: { halign: "left", cellWidth: 90 },
-        2: { cellWidth: 70 }
-      }
-    });
+  //   doc.autoTable({
+  //     head: [headerRow1, headerRow2],
+  //     body: rows,
+  //     startY: 345,
+  //     theme: "grid",
+  //     styles: { 
+  //       fontSize: 7.5, 
+  //       cellPadding: 2, 
+  //       halign: "center", 
+  //       valign: "middle", 
+  //       lineColor: [0, 128, 0],
+  //       lineWidth: 0.5,
+  //       textColor: 0
+  //     },
+  //     headStyles: { 
+  //       fillColor: [255, 255, 255], 
+  //       textColor: [0, 0, 0], 
+  //       fontStyle: "bold",
+  //     },
+  //     columnStyles: {
+  //       1: { halign: "left", cellWidth: 90 },
+  //       2: { cellWidth: 70 }
+  //     }
+  //   });
 
-    // --- SUMMARY & SIGNATURES ---
-    const finalY = doc.lastAutoTable.finalY + 40;
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "bold");
+  //   // --- SUMMARY & SIGNATURES ---
+  //   const finalY = doc.lastAutoTable.finalY + 40;
+  //   doc.setFontSize(10);
+  //   doc.setFont("helvetica", "bold");
 
-    doc.text(`SUMMARY: TOTAL: ${grandTotal}     RANGE OF GPA: ${currentGPA}     RANGE OF CGPA: ${cumGPA}`, 40, finalY);
+  //   doc.text(`SUMMARY: TOTAL: ${grandTotal}     RANGE OF GPA: ${currentGPA}     RANGE OF CGPA: ${cumGPA}`, 40, finalY);
 
-    const sigLineY = finalY + 60;
-    doc.setDrawColor(0, 0, 0); 
-    doc.setLineWidth(1);
+  //   const sigLineY = finalY + 60;
+  //   doc.setDrawColor(0, 0, 0); 
+  //   doc.setLineWidth(1);
     
-    doc.line(40, sigLineY, 300, sigLineY);
-    doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
+  //   doc.line(40, sigLineY, 300, sigLineY);
+  //   doc.text("AG.DIRECTOR: DR AKINYEMI OGUNKEYEDE", 40, sigLineY + 15);
 
-    const rightSigX = pageWidth - 340;
-    doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
-    doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
+  //   const rightSigX = pageWidth - 340;
+  //   doc.line(rightSigX, sigLineY, pageWidth - 40, sigLineY);
+  //   doc.text("DEAN, PG SCHOOL: PROF (MRS) J.E. EMUDIANUGHE", rightSigX, sigLineY + 15);
 
-    // --- QR CODE & FOOTER ---
-    const verifyLink = "https://cwmsrfupre.com.ng/resultverification";
-    const qrCodeData = await QRCode.toDataURL(verifyLink);
-    const qrSize = 60;
-    const qrX = pageWidth - 100;
-    const qrY = pageHeight - 85; 
+  //   // --- QR CODE & FOOTER ---
+  //   const verifyLink = "https://cwmsrfupre.com.ng/resultverification";
+  //   const qrCodeData = await QRCode.toDataURL(verifyLink);
+  //   const qrSize = 60;
+  //   const qrX = pageWidth - 100;
+  //   const qrY = pageHeight - 85; 
 
-    doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
-    doc.setFontSize(8);
-    doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
+  //   doc.addImage(qrCodeData, "PNG", qrX, qrY, qrSize, qrSize);
+  //   doc.setFontSize(8);
+  //   doc.text("(scan to verify)", qrX + (qrSize/2), qrY + qrSize + 10, { align: "center" });
 
-    doc.setFontSize(9);
-    doc.setTextColor(100);
-    doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
+  //   doc.setFontSize(9);
+  //   doc.setTextColor(100);
+  //   doc.text("Generated by CWMSRFUPRE Portal", pageWidth / 2, pageHeight - 15, { align: "center" });
 
-    doc.save(`Result_${student?.admission_number || "student"}.pdf`);
+  //   doc.save(`Result_${student?.admission_number || "student"}.pdf`);
 
-    Swal.fire({
-      icon: "success",
-      title: "Download Successful",
-      text: "Your result has been Downloaded, Please check your downloads folder.",
-    });
-  };
+  //   Swal.fire({
+  //     icon: "success",
+  //     title: "Download Successful",
+  //     text: "Your result has been Downloaded, Please check your downloads folder.",
+  //   });
+  // };
 
   const handleAlert = () => {
     Swal.fire({
@@ -554,7 +555,24 @@ const handleCheckApprovalAndDownload = async () => {
 
       if (res.data.success && res.data.is_approved) {
         // Payment is approved — run the PDF generator function
-        generatePDF();
+        generatePDF(
+            student,
+  programName,
+  semester,
+  semesters,
+  groupedResults,
+  courseTotals,
+  currentTCP,
+  currentTNU,
+  currentGPA,
+  prevTCP,
+  prevTNU,
+  prevGPA,
+  cumTCP,
+  cumTNU,
+  cumGPA,
+  grandTotal
+        );
       } else {
         Swal.fire({
           icon: "warning",
@@ -626,7 +644,24 @@ const handleCheckApprovalAndDownload = async () => {
   </Button>
 
 </>}
-{window.location.pathname==='/admin'&&<Button onClick={generatePDF}>Download Result</Button>}
+{window.location.pathname==='/admin'&&<Button onClick={()=>generatePDF(
+    student,
+  programName,
+  semester,
+  semesters,
+  groupedResults,
+  courseTotals,
+  currentTCP,
+  currentTNU,
+  currentGPA,
+  prevTCP,
+  prevTNU,
+  prevGPA,
+  cumTCP,
+  cumTNU,
+  cumGPA,
+  grandTotal
+)}>Download Result</Button>}
 </>
       
           ) : (

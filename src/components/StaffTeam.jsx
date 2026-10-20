@@ -22,6 +22,7 @@ import st14 from '../Images/staff/st14.jpg';
 import st17 from '../Images/staff/st17.jpeg';
 import st18 from '../Images/staff/st18.jpeg';
 import vc from '../Images/staff/vc.jpeg'
+import director from '../Images/staff/director.jpeg'
 
 
 // Hero Section
@@ -155,11 +156,18 @@ const StaffTeam = () => {
       <style>{fadeIn}</style>
 
       <HeroSection>
-        <h1>Our Staff Team</h1>
+        <h1>Our Team</h1>
         <p>The dedicated team leading CWMSR toward a cleaner, sustainable future.</p>
       </HeroSection>
 
       <StaffWrapper>
+
+            <StaffCard>
+              <img src={director} alt="staff"/>
+              <h3>Prof. Okewale, Akindele Oyetunde</h3>
+              <h5 style={{color:"#333"}}>Director, Directorate of SDG, FUPRE</h5>
+            <p style={{fontSize:"0.8rem", fontWeight:"500"}}></p>
+           </StaffCard>
   
            <StaffCard>
               <img src={vc} alt="staff"/>

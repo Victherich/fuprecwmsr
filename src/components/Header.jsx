@@ -202,8 +202,8 @@ const Header = () => {
             {aboutDropdownOpen && (
               <DropdownMenu>
                 <li onClick={() => { navigate('/aboutus'); closeMenus(); }}>About Us</li>
-                <li onClick={() => { navigate('/directormessage'); closeMenus(); }}>Director’s Message</li>
-                <li onClick={() => { navigate('/staffteam'); closeMenus(); }}>Our Staff Team</li>
+                <li onClick={() => { navigate('/directormessage'); closeMenus(); }}>VC / Director Messages</li>
+                <li onClick={() => { navigate('/staffteam'); closeMenus(); }}>Our Team</li>
                 <li onClick={() => { navigate('/shortcourses'); closeMenus(); }}>Short Courses</li>
               </DropdownMenu>
             )}

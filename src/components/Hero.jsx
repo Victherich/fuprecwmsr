@@ -4,6 +4,9 @@ import HeroImg1 from "../Images/pic1.jpg"
 import HeroImg2 from "../Images/pic2.jpg"
 import HeroImg3 from "../Images/pic3.jpg"
 import HeroImg4 from "../Images/pic4.jpg"
+import HeroImg5 from "../Images3/im11.jpeg"
+import HeroImg6 from "../Images3/im36.jpeg"
+import HeroImg7 from "../Images3/im29.jpeg"
 import "animate.css"
 import { Context } from './Context';
 import { useNavigate } from 'react-router-dom';
@@ -23,14 +26,27 @@ const Hero = () => {
       image: HeroImg2,
       caption: "Transforming Waste into Resources",
     },
-    {
+ {
       image: HeroImg3,
       caption: "Pioneering Environmental Sustainability Solutions",
     },
     {
       image: HeroImg4,
       caption: "Advancing Research for a Greener Future",
-    }
+    },
+    {
+      image: HeroImg5,
+      caption: "Pioneering Environmental Sustainability Solutions",
+    },
+    {
+      image: HeroImg6,
+      caption: "Advancing Research for a Greener Future",
+    },
+        {
+      image: HeroImg7,
+      caption: "Transforming Waste into Resources",
+    },
+
 ];
 
 

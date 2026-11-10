@@ -631,6 +631,7 @@ import CurrentEvents from './CurrentEvents';
 // import ResponsiveImage from './ResponsiveImage';
 import ResponsiveImage from './ResponsiveImage'
 import CurrentEvents2 from './CurrentEvents2';
+import Hero2 from './Hero2';
 
 const Landingpage = () => {
 
@@ -663,6 +664,7 @@ const Landingpage = () => {
         <CurrentEvents/>
         <Academics/>
         <FacultyLecturers/>
+        <Hero2/>
         
         <ServicesBrief />
         <CommunityImpact/>

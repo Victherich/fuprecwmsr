@@ -832,7 +832,7 @@ const filteredCourses = courses.filter((course) => {
     <>
       <Container>
         <Title>
-          <FaBookOpen /> Your Enrollments
+          <FaBookOpen /> Your Enrollments 
         </Title>
         <Description>Ensure you are enrolled in all required courses for this semester.</Description>
 
@@ -891,7 +891,9 @@ const filteredCourses = courses.filter((course) => {
               onChange={(e) => setSelectedCourse(e.target.value)}
             >
               <option value="">Choose a course...</option>
+              
               {filteredCourses.map((course) => (
+
                 <option key={course.id} value={course.id}>
                   {course.code} — {course.title}
                 </option>

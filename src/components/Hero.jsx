@@ -19,31 +19,31 @@ const Hero = () => {
   // Array of background images and captions
   const slides = [
     {
-      image: HeroImg1, 
+      image: HeroImg6, 
       caption: "Innovating Sustainable Waste Management",
     },
     {
-      image: HeroImg2,
+      image: HeroImg5,
       caption: "Transforming Waste into Resources",
     },
  {
-      image: HeroImg3,
+      image: HeroImg7,
       caption: "Pioneering Environmental Sustainability Solutions",
     },
     {
-      image: HeroImg4,
+      image: HeroImg1,
       caption: "Advancing Research for a Greener Future",
     },
     {
-      image: HeroImg5,
+      image: HeroImg2,
       caption: "Pioneering Environmental Sustainability Solutions",
     },
     {
-      image: HeroImg6,
+      image: HeroImg3,
       caption: "Advancing Research for a Greener Future",
     },
         {
-      image: HeroImg7,
+      image: HeroImg4,
       caption: "Transforming Waste into Resources",
     },
 

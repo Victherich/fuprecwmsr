@@ -19,78 +19,81 @@ const ContextProvider = ({children}) => {
 
 
 
-//     const programs = [
-//       { id: 1, name: "Postgraduate Diploma (PGD) in Petroleum Waste Management", code:"PG/CWMSR/PWM" },
-//       { id: 2, name: "Postgraduate Diploma (PGD) in Waste Management", code:"PG/CWMSR/WM" },
-//       { id: 3, name: "Postgraduate Diploma (PGD) in Environmental Social Work & Community Development" },
-//       { id: 4, name: "Postgraduate Diploma (PGD) in Environmental Health Management" },
-//       { id: 5, name: "Master Degree in Petroleum Waste Management" },
-//       { id: 6, name: "Master Degree in Waste Management" },
-//       { id: 7, name: "Master Degree in Environmental Social Work & Community Development" },
-//       { id: 8, name: "Master Degree in Environmental Health Management" },
-//       { id: 9, name: "Master of Philosophy (M.Phil.) in Petroleum Waste Management" },
-//       { id: 10, name: "Master of Philosophy (M.Phil.) in Waste Management" },
-//       { id: 11, name: "Master of Philosophy (M.Phil.) in Environmental Social Work & Community Development" },
-//       { id: 12, name: "Master of Philosophy (M.Phil.) in Environmental Health Management" },
-//       { id: 13, name: "Doctor of Philosophy (Ph.D.) in Petroleum Waste Management" },
-//       { id: 14, name: "Doctor of Philosophy (Ph.D.) in Waste Management" },
-//       { id: 15, name: "Doctor of Philosophy (Ph.D.) in Environmental Social Work & Community Development" },
-//       { id: 16, name: "Doctor of Philosophy (Ph.D.) in Environmental Health Management" },
+    
+    
+// PG/P/PHD/CWMSR/WMT/2025/8987
+// const programs = [
+//       { id: 1, name: "Postgraduate Diploma (PGD) in Petroleum Waste Management", code: "PG/CWMSR/PWM" },
+//       { id: 2, name: "Postgraduate Diploma (PGD) in Waste Management", code: "PG/CWMSR/WM" },
+//       { id: 3, name: "Postgraduate Diploma (PGD) in Environmental Social Work & Community Development", code: "PG/CWMSR/ESWCD" },
+//       { id: 4, name: "Postgraduate Diploma (PGD) in Environmental Health Management", code: "PG/CWMSR/EHM" },
       
-//     { id: 17, name: "Professional PGD in Petroleum Waste Management" },
-// { id: 18, name: "Professional PGD in Waste Management" },
-// { id: 19, name: "Professional PGD in Environmental Social Work & Community Development" },
-// { id: 20, name: "Professional PGD in Environmental Health Management" },
+//       { id: 5, name: "Master Degree in Petroleum Waste Management", code: "MSC/CWMSR/PWM" },
+//       { id: 6, name: "Master Degree in Waste Management", code: "MSC/CWMSR/WM" },
+//       { id: 7, name: "Master Degree in Environmental Social Work & Community Development", code: "MSC/CWMSR/ESWCD" },
+//       { id: 8, name: "Master Degree in Environmental Health Management", code: "MSC/CWMSR/EHM" },
+      
+//       { id: 9, name: "Master of Philosophy (M.Phil.) in Petroleum Waste Management", code: "MPHIL/CWMSR/PWM" },
+//       { id: 10, name: "Master of Philosophy (M.Phil.) in Waste Management", code: "MPHIL/CWMSR/WM" },
+//       { id: 11, name: "Master of Philosophy (M.Phil.) in Environmental Social Work & Community Development", code: "MPHIL/CWMSR/ESWCD" },
+//       { id: 12, name: "Master of Philosophy (M.Phil.) in Environmental Health Management", code: "MPHIL/CWMSR/EHM" },
+      
+//       { id: 13, name: "Doctor of Philosophy (Ph.D.) in Petroleum Waste Management", code: "PHD/CWMSR/PWM" },
+//       { id: 14, name: "Doctor of Philosophy (Ph.D.) in Waste Management", code: "PHD/CWMSR/WM" },
+//       { id: 15, name: "Doctor of Philosophy (Ph.D.) in Environmental Social Work & Community Development", code: "PHD/CWMSR/ESWCD" },
+//       { id: 16, name: "Doctor of Philosophy (Ph.D.) in Environmental Health Management", code: "PHD/CWMSR/EHM" },
+      
+//       { id: 17, name: "Professional PGD in Petroleum Waste Management", code: "PPG/CWMSR/PWM" },
+//       { id: 18, name: "Professional PGD in Waste Management", code: "PPG/CWMSR/WM" },
+//       { id: 19, name: "Professional PGD in Environmental Social Work & Community Development", code: "PPG/CWMSR/ESWCD" },
+//       { id: 20, name: "Professional PGD in Environmental Health Management", code: "PPG/CWMSR/EHM" },
 
-//    { id: 21, name: "Professional Masters in Petroleum Waste Management" },
-// { id: 22, name: "Professional Masters in Waste Management" },
-// { id: 23, name: "Professional Masters in Environmental Social Work & Community Development" },
-// { id: 24, name: "Professional Masters in Environmental Health Management" },
+//       { id: 21, name: "Professional Masters in Petroleum Waste Management", code: "PMST/CWMSR/PWM" },
+//       { id: 22, name: "Professional Masters in Waste Management", code: "PMST/CWMSR/WM" },
+//       { id: 23, name: "Professional Masters in Environmental Social Work & Community Development", code: "PMST/CWMSR/ESWCD" },
+//       { id: 24, name: "Professional Masters in Environmental Health Management", code: "PMST/CWMSR/EHM" },
 
-//    { id: 25, name: "Professional Doctorate in Petroleum Waste Management" },
-// { id: 26, name: "Professional Doctorate in Waste Management" },
-// { id: 27, name: "Professional Doctorate in Environmental Social Work & Community Development" },
-// { id: 28, name: "Professional Doctorate in Environmental Health Management" },
-
-//     ];
-    
-    
+//       { id: 25, name: "Professional Doctorate in Petroleum Waste Management", code: "PDR/CWMSR/PWM" },
+//       { id: 26, name: "Professional Doctorate in Waste Management", code: "PDR/CWMSR/WM" },
+//       { id: 27, name: "Professional Doctorate in Environmental Social Work & Community Development", code: "PDR/CWMSR/ESWCD" },
+//       { id: 28, name: "Professional Doctorate in Environmental Health Management", code: "PDR/CWMSR/EHM" },
+//   ];
 
 const programs = [
-      { id: 1, name: "Postgraduate Diploma (PGD) in Petroleum Waste Management", code: "PG/CWMSR/PWM" },
-      { id: 2, name: "Postgraduate Diploma (PGD) in Waste Management", code: "PG/CWMSR/WM" },
-      { id: 3, name: "Postgraduate Diploma (PGD) in Environmental Social Work & Community Development", code: "PG/CWMSR/ESWCD" },
-      { id: 4, name: "Postgraduate Diploma (PGD) in Environmental Health Management", code: "PG/CWMSR/EHM" },
+      { id: 1, name: "Postgraduate Diploma (PGD) in Petroleum Waste Management", code: "PG/P/PG/CWMSR/PWM" },
+      { id: 2, name: "Postgraduate Diploma (PGD) in Waste Management", code: "PG/P/PG/CWMSR/WM" },
+      { id: 3, name: "Postgraduate Diploma (PGD) in Environmental Social Work & Community Development", code: "PG/P/PG/CWMSR/ESWCD" },
+      { id: 4, name: "Postgraduate Diploma (PGD) in Environmental Health Management", code: "PG/P/PG/CWMSR/EHM" },
       
-      { id: 5, name: "Master Degree in Petroleum Waste Management", code: "MSC/CWMSR/PWM" },
-      { id: 6, name: "Master Degree in Waste Management", code: "MSC/CWMSR/WM" },
-      { id: 7, name: "Master Degree in Environmental Social Work & Community Development", code: "MSC/CWMSR/ESWCD" },
-      { id: 8, name: "Master Degree in Environmental Health Management", code: "MSC/CWMSR/EHM" },
+      { id: 5, name: "Master Degree in Petroleum Waste Management", code: "PG/P/MSC/CWMSR/PWM" },
+      { id: 6, name: "Master Degree in Waste Management", code: "PG/P/MSC/CWMSR/WM" },
+      { id: 7, name: "Master Degree in Environmental Social Work & Community Development", code: "PG/P/MSC/CWMSR/ESWCD" },
+      { id: 8, name: "Master Degree in Environmental Health Management", code: "PG/P/MSC/CWMSR/EHM" },
       
-      { id: 9, name: "Master of Philosophy (M.Phil.) in Petroleum Waste Management", code: "MPHIL/CWMSR/PWM" },
-      { id: 10, name: "Master of Philosophy (M.Phil.) in Waste Management", code: "MPHIL/CWMSR/WM" },
-      { id: 11, name: "Master of Philosophy (M.Phil.) in Environmental Social Work & Community Development", code: "MPHIL/CWMSR/ESWCD" },
-      { id: 12, name: "Master of Philosophy (M.Phil.) in Environmental Health Management", code: "MPHIL/CWMSR/EHM" },
+      { id: 9, name: "Master of Philosophy (M.Phil.) in Petroleum Waste Management", code: "PG/P/MPHIL/CWMSR/PWM" },
+      { id: 10, name: "Master of Philosophy (M.Phil.) in Waste Management", code: "PG/P/MPHIL/CWMSR/WM" },
+      { id: 11, name: "Master of Philosophy (M.Phil.) in Environmental Social Work & Community Development", code: "PG/P/MPHIL/CWMSR/ESWCD" },
+      { id: 12, name: "Master of Philosophy (M.Phil.) in Environmental Health Management", code: "PG/P/MPHIL/CWMSR/EHM" },
       
-      { id: 13, name: "Doctor of Philosophy (Ph.D.) in Petroleum Waste Management", code: "PHD/CWMSR/PWM" },
-      { id: 14, name: "Doctor of Philosophy (Ph.D.) in Waste Management", code: "PHD/CWMSR/WM" },
-      { id: 15, name: "Doctor of Philosophy (Ph.D.) in Environmental Social Work & Community Development", code: "PHD/CWMSR/ESWCD" },
-      { id: 16, name: "Doctor of Philosophy (Ph.D.) in Environmental Health Management", code: "PHD/CWMSR/EHM" },
+      { id: 13, name: "Doctor of Philosophy (Ph.D.) in Petroleum Waste Management", code: "PG/P/PHD/CWMSR/PWM" },
+      { id: 14, name: "Doctor of Philosophy (Ph.D.) in Waste Management", code: "PG/P/PHD/CWMSR/WM" },
+      { id: 15, name: "Doctor of Philosophy (Ph.D.) in Environmental Social Work & Community Development", code: "PG/P/PHD/CWMSR/ESWCD" },
+      { id: 16, name: "Doctor of Philosophy (Ph.D.) in Environmental Health Management", code: "PG/P/PHD/CWMSR/EHM" },
       
-      { id: 17, name: "Professional PGD in Petroleum Waste Management", code: "PPG/CWMSR/PWM" },
-      { id: 18, name: "Professional PGD in Waste Management", code: "PPG/CWMSR/WM" },
-      { id: 19, name: "Professional PGD in Environmental Social Work & Community Development", code: "PPG/CWMSR/ESWCD" },
-      { id: 20, name: "Professional PGD in Environmental Health Management", code: "PPG/CWMSR/EHM" },
+      { id: 17, name: "Professional PGD in Petroleum Waste Management", code: "PG/P/PPG/CWMSR/PWM" },
+      { id: 18, name: "Professional PGD in Waste Management", code: "PG/P/PPG/CWMSR/WM" },
+      { id: 19, name: "Professional PGD in Environmental Social Work & Community Development", code: "PG/P/PPG/CWMSR/ESWCD" },
+      { id: 20, name: "Professional PGD in Environmental Health Management", code: "PG/P/PPG/CWMSR/EHM" },
 
-      { id: 21, name: "Professional Masters in Petroleum Waste Management", code: "PMST/CWMSR/PWM" },
-      { id: 22, name: "Professional Masters in Waste Management", code: "PMST/CWMSR/WM" },
-      { id: 23, name: "Professional Masters in Environmental Social Work & Community Development", code: "PMST/CWMSR/ESWCD" },
-      { id: 24, name: "Professional Masters in Environmental Health Management", code: "PMST/CWMSR/EHM" },
+      { id: 21, name: "Professional Masters in Petroleum Waste Management", code: "PG/P/PMST/CWMSR/PWM" },
+      { id: 22, name: "Professional Masters in Waste Management", code: "PG/P/PMST/CWMSR/WM" },
+      { id: 23, name: "Professional Masters in Environmental Social Work & Community Development", code: "PG/P/PMST/CWMSR/ESWCD" },
+      { id: 24, name: "Professional Masters in Environmental Health Management", code: "PG/P/PMST/CWMSR/EHM" },
 
-      { id: 25, name: "Professional Doctorate in Petroleum Waste Management", code: "PDR/CWMSR/PWM" },
-      { id: 26, name: "Professional Doctorate in Waste Management", code: "PDR/CWMSR/WM" },
-      { id: 27, name: "Professional Doctorate in Environmental Social Work & Community Development", code: "PDR/CWMSR/ESWCD" },
-      { id: 28, name: "Professional Doctorate in Environmental Health Management", code: "PDR/CWMSR/EHM" },
+      { id: 25, name: "Professional Doctorate in Petroleum Waste Management", code: "PG/P/PDR/CWMSR/PWM" },
+      { id: 26, name: "Professional Doctorate in Waste Management", code: "PG/P/PDR/CWMSR/WM" },
+      { id: 27, name: "Professional Doctorate in Environmental Social Work & Community Development", code: "PG/P/PDR/CWMSR/ESWCD" },
+      { id: 28, name: "Professional Doctorate in Environmental Health Management", code: "PG/P/PDR/CWMSR/EHM" },
   ];
 
 
